@@ -1,1 +1,23 @@
 @import url("https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@300;400&family=Lora:wght@600&family=Montserrat:wght@700&display=swap");
+
+:root {
+  /* header */
+  --header-height: 80px;
+
+  /* color */
+  --primary-color: #1cbf73;
+  --primary-color-light: #a1f4c0;
+  --secondary-color: #ff61ad;
+  --primary-text: #222425;
+  --secondary-text: #404145;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: grid;
+  place-items: center;
+}

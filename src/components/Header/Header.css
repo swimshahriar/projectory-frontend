@@ -1,0 +1,70 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.header h1 {
+  font-family: "Montserrat", serif;
+}
+
+.header__menu {
+  font-size: 2rem;
+  display: none;
+}
+.header__menu:hover {
+  cursor: pointer;
+}
+
+.header__list {
+  display: flex;
+  list-style: none;
+}
+
+.header__list li {
+  margin-right: 1rem;
+}
+
+.header__list li:nth-child(5) {
+  margin-right: 0;
+}
+
+.header__list li a {
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-family: "Hind Vadodara", sans-serif;
+}
+
+.show {
+  display: flex !important;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    box-shadow: 1px 1px 8px var(--primary-text);
+  }
+  .header__menu {
+    display: block;
+  }
+
+  .header__list {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40vw;
+    padding: 2rem 1rem;
+    margin-top: calc(2px + var(--header-height));
+    min-height: calc(100vh - var(--header-height));
+    background-color: var(--primary-color);
+  }
+
+  .header__list li a {
+    color: #fff;
+    padding-left: 1.5rem;
+  }
+}

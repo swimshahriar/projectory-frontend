@@ -10,7 +10,9 @@ import Header from "./components/Header/Header";
 function App() {
   return (
     <>
-      <Header />
+      <header>
+        <Header />
+      </header>
       <Switch>
         <Route component={Home} path="/" exact />
       </Switch>
