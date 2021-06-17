@@ -35,6 +35,22 @@
   text-decoration: none;
   font-size: 1.5rem;
   font-family: "Hind Vadodara", sans-serif;
+  font-weight: 600;
+  color: var(--secondary-text);
+}
+.active {
+  position: relative;
+  color: var(--primary-text) !important;
+}
+
+.active::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 0.25rem;
+  left: 0;
+  top: 2.2rem;
+  background-color: var(--primary-color);
 }
 
 .show {
@@ -42,9 +58,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .header {
-    box-shadow: 1px 1px 8px var(--primary-text);
-  }
   .header__menu {
     display: block;
   }
@@ -66,5 +79,14 @@
   .header__list li a {
     color: #fff;
     padding-left: 1.5rem;
+  }
+
+  .active {
+    color: #fff !important;
+  }
+  .active::after {
+    background-color: #fff;
+    width: 80%;
+    margin-left: 1.5rem;
   }
 }

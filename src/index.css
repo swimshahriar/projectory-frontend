@@ -20,4 +20,5 @@ body {
 header {
   display: grid;
   place-items: center;
+  box-shadow: 0 1px 8px var(--primary-text);
 }

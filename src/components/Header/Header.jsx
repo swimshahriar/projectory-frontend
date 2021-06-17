@@ -21,11 +21,11 @@ const navLinks = [
   },
   {
     title: "Login",
-    url: "/?login=open",
+    url: "/login",
   },
   {
     title: "Join",
-    url: "/?register=open",
+    url: "/register",
   },
 ];
 
@@ -41,6 +41,7 @@ const Header = () => {
               onClick={() =>
                 document.getElementById("nav").classList.remove("show")
               }
+              activeClassName="active"
             >
               {link.title}
             </NavLink>
