@@ -8,6 +8,7 @@
 
 .header h1 {
   font-family: "Montserrat", serif;
+  cursor: pointer;
 }
 
 .header__menu {

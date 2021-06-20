@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { HiMenuAlt3 } from "react-icons/hi";
 
 // styles
@@ -20,19 +20,21 @@ const navLinks = [
     url: "/about",
   },
   {
-    title: "Login",
-    url: "/login",
+    title: "Login/Register",
+    url: "/auth",
   },
-  {
-    title: "Join",
-    url: "/register",
-  },
+  // {
+  //   title: "Join",
+  //   url: "/auth?register=true",
+  // },
 ];
 
 const Header = () => {
+  const history = useHistory();
   return (
     <div className="header">
-      <h1>Projectory</h1>
+      <h1 onClick={() => history.push("/")}>Projectory</h1>
+
       <nav className="header__list" id="nav">
         {navLinks.map((link, idx) => (
           <li key={idx}>
@@ -42,6 +44,7 @@ const Header = () => {
                 document.getElementById("nav").classList.remove("show")
               }
               activeClassName="active"
+              exact
             >
               {link.title}
             </NavLink>
