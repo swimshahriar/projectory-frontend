@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Typography, TextField, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import axios from "axios";
+import {useDispatch, useSelector} from 'react-redux';
+
+import {loginHandler, registerHandler} from '../actions/authAction';
 
 // styles
 const useStyles = makeStyles(() => ({
@@ -26,86 +30,168 @@ const useStyles = makeStyles(() => ({
     marginBottom: 20,
     width: "100%",
   },
+  lowerHalf: {
+    marginTop: 20,
+
+    "& button": {
+      marginLeft: 15,
+    },
+  },
 }));
 
 // form schema
-const schema = yup.object().shape({
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().email().required(),
-  password: yup.string().min(6).required(),
-  confirmPassword: yup.string().min(6).required(),
+const schemaReg = yup.object().shape({
+  firstName: yup.string().required("required"),
+  lastName: yup.string().required("required"),
+  userName: yup.string().required("required"),
+  email: yup.string().email().required("required"),
+  password: yup.string().min(6).required("required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords don't match!")
+    .required("required"),
+});
+
+const schemaLog = yup.object().shape({
+  email: yup.string().email().required("required"),
+  password: yup.string().min(6).required("required"),
 });
 
 const Auth = () => {
+  const [isLoginMode, setIsLoginMode] = useState(true);
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+    reset,
+  } = useForm({ resolver: yupResolver(isLoginMode ? schemaLog : schemaReg) });
 
-  const submitHandler = (data) => {
-    console.log(data);
+  const submitHandler = async (data) => {
+    if (isLoginMode) {
+      await dispatch(loginHandler(data));
+    } else {
+      await dispatch(registerHandler(data));
+    }
   };
+
+  // grab error from state
+  const {error} = useSelector(state => state.auth);
+    
 
   return (
     <Container maxWidth="xl" className={classes.authContainer}>
       <Typography variant="h4" align="center">
-        Register
+        {!isLoginMode ? "Register" : "Login"}
       </Typography>
+      {error && <Typography variant="body1" color="secondary" align="center">{error}</Typography>}
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
-        <TextField
-          {...register("firstName")}
-          label="First Name"
-          helperText="required"
-          variant="outlined"
-          className={classes.formInput}
-        />
+        {!isLoginMode ? (
+          <>
+            <TextField
+              {...register("firstName")}
+              label="First Name"
+              helperText={errors.firstName?.message}
+              error={errors.firstName ? true : false}
+              variant="outlined"
+              className={classes.formInput}
+            />
 
-        <TextField
-          {...register("lastName")}
-          label="Last Name"
-          helperText="required"
-          variant="outlined"
-          className={classes.formInput}
-        />
+            <TextField
+              {...register("lastName")}
+              label="Last Name"
+              helperText={errors.lastName?.message}
+              error={errors.lastName ? true : false}
+              variant="outlined"
+              className={classes.formInput}
+            />
 
-        <TextField
-          {...register("email")}
-          label="Email"
-          helperText="required"
-          variant="outlined"
-          className={classes.formInput}
-        />
-        <TextField
-          {...register("password")}
-          type="password"
-          label="Password"
-          helperText="min length 6"
-          variant="outlined"
-          className={classes.formInput}
-        />
-        <TextField
-          {...register("confirmPassword")}
-          type="password"
-          label="Confirm password"
-          helperText="retype your pass"
-          variant="outlined"
-          className={classes.formInput}
-        />
+            <TextField
+              {...register("userName")}
+              label="User Name"
+              helperText={errors.userName?.message}
+              error={errors.userName ? true : false}
+              variant="outlined"
+              className={classes.formInput}
+            />
+
+            <TextField
+              {...register("email")}
+              label="Email"
+              helperText={errors.email?.message}
+              error={errors.email ? true : false}
+              variant="outlined"
+              className={classes.formInput}
+            />
+
+            <TextField
+              {...register("password")}
+              type="password"
+              label="Password"
+              helperText={errors.password?.message}
+              error={errors.password ? true : false}
+              variant="outlined"
+              className={classes.formInput}
+            />
+
+            <TextField
+              {...register("confirmPassword")}
+              type="password"
+              label="Confirm password"
+              helperText={errors.confirmPassword?.message}
+              error={errors.confirmPassword ? true : false}
+              variant="outlined"
+              className={classes.formInput}
+            />
+          </>
+        ) : (
+          <>
+            <TextField
+              {...register("email")}
+              label="Email"
+              helperText={errors.email?.message}
+              error={errors.email ? true : false}
+              variant="outlined"
+              className={classes.formInput}
+            />
+
+            <TextField
+              {...register("password")}
+              type="password"
+              label="Password"
+              helperText={errors.password?.message}
+              error={errors.password ? true : false}
+              variant="outlined"
+              className={classes.formInput}
+            />
+          </>
+        )}
         <Button
           variant="outlined"
           color="primary"
           size="large"
-          onClick={() => handleSubmit(submitHandler)}
+          onClick={handleSubmit(submitHandler)}
         >
-          Register
+          {!isLoginMode ? "Register" : "Login"}
         </Button>
       </form>
 
-      <Typography align="center">
-        Already have an account? <Typography variant="span">login</Typography>
+      <Typography variant="body1" align="center" className={classes.lowerHalf}>
+        {isLoginMode ? "Don't have an account?" : "Already have an account?"}
+        <span>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => {
+              setIsLoginMode((prev) => !prev);
+              reset();
+            }}
+          >
+            {isLoginMode ? "Register" : "Login"}
+          </Button>
+        </span>
       </Typography>
     </Container>
   );
