@@ -79,13 +79,15 @@ export const registerHandler = (data) => async (dispatch) => {
 };
 
 // logout
-export const logOutHandler = () => {
+export const logOutHandler = () => (dispatch) => {
   dispatch({
     type: "LOADING",
   });
   dispatch({
     type: "LOGOUT",
   });
+
+  localStorage.removeItem("auth");
 };
 
 // on start check for auth
