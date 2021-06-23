@@ -1,5 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+// reducers
+import { checkForAuth } from "./actions/authAction";
 
 // pages
 import Home from "./pages/Home";
@@ -10,6 +14,14 @@ import About from "./pages/About";
 import Header from "./components/Header/Header";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      await dispatch(checkForAuth());
+    })();
+  }, []);
+
   return (
     <>
       <header>

@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 
-import {loginHandler, registerHandler} from '../actions/authAction';
+import { loginHandler, registerHandler } from "../actions/authAction";
 
 // styles
 const useStyles = makeStyles(() => ({
@@ -72,21 +72,26 @@ const Auth = () => {
   const submitHandler = async (data) => {
     if (isLoginMode) {
       await dispatch(loginHandler(data));
+      reset();
     } else {
       await dispatch(registerHandler(data));
+      reset();
     }
   };
 
   // grab error from state
-  const {error} = useSelector(state => state.auth);
-    
+  const { error } = useSelector((state) => state.auth);
 
   return (
     <Container maxWidth="xl" className={classes.authContainer}>
       <Typography variant="h4" align="center">
         {!isLoginMode ? "Register" : "Login"}
       </Typography>
-      {error && <Typography variant="body1" color="secondary" align="center">{error}</Typography>}
+      {error && (
+        <Typography variant="body1" color="secondary" align="center">
+          {error}
+        </Typography>
+      )}
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         {!isLoginMode ? (
           <>
