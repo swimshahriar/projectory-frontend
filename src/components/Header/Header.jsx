@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { AiOutlineClose } from "react-icons/ai";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
@@ -87,9 +89,10 @@ const Header = () => {
           <li key={idx}>
             <NavLink
               to={link.url}
-              onClick={() =>
-                document.getElementById("nav").classList.remove("show")
-              }
+              onClick={() => {
+                setIsMenuOpen((prev) => !prev);
+                document.getElementById("nav").classList.remove("show");
+              }}
               activeClassName="active"
               exact
             >
@@ -104,6 +107,7 @@ const Header = () => {
               color="secondary"
               onClick={async () => {
                 await dispatch(logOutHandler());
+                setIsMenuOpen((prev) => !prev);
                 document.getElementById("nav").classList.remove("show");
               }}
             >
@@ -114,9 +118,12 @@ const Header = () => {
       </nav>
       <div
         className="header__menu"
-        onClick={() => document.getElementById("nav").classList.toggle("show")}
+        onClick={() => {
+          setIsMenuOpen((prev) => !prev);
+          document.getElementById("nav").classList.toggle("show");
+        }}
       >
-        <HiMenuAlt3 />
+        {isMenuOpen ? <AiOutlineClose /> : <HiMenuAlt3 />}
       </div>
     </div>
   );

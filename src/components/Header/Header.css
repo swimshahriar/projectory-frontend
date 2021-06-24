@@ -73,11 +73,12 @@
     position: absolute;
     right: 0;
     top: 0;
-    width: 40vw;
+    width: 50vw;
     padding: 2rem 1rem;
     margin-top: calc(2px + var(--header-height));
     min-height: calc(100vh - var(--header-height));
     background-color: var(--primary-color);
+    z-index: 1000;
   }
 
   .header__list li a {

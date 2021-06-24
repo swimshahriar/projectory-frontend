@@ -27,7 +27,12 @@ import DialogModal from "../components/DialogModal";
 const useStyles = makeStyles((theme) => ({
   authContainer: {
     marginTop: 50,
-    width: "50%",
+    marginBottom: 50,
+    width: "80%",
+
+    [theme.breakpoints.up("md")]: {
+      width: "60%",
+    },
   },
   errorText: {
     marginTop: 10,
