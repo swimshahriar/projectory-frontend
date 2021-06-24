@@ -3,6 +3,7 @@ const initialState = {
   token: null,
   expiresAt: null,
   isLoading: false,
+  isAuthCheck: true,
   error: null,
 };
 
@@ -28,6 +29,7 @@ const authReducer = (state = initialState, action) => {
         token: action.payload.token,
         expiresAt: action.payload.expiresAt,
         isLoading: false,
+        isAuthCheck: false,
       };
 
     case "REGISTER":

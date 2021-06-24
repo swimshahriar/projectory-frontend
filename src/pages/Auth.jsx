@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Container, Typography, TextField, Button } from "@material-ui/core";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,6 +20,9 @@ const useStyles = makeStyles(() => ({
   authContainer: {
     marginTop: 50,
     width: "50%",
+  },
+  errorText: {
+    marginTop: 10,
   },
   form: {
     marginTop: 30,
@@ -80,7 +89,7 @@ const Auth = () => {
   };
 
   // grab error from state
-  const { error } = useSelector((state) => state.auth);
+  const { error, isLoading } = useSelector((state) => state.auth);
 
   return (
     <Container maxWidth="xl" className={classes.authContainer}>
@@ -88,7 +97,12 @@ const Auth = () => {
         {!isLoginMode ? "Register" : "Login"}
       </Typography>
       {error && (
-        <Typography variant="body1" color="secondary" align="center">
+        <Typography
+          className={classes.errorText}
+          variant="body1"
+          color="secondary"
+          align="center"
+        >
           {error}
         </Typography>
       )}
@@ -173,14 +187,18 @@ const Auth = () => {
             />
           </>
         )}
-        <Button
-          variant="outlined"
-          color="primary"
-          size="large"
-          onClick={handleSubmit(submitHandler)}
-        >
-          {!isLoginMode ? "Register" : "Login"}
-        </Button>
+        {isLoading ? (
+          <CircularProgress color="primary" />
+        ) : (
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            onClick={handleSubmit(submitHandler)}
+          >
+            {!isLoginMode ? "Register" : "Login"}
+          </Button>
+        )}
       </form>
 
       <Typography variant="body1" align="center" className={classes.lowerHalf}>

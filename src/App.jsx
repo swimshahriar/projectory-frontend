@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Container, Typography } from "@material-ui/core";
 
 // reducers
 import { checkForAuth } from "./actions/authAction";
@@ -12,18 +13,31 @@ import About from "./pages/About";
 import Jobs from "./pages/Jobs";
 import Services from "./pages/Services";
 import UserProfile from "./pages/UserProfile";
+import Error404 from "./pages/Error404";
 
 // components
 import Header from "./components/Header/Header";
+import PrivateRoute from "./helpers/PrivateRoute";
 
 function App() {
   const dispatch = useDispatch();
+  const { token, isAuthCheck } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
       await dispatch(checkForAuth());
     })();
   }, []);
+
+  if (isAuthCheck) {
+    return (
+      <Container>
+        <Typography variant="h4" color="textSecondary" align="center">
+          Loading...
+        </Typography>
+      </Container>
+    );
+  }
 
   return (
     <>
@@ -32,11 +46,24 @@ function App() {
       </header>
       <Switch>
         <Route component={Home} path="/" exact />
-        <Route component={Auth} path="/auth" />
+        <PrivateRoute
+          component={Auth}
+          path="/auth"
+          token={token}
+          samePath={false}
+          redirectUrl="/user-profile"
+        />
         <Route component={About} path="/about" />
         <Route component={Jobs} path="/jobs" />
         <Route component={Services} path="/services" />
-        <Route component={UserProfile} path="/user-profile" />
+        <PrivateRoute
+          component={UserProfile}
+          path="/user-profile"
+          token={token}
+          samePath={true}
+          redirectUrl="/auth"
+        />
+        <Route component={Error404} />
       </Switch>
     </>
   );
