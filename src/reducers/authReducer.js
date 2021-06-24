@@ -5,6 +5,7 @@ const initialState = {
   isLoading: false,
   isAuthCheck: true,
   error: null,
+  res: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -20,6 +21,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+        isAuthCheck: false,
       };
 
     case "LOGIN":
@@ -30,6 +32,7 @@ const authReducer = (state = initialState, action) => {
         expiresAt: action.payload.expiresAt,
         isLoading: false,
         isAuthCheck: false,
+        res: null,
       };
 
     case "REGISTER":
@@ -39,6 +42,7 @@ const authReducer = (state = initialState, action) => {
         token: action.payload.token,
         expiresAt: action.payload.expiresAt,
         isLoading: false,
+        res: null,
       };
 
     case "LOGOUT":
@@ -48,6 +52,7 @@ const authReducer = (state = initialState, action) => {
         token: null,
         expiresAt: null,
         isLoading: false,
+        res: null,
       };
 
     case "ERROR":
@@ -55,6 +60,27 @@ const authReducer = (state = initialState, action) => {
         ...state,
         error: action.payload.error,
         isLoading: false,
+        res: null,
+      };
+
+    case "CLEAR_ERROR":
+      return {
+        ...state,
+        error: null,
+        res: null,
+      };
+
+    case "FORGOT_PASSWORD":
+      return {
+        ...state,
+        isLoading: false,
+        res: action.payload.res,
+      };
+
+    case "CLEAR_RES":
+      return {
+        ...state,
+        res: null,
       };
 
     default:

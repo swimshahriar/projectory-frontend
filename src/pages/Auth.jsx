@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Container,
   Typography,
@@ -6,17 +6,25 @@ import {
   Button,
   CircularProgress,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
-import { loginHandler, registerHandler } from "../actions/authAction";
+// actions
+import {
+  loginHandler,
+  registerHandler,
+  forgotPassHandler,
+} from "../actions/authAction";
+
+// components
+import DialogModal from "../components/DialogModal";
 
 // styles
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   authContainer: {
     marginTop: 50,
     width: "50%",
@@ -38,6 +46,13 @@ const useStyles = makeStyles(() => ({
   formInput: {
     marginBottom: 20,
     width: "100%",
+  },
+  forgotPass: {
+    cursor: "pointer",
+
+    "&:hover": {
+      color: theme.palette.secondary.main,
+    },
   },
   lowerHalf: {
     marginTop: 20,
@@ -68,8 +83,13 @@ const schemaLog = yup.object().shape({
 
 const Auth = () => {
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [modalEmail, setModalEmail] = useState("");
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  // grab state from auth state
+  const { error, isLoading, res } = useSelector((state) => state.auth);
 
   const {
     register,
@@ -81,142 +101,225 @@ const Auth = () => {
   const submitHandler = async (data) => {
     if (isLoginMode) {
       await dispatch(loginHandler(data));
-      reset();
     } else {
       await dispatch(registerHandler(data));
+    }
+
+    if (token) {
       reset();
     }
   };
 
-  // grab error from state
-  const { error, isLoading } = useSelector((state) => state.auth);
-
   return (
-    <Container maxWidth="xl" className={classes.authContainer}>
-      <Typography variant="h4" align="center">
-        {!isLoginMode ? "Register" : "Login"}
-      </Typography>
-      {error && (
-        <Typography
-          className={classes.errorText}
-          variant="body1"
-          color="secondary"
-          align="center"
-        >
-          {error}
+    <>
+      <DialogModal
+        open={open}
+        setOpen={setOpen}
+        title="Forgot Password"
+        bodyText="Enter your email to get recovery link."
+        body={
+          <div>
+            {error && (
+              <Alert className={classes.errorText} severity="error">
+                {error}
+              </Alert>
+            )}
+            <TextField
+              variant="outlined"
+              label="Email"
+              required={true}
+              value={modalEmail}
+              onChange={(e) => setModalEmail(e.target.value)}
+            />
+          </div>
+        }
+        actions={
+          isLoading ? (
+            <CircularProgress color="primary" />
+          ) : (
+            <>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => {
+                  dispatch({
+                    type: "CLEAR_ERROR",
+                  });
+                  setOpen(false);
+                }}
+              >
+                Close
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={async () => {
+                  dispatch({
+                    type: "CLEAR_ERROR",
+                  });
+                  if (modalEmail !== "") {
+                    await dispatch(forgotPassHandler(modalEmail));
+                    if (!isLoading && !error) {
+                      setModalEmail("");
+                      setOpen(false);
+                    }
+                  }
+                }}
+              >
+                Send
+              </Button>
+            </>
+          )
+        }
+      />
+
+      <Container maxWidth="xl" className={classes.authContainer}>
+        <Typography variant="h4" align="center">
+          {!isLoginMode ? "Register" : "Login"}
         </Typography>
-      )}
-      <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
-        {!isLoginMode ? (
-          <>
-            <TextField
-              {...register("firstName")}
-              label="First Name"
-              helperText={errors.firstName?.message}
-              error={errors.firstName ? true : false}
-              variant="outlined"
-              className={classes.formInput}
-            />
-
-            <TextField
-              {...register("lastName")}
-              label="Last Name"
-              helperText={errors.lastName?.message}
-              error={errors.lastName ? true : false}
-              variant="outlined"
-              className={classes.formInput}
-            />
-
-            <TextField
-              {...register("userName")}
-              label="User Name"
-              helperText={errors.userName?.message}
-              error={errors.userName ? true : false}
-              variant="outlined"
-              className={classes.formInput}
-            />
-
-            <TextField
-              {...register("email")}
-              label="Email"
-              helperText={errors.email?.message}
-              error={errors.email ? true : false}
-              variant="outlined"
-              className={classes.formInput}
-            />
-
-            <TextField
-              {...register("password")}
-              type="password"
-              label="Password"
-              helperText={errors.password?.message}
-              error={errors.password ? true : false}
-              variant="outlined"
-              className={classes.formInput}
-            />
-
-            <TextField
-              {...register("confirmPassword")}
-              type="password"
-              label="Confirm password"
-              helperText={errors.confirmPassword?.message}
-              error={errors.confirmPassword ? true : false}
-              variant="outlined"
-              className={classes.formInput}
-            />
-          </>
-        ) : (
-          <>
-            <TextField
-              {...register("email")}
-              label="Email"
-              helperText={errors.email?.message}
-              error={errors.email ? true : false}
-              variant="outlined"
-              className={classes.formInput}
-            />
-
-            <TextField
-              {...register("password")}
-              type="password"
-              label="Password"
-              helperText={errors.password?.message}
-              error={errors.password ? true : false}
-              variant="outlined"
-              className={classes.formInput}
-            />
-          </>
+        {res && (
+          <Alert className={classes.errorText} severity="success">
+            {res}
+          </Alert>
         )}
-        {isLoading ? (
-          <CircularProgress color="primary" />
-        ) : (
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            onClick={handleSubmit(submitHandler)}
-          >
-            {!isLoginMode ? "Register" : "Login"}
-          </Button>
+        {error && (
+          <Alert className={classes.errorText} severity="error">
+            {error}
+          </Alert>
         )}
-      </form>
+        <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
+          {!isLoginMode ? (
+            <>
+              <TextField
+                {...register("firstName")}
+                label="First Name"
+                helperText={errors.firstName?.message}
+                error={errors.firstName ? true : false}
+                variant="outlined"
+                className={classes.formInput}
+              />
 
-      <Typography variant="body1" align="center" className={classes.lowerHalf}>
-        {isLoginMode ? "Don't have an account?" : "Already have an account?"}
-        <span>
-          <Button
-            variant="outlined"
-            color="secondary"
+              <TextField
+                {...register("lastName")}
+                label="Last Name"
+                helperText={errors.lastName?.message}
+                error={errors.lastName ? true : false}
+                variant="outlined"
+                className={classes.formInput}
+              />
+
+              <TextField
+                {...register("userName")}
+                label="User Name"
+                helperText={errors.userName?.message}
+                error={errors.userName ? true : false}
+                variant="outlined"
+                className={classes.formInput}
+              />
+
+              <TextField
+                {...register("email")}
+                label="Email"
+                helperText={errors.email?.message}
+                error={errors.email ? true : false}
+                variant="outlined"
+                className={classes.formInput}
+              />
+
+              <TextField
+                {...register("password")}
+                type="password"
+                label="Password"
+                helperText={errors.password?.message}
+                error={errors.password ? true : false}
+                variant="outlined"
+                className={classes.formInput}
+              />
+
+              <TextField
+                {...register("confirmPassword")}
+                type="password"
+                label="Confirm password"
+                helperText={errors.confirmPassword?.message}
+                error={errors.confirmPassword ? true : false}
+                variant="outlined"
+                className={classes.formInput}
+              />
+            </>
+          ) : (
+            <>
+              <TextField
+                {...register("email")}
+                label="Email"
+                helperText={errors.email?.message}
+                error={errors.email ? true : false}
+                variant="outlined"
+                className={classes.formInput}
+              />
+
+              <TextField
+                {...register("password")}
+                type="password"
+                label="Password"
+                helperText={errors.password?.message}
+                error={errors.password ? true : false}
+                variant="outlined"
+                className={classes.formInput}
+              />
+            </>
+          )}
+          <Typography
+            className={classes.forgotPass}
+            variant="body1"
+            color="textSecondary"
             onClick={() => {
-              setIsLoginMode((prev) => !prev);
-              reset();
+              dispatch({
+                type: "CLEAR_ERROR",
+              });
+              setOpen(true);
+              setModalEmail("");
             }}
           >
-            {isLoginMode ? "Register" : "Login"}
-          </Button>
-        </span>
-      </Typography>
-    </Container>
+            forgot password?
+          </Typography>
+          {isLoading ? (
+            <CircularProgress color="primary" />
+          ) : (
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              onClick={handleSubmit(submitHandler)}
+            >
+              {!isLoginMode ? "Register" : "Login"}
+            </Button>
+          )}
+        </form>
+
+        <Typography
+          variant="body1"
+          align="center"
+          className={classes.lowerHalf}
+        >
+          {isLoginMode ? "Don't have an account?" : "Already have an account?"}
+          <span>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => {
+                setIsLoginMode((prev) => !prev);
+                reset();
+                dispatch({
+                  type: "CLEAR_ERROR",
+                });
+              }}
+            >
+              {isLoginMode ? "Register" : "Login"}
+            </Button>
+          </span>
+        </Typography>
+      </Container>
+    </>
   );
 };
 

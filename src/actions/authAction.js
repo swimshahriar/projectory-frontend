@@ -90,6 +90,39 @@ export const logOutHandler = () => (dispatch) => {
   localStorage.removeItem("auth");
 };
 
+// forgot password
+export const forgotPassHandler = (data) => async (dispatch) => {
+  dispatch({
+    type: "LOADING",
+  });
+  dispatch({
+    type: "CLEAR_RES",
+  });
+
+  try {
+    const { data: res } = await axios.post(
+      "http://localhost:8000/api/user/forgot-password",
+      {
+        email: data,
+      }
+    );
+
+    dispatch({
+      type: "FORGOT_PASSWORD",
+      payload: {
+        res: res.message,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR",
+      payload: {
+        error: error.response.data.message,
+      },
+    });
+  }
+};
+
 // on start check for auth
 export const checkForAuth = () => async (dispatch) => {
   dispatch({
