@@ -10,6 +10,9 @@
   --secondary-color: #ff61ad;
   --primary-text: #222425;
   --secondary-text: #404145;
+
+  /* Box shadow */
+  --shadow-primary: 0px 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 body {
@@ -20,5 +23,5 @@ body {
 header {
   display: grid;
   place-items: center;
-  box-shadow: 0 1px 8px var(--primary-text);
+  box-shadow: var(--shadow-primary);
 }

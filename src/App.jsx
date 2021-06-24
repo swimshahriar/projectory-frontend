@@ -9,6 +9,9 @@ import { checkForAuth } from "./actions/authAction";
 import Home from "./pages/Home";
 import Auth from "./pages/Auth";
 import About from "./pages/About";
+import Jobs from "./pages/Jobs";
+import Services from "./pages/Services";
+import UserProfile from "./pages/UserProfile";
 
 // components
 import Header from "./components/Header/Header";
@@ -31,6 +34,9 @@ function App() {
         <Route component={Home} path="/" exact />
         <Route component={Auth} path="/auth" />
         <Route component={About} path="/about" />
+        <Route component={Jobs} path="/jobs" />
+        <Route component={Services} path="/services" />
+        <Route component={UserProfile} path="/user-profile" />
       </Switch>
     </>
   );

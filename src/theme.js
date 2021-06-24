@@ -23,6 +23,15 @@ let theme = createMuiTheme({
     h5: { fontFamily: "Lora, serif" },
     h6: { fontFamily: "Lora, serif" },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 850,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
 });
 
 theme = responsiveFontSizes(theme);

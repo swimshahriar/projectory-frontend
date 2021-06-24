@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 
 // action
@@ -10,10 +11,23 @@ import { logOutHandler } from "../../actions/authAction";
 // styles
 import "./Header.css";
 
+const useStyles = makeStyles((theme) => ({
+  logoutBtn: {
+    marginTop: 10,
+    paddingLeft: 20,
+    [theme.breakpoints.up("md")]: {
+      marginLeft: 10,
+      marginTop: 0,
+      paddingLeft: 0,
+    },
+  },
+}));
+
 const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
+  const classes = useStyles();
 
   // link lists
   let navLinks = [
@@ -22,8 +36,12 @@ const Header = () => {
       url: "/",
     },
     {
-      title: "Categories",
-      url: "/categories",
+      title: "Jobs",
+      url: "/jobs",
+    },
+    {
+      title: "Services",
+      url: "/services",
     },
     {
       title: "About",
@@ -42,16 +60,20 @@ const Header = () => {
         url: "/",
       },
       {
-        title: "Categories",
-        url: "/categories",
+        title: "Jobs",
+        url: "/jobs",
+      },
+      {
+        title: "Services",
+        url: "/services",
       },
       {
         title: "About",
         url: "/about",
       },
       {
-        title: "Dashboard",
-        url: "/user-dashboard",
+        title: "Profile",
+        url: "/user-profile",
       },
     ];
   }
@@ -76,7 +98,7 @@ const Header = () => {
           </li>
         ))}
         {token && (
-          <li>
+          <li className={classes.logoutBtn}>
             <Button
               variant="outlined"
               color="secondary"

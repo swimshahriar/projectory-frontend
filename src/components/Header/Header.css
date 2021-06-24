@@ -9,6 +9,7 @@
 .header h1 {
   font-family: "Montserrat", serif;
   cursor: pointer;
+  padding-left: 2rem;
 }
 
 .header__menu {
@@ -22,6 +23,7 @@
 .header__list {
   display: flex;
   list-style: none;
+  padding-right: 2rem;
 }
 
 .header__list li {
@@ -58,9 +60,10 @@
   display: flex !important;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 850px) {
   .header__menu {
     display: block;
+    padding-right: 2rem;
   }
 
   .header__list {
