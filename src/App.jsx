@@ -14,6 +14,7 @@ import Jobs from "./pages/Jobs";
 import Services from "./pages/Services";
 import UserProfile from "./pages/UserProfile";
 import Error404 from "./pages/Error404";
+import ResetPass from "./pages/ResetPass";
 
 // components
 import Header from "./components/Header/Header";
@@ -62,6 +63,13 @@ function App() {
           token={token}
           samePath={true}
           redirectUrl="/auth"
+        />
+        <PrivateRoute
+          component={ResetPass}
+          path="/reset-password/:token"
+          token={token}
+          samePath={false}
+          redirectUrl="/user-profile"
         />
         <Route component={Error404} />
       </Switch>

@@ -123,6 +123,40 @@ export const forgotPassHandler = (data) => async (dispatch) => {
   }
 };
 
+// reset password
+export const resetPassHandler = (data) => async (dispatch) => {
+  dispatch({
+    type: "LOADING",
+  });
+  dispatch({
+    type: "CLEAR_RES",
+  });
+
+  try {
+    const { data: res } = await axios.patch(
+      `http://localhost:8000/api/user/reset-password/${data.token}`,
+      {
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      }
+    );
+
+    dispatch({
+      type: "FORGOT_PASSWORD",
+      payload: {
+        res: res.message,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR",
+      payload: {
+        error: error.response.data.message,
+      },
+    });
+  }
+};
+
 // on start check for auth
 export const checkForAuth = () => async (dispatch) => {
   dispatch({

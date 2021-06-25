@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Typography,
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     width: "80%",
 
     [theme.breakpoints.up("md")]: {
-      width: "60%",
+      width: "50%",
     },
   },
   errorText: {
