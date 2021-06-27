@@ -269,6 +269,37 @@ const UserProfile = () => {
                 </RoundedBox>
               ))}
             </Box>
+            {/* Education */}
+            <Typography
+              variant="h6"
+              component="h6"
+              align="left"
+              color="textPrimary"
+              className={classes.mtMd}
+            >
+              Education{" "}
+            </Typography>
+            {[
+              {
+                deg: "B. Sc. - Computer Science and Engineering",
+                institute: "North South University, Bangladesh.",
+                year: "2021",
+              },
+            ].map((inst, idx) => (
+              <Typography
+                variant="body1"
+                component="p"
+                align="left"
+                color="textPrimary"
+                className={`${classes.mtMd} ${classes.textBold}`}
+                key={idx}
+              >
+                {inst.deg}
+                <Typography variant="body1" color="textSecondary">
+                  {inst.institute} [{inst.year}]
+                </Typography>
+              </Typography>
+            ))}
           </Box>
         </Box>
 
