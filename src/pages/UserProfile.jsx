@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Typography, Box, Divider } from "@material-ui/core";
+import { Container, Typography, Box, Divider, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { HiLocationMarker } from "react-icons/hi";
@@ -8,6 +8,7 @@ import { GoPrimitiveDot } from "react-icons/go";
 
 // components
 import Avatar from "../components/Avatar";
+import RoundedBox from "../components/RoundedBox";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +34,14 @@ const useStyles = makeStyles((theme) => ({
   },
   textBold: {
     fontWeight: "bold",
+  },
+  account: {
+    border: 1,
+    borderColor: theme.palette.text.secondary,
+    borderStyle: "solid",
+    borderRadius: 5,
+    padding: "2px 3px",
+    marginRight: 5,
   },
 }));
 
@@ -137,7 +146,97 @@ const UserProfile = () => {
               </Box>
             </Box>
           </Box>
+          {/* description */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="start"
+            boxShadow={3}
+            borderRadius={5}
+            p={5}
+            mt={3}
+            mb={3}
+          >
+            <Typography
+              variant="h6"
+              component="h6"
+              align="left"
+              color="textPrimary"
+              className={classes.mtMd}
+            >
+              Description
+            </Typography>
+            <Typography
+              variant="body1"
+              component="p"
+              align="left"
+              color="textSecondary"
+              className={classes.mtMd}
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere
+              earum deserunt adipisci quas totam aspernatur at non impedit
+              consequatur tenetur quibusdam, eos numquam eaque? Nam libero natus
+              porro assumenda. Cupiditate!
+            </Typography>
+            <Divider className={classes.mtMd} />
+            {/* languages */}
+            <Typography
+              variant="h6"
+              component="h6"
+              align="left"
+              color="textPrimary"
+              className={classes.mtMd}
+            >
+              Languages
+            </Typography>
+            {[
+              { lan: "English", level: "Conversational" },
+              { lan: "Bengali", level: "Native" },
+            ].map((lan, idx) => (
+              <Typography
+                variant="body1"
+                component="p"
+                align="left"
+                color="textPrimary"
+                className={`${classes.mtMd} ${classes.textBold}`}
+                key={idx}
+              >
+                {lan.lan} -{" "}
+                <Typography component="span" color="textSecondary">
+                  {lan.level}
+                </Typography>
+              </Typography>
+            ))}
+
+            {/* linked account */}
+            <Typography
+              variant="h6"
+              component="h6"
+              align="left"
+              color="textPrimary"
+              className={classes.mtMd}
+            >
+              Linked Accounts
+            </Typography>
+            <Box display="flex" flexWrap={true} mt={2}>
+              {[
+                {
+                  name: "FaceBook",
+                  link: "https://facebook.com/shahriar.swim02",
+                },
+                { name: "GitHub", link: "https://github.com/swimshahriar" },
+              ].map((acc, idx) => (
+                <RoundedBox key={idx}>
+                  <Link href={acc.link} color="textSecondary">
+                    {acc.name}
+                  </Link>
+                </RoundedBox>
+              ))}
+            </Box>
+          </Box>
         </Box>
+
         <Box flex={60}>Right Box</Box>
       </Box>
     </Container>
