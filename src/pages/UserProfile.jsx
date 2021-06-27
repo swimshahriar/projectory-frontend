@@ -219,7 +219,7 @@ const UserProfile = () => {
             >
               Linked Accounts
             </Typography>
-            <Box display="flex" flexWrap={true} mt={2}>
+            <Box display="flex" flexWrap="wrap" mt={2}>
               {[
                 {
                   name: "FaceBook",
@@ -231,6 +231,41 @@ const UserProfile = () => {
                   <Link href={acc.link} color="textSecondary">
                     {acc.name}
                   </Link>
+                </RoundedBox>
+              ))}
+            </Box>
+            {/* Skills */}
+            <Typography
+              variant="h6"
+              component="h6"
+              align="left"
+              color="textPrimary"
+              className={classes.mtMd}
+            >
+              Skills{" "}
+            </Typography>
+            <Box display="flex" flexWrap="wrap" mt={2}>
+              {[
+                "html5",
+                "css3",
+                "javascript",
+                "reactjs",
+                "nextjs",
+                "redux",
+                "bootstrap",
+                "tailwind css",
+                "material ui",
+                "scss",
+                "firebase",
+                "nodejs",
+                "expressjs",
+                "mongodb",
+                "mysql",
+                "figma",
+                "wordpress",
+              ].map((skill, idx) => (
+                <RoundedBox key={idx} light={true}>
+                  {skill}
                 </RoundedBox>
               ))}
             </Box>
