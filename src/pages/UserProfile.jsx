@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Typography, Box, Divider, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,10 @@ import { GoPrimitiveDot } from "react-icons/go";
 // components
 import Avatar from "../components/Avatar";
 import RoundedBox from "../components/RoundedBox";
+import GigCard from "../components/GigCard";
+
+// actions
+import { fetchUserInfo } from "../actions/userAction";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -49,11 +53,34 @@ const UserProfile = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { uid, token } = useSelector((state) => state.auth);
+  const { user, isLoading, error } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    const fetchInfo = async () => dispatch(fetchUserInfo(uid));
+    fetchInfo();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <Container>
+        <Typography variant="h4" align="center">
+          Loading...
+        </Typography>
+      </Container>
+    );
+  }
+
+  // format date
+  const memberSince = new Date(user.createdAt)
+    .toDateString()
+    .split(" ")
+    .splice(1, 3)
+    .join(" ");
 
   return (
     <Container>
       <Box display="flex" justifyContent="center" gridGap={15} mt={5}>
-        <Box flex={40}>
+        <Box flex={35}>
           <Box
             display="flex"
             flexDirection="column"
@@ -74,8 +101,8 @@ const UserProfile = () => {
                 </Typography>
               </Box>
               <Avatar
-                alt="shahriar"
-                src="https://i.pravatar.cc/300?img=57"
+                alt={user.userName}
+                src={user.avatar || "https://i.pravatar.cc/300?img=57"}
                 size="large"
                 position="center"
               />
@@ -86,8 +113,9 @@ const UserProfile = () => {
                 color="textPrimary"
                 className={classes.mtMd}
               >
-                shahriar_swim
+                {user.userName}
               </Typography>
+
               <Typography
                 variant="body1"
                 component="p"
@@ -95,7 +123,11 @@ const UserProfile = () => {
                 color="textSecondary"
                 className={classes.mtMd}
               >
-                Experienced Software Engineer
+                {user.tagLine ? (
+                  user.tagLine
+                ) : (
+                  <Typography>No tagline added.</Typography>
+                )}
               </Typography>
               <Divider className={classes.mtMd} />
               <Box
@@ -118,7 +150,11 @@ const UserProfile = () => {
                   color="textPrimary"
                   className={classes.textBold}
                 >
-                  Bangladesh
+                  {user.location ? (
+                    user.location
+                  ) : (
+                    <Typography>Not yet added.</Typography>
+                  )}
                 </Typography>
               </Box>
               <Box
@@ -141,7 +177,11 @@ const UserProfile = () => {
                   color="textPrimary"
                   className={classes.textBold}
                 >
-                  {new Date().toDateString()}
+                  {user.createdAt ? (
+                    memberSince
+                  ) : (
+                    <Typography>Not yet added.</Typography>
+                  )}
                 </Typography>
               </Box>
             </Box>
@@ -174,10 +214,11 @@ const UserProfile = () => {
               color="textSecondary"
               className={classes.mtMd}
             >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere
-              earum deserunt adipisci quas totam aspernatur at non impedit
-              consequatur tenetur quibusdam, eos numquam eaque? Nam libero natus
-              porro assumenda. Cupiditate!
+              {user.description ? (
+                user.description
+              ) : (
+                <Typography>Not yet added.</Typography>
+              )}
             </Typography>
             <Divider className={classes.mtMd} />
             {/* languages */}
@@ -190,24 +231,26 @@ const UserProfile = () => {
             >
               Languages
             </Typography>
-            {[
-              { lan: "English", level: "Conversational" },
-              { lan: "Bengali", level: "Native" },
-            ].map((lan, idx) => (
-              <Typography
-                variant="body1"
-                component="p"
-                align="left"
-                color="textPrimary"
-                className={`${classes.mtMd} ${classes.textBold}`}
-                key={idx}
-              >
-                {lan.lan} -{" "}
-                <Typography component="span" color="textSecondary">
-                  {lan.level}
+            {!user.languages ? (
+              <Typography>Not yet added.</Typography>
+            ) : (
+              user.languages.map((lan, idx) => (
+                <Typography
+                  variant="body1"
+                  component="p"
+                  align="left"
+                  color="textPrimary"
+                  className={`${classes.mtMd} ${classes.textBold}`}
+                  key={idx}
+                >
+                  {lan.title} -{" "}
+                  <Typography component="span" color="textSecondary">
+                    {lan.level}
+                  </Typography>
                 </Typography>
-              </Typography>
-            ))}
+              ))
+            )}
+            <Divider className={classes.mtMd} />
 
             {/* linked account */}
             <Typography
@@ -220,20 +263,24 @@ const UserProfile = () => {
               Linked Accounts
             </Typography>
             <Box display="flex" flexWrap="wrap" mt={2}>
-              {[
-                {
-                  name: "FaceBook",
-                  link: "https://facebook.com/shahriar.swim02",
-                },
-                { name: "GitHub", link: "https://github.com/swimshahriar" },
-              ].map((acc, idx) => (
-                <RoundedBox key={idx}>
-                  <Link href={acc.link} color="textSecondary">
-                    {acc.name}
-                  </Link>
-                </RoundedBox>
-              ))}
+              {!user.linkedAccounts ? (
+                <Typography>Not yet added.</Typography>
+              ) : (
+                user.linkedAccounts.map((acc, idx) => (
+                  <RoundedBox
+                    key={idx}
+                    borderColor={
+                      idx % 2 !== 0 ? "primary.main" : "secondary.main"
+                    }
+                  >
+                    <Link href={acc.link} color="textSecondary" target="_blank">
+                      {acc.title}
+                    </Link>
+                  </RoundedBox>
+                ))
+              )}
             </Box>
+            <Divider className={classes.mtMd} />
             {/* Skills */}
             <Typography
               variant="h6"
@@ -245,30 +292,24 @@ const UserProfile = () => {
               Skills{" "}
             </Typography>
             <Box display="flex" flexWrap="wrap" mt={2}>
-              {[
-                "html5",
-                "css3",
-                "javascript",
-                "reactjs",
-                "nextjs",
-                "redux",
-                "bootstrap",
-                "tailwind css",
-                "material ui",
-                "scss",
-                "firebase",
-                "nodejs",
-                "expressjs",
-                "mongodb",
-                "mysql",
-                "figma",
-                "wordpress",
-              ].map((skill, idx) => (
-                <RoundedBox key={idx} light={true}>
-                  {skill}
-                </RoundedBox>
-              ))}
+              {!user.skills ? (
+                <Typography>Not yet added.</Typography>
+              ) : (
+                user.skills.map((skill, idx) => (
+                  <RoundedBox
+                    key={idx}
+                    light={true}
+                    borderColor={
+                      idx % 2 == 0 ? "primary.main" : "secondary.main"
+                    }
+                  >
+                    {skill}
+                  </RoundedBox>
+                ))
+              )}
             </Box>
+            <Divider className={classes.mtMd} />
+
             {/* Education */}
             <Typography
               variant="h6"
@@ -279,31 +320,51 @@ const UserProfile = () => {
             >
               Education{" "}
             </Typography>
-            {[
-              {
-                deg: "B. Sc. - Computer Science and Engineering",
-                institute: "North South University, Bangladesh.",
-                year: "2021",
-              },
-            ].map((inst, idx) => (
-              <Typography
-                variant="body1"
-                component="p"
-                align="left"
-                color="textPrimary"
-                className={`${classes.mtMd} ${classes.textBold}`}
-                key={idx}
-              >
-                {inst.deg}
-                <Typography variant="body1" color="textSecondary">
-                  {inst.institute} [{inst.year}]
+            {!user.education ? (
+              <Typography>Not yet added.</Typography>
+            ) : (
+              user.education.map((inst, idx) => (
+                <Typography
+                  variant="body1"
+                  align="left"
+                  color="textPrimary"
+                  className={`${classes.mtMd} ${classes.textBold}`}
+                  key={idx}
+                >
+                  {inst.degree}
+                  <Typography variant="body1" color="textSecondary">
+                    {inst.institute}, {inst.location}. [{inst.year}]
+                  </Typography>
                 </Typography>
-              </Typography>
-            ))}
+              ))
+            )}
           </Box>
         </Box>
-
-        <Box flex={60}>Right Box</Box>
+        {/* Right Site */}
+        <Box flex={65}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            boxShadow={3}
+            borderRadius={5}
+            p={5}
+          >
+            <Box width="100%">
+              <Typography
+                variant="h6"
+                component="h6"
+                align="left"
+                color="textPrimary"
+                className={classes.mtMd}
+              >
+                Active Gigs
+              </Typography>
+              <Divider className={classes.mtMd} />
+            </Box>
+          </Box>
+        </Box>
       </Box>
     </Container>
   );

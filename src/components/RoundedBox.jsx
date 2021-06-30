@@ -1,11 +1,15 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 
-const RoundedBox = ({ children, light = false }) => {
+const RoundedBox = ({
+  children,
+  light = false,
+  borderColor = "textPrimary",
+}) => {
   return (
     <Box
       border={1.5}
-      borderColor="textPrimary"
+      borderColor={borderColor}
       borderRadius={5}
       p={1}
       m={0.5}
