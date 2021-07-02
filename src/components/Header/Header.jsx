@@ -28,7 +28,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.auth);
+  const { token, uid } = useSelector((state) => state.auth);
   const classes = useStyles();
 
   // link lists
@@ -75,7 +75,7 @@ const Header = () => {
       },
       {
         title: "Profile",
-        url: "/user-profile",
+        url: `/user-profile/${uid}`,
       },
     ];
   }

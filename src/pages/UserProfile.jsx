@@ -1,10 +1,19 @@
 import React, { useEffect } from "react";
-import { Container, Typography, Box, Divider, Link } from "@material-ui/core";
+import {
+  Container,
+  Typography,
+  Box,
+  Divider,
+  Link,
+  Button,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { HiLocationMarker } from "react-icons/hi";
 import { BsFillPersonFill } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
+import { FaEdit } from "react-icons/fa";
+import { useParams, useHistory } from "react-router-dom";
 
 // components
 import Avatar from "../components/Avatar";
@@ -54,11 +63,28 @@ const UserProfile = () => {
   const dispatch = useDispatch();
   const { uid, token } = useSelector((state) => state.auth);
   const { user, isLoading, error } = useSelector((state) => state.user);
+  const { uid: userId } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
-    const fetchInfo = async () => dispatch(fetchUserInfo(uid));
+    const fetchInfo = async () => await dispatch(fetchUserInfo(userId));
     fetchInfo();
+
+    return async () => {
+      await dispatch({ type: "LOADING_USER" });
+      await dispatch({ type: "CLEAR_USER" });
+    };
   }, []);
+
+  // format date
+  let memberSince = null;
+  if (user) {
+    memberSince = new Date(user.createdAt)
+      .toDateString()
+      .split(" ")
+      .splice(1, 3)
+      .join(" ");
+  }
 
   if (isLoading) {
     return (
@@ -70,16 +96,22 @@ const UserProfile = () => {
     );
   }
 
-  // format date
-  const memberSince = new Date(user.createdAt)
-    .toDateString()
-    .split(" ")
-    .splice(1, 3)
-    .join(" ");
-
   return (
-    <Container>
-      <Box display="flex" justifyContent="center" gridGap={15} mt={5}>
+    <Container maxWidth="xl">
+      {userId === uid && (
+        <Box mt={3} fullWidth display="flex" justifyContent="flex-end">
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => history.push(`/profile-edit/${uid}`)}
+          >
+            <FaEdit className={classes.mrSm} />
+            Edit
+          </Button>
+        </Box>
+      )}
+
+      <Box display="flex" justifyContent="center" gridGap={15} mt={3}>
         <Box flex={35}>
           <Box
             display="flex"

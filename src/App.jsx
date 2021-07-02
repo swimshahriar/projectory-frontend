@@ -19,10 +19,11 @@ import ResetPass from "./pages/ResetPass";
 // components
 import Header from "./components/Header/Header";
 import PrivateRoute from "./helpers/PrivateRoute";
+import ProfileEdit from "./pages/ProfileEdit";
 
 function App() {
   const dispatch = useDispatch();
-  const { token, isAuthCheck } = useSelector((state) => state.auth);
+  const { token, isAuthCheck, uid } = useSelector((state) => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -52,14 +53,15 @@ function App() {
           path="/auth"
           token={token}
           samePath={false}
-          redirectUrl="/user-profile"
+          redirectUrl={`/user-profile/${uid}`}
         />
         <Route component={About} path="/about" />
         <Route component={Jobs} path="/jobs" />
         <Route component={Services} path="/services" />
+        <Route component={UserProfile} path="/user-profile/:uid" />
         <PrivateRoute
-          component={UserProfile}
-          path="/user-profile"
+          component={ProfileEdit}
+          path={`/profile-edit/${uid}`}
           token={token}
           samePath={true}
           redirectUrl="/auth"
@@ -69,7 +71,7 @@ function App() {
           path="/reset-password/:token"
           token={token}
           samePath={false}
-          redirectUrl="/user-profile"
+          redirectUrl={`/user-profile/${uid}`}
         />
         <Route component={Error404} />
       </Switch>
