@@ -79,7 +79,7 @@ export const registerHandler = (data) => async (dispatch) => {
 };
 
 // logout
-export const logOutHandler = () => (dispatch) => {
+export const logOutHandler = () => async (dispatch) => {
   dispatch({
     type: "LOADING",
   });
@@ -87,7 +87,7 @@ export const logOutHandler = () => (dispatch) => {
     type: "LOGOUT",
   });
 
-  localStorage.removeItem("auth");
+  await localStorage.removeItem("auth");
 };
 
 // forgot password

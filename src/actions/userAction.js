@@ -57,3 +57,34 @@ export const updateUserInfo = (data, token) => async (dispatch) => {
     });
   }
 };
+
+// change password
+export const changePass = (data, token) => async (dispatch) => {
+  dispatch({
+    type: "LOADING_USER",
+  });
+
+  try {
+    await axios.patch(
+      "http://localhost:8000/api/user/change-password",
+      {
+        ...data,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    await localStorage.removeItem("auth");
+    location.replace("/auth");
+  } catch (error) {
+    dispatch({
+      type: "ERROR_USER",
+      payload: {
+        error: error.response.data.message,
+      },
+    });
+  }
+};

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -16,7 +16,11 @@ import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 
 // acitons
-import { fetchUserInfo, updateUserInfo } from "../actions/userAction";
+import {
+  fetchUserInfo,
+  updateUserInfo,
+  changePass,
+} from "../actions/userAction";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileEdit = () => {
   const { pathname } = useLocation();
+  const history = useHistory();
   const classes = useStyles();
   const dispatch = useDispatch();
   const { res, user, isLoading, error } = useSelector((state) => state.user);
@@ -65,6 +70,16 @@ const ProfileEdit = () => {
     description: "",
     avatar: "",
   });
+  const [changePassData, setChangePassData] = useState({
+    currentPassword: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  // if not logged in
+  if (!token) {
+    history.push("/auth");
+  }
 
   // form schema
   let schema;
@@ -122,6 +137,19 @@ const ProfileEdit = () => {
     await dispatch(updateUserInfo(oldData, token));
   };
 
+  // change pass handler
+  const changePassHandler = async (e) => {
+    e.preventDefault();
+    if (
+      changePassData.confirmPassword === "" ||
+      changePassData.password === "" ||
+      changePassData.currentPassword === ""
+    ) {
+      return;
+    }
+    await dispatch(changePass(changePassData, token));
+  };
+
   if (isLoading) {
     return (
       <Container>
@@ -133,7 +161,7 @@ const ProfileEdit = () => {
   }
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="lg">
       <Box mt={3}>
         <Box
           display="flex"
@@ -161,64 +189,20 @@ const ProfileEdit = () => {
         <Typography variant="h4" align="center" className={classes.mtLg}>
           Edit Info
         </Typography>
-        {error && (
-          <Alert className={classes.mtLg} severity="error">
-            {error}
-          </Alert>
-        )}
+
         {/* update form */}
         <Container className={classes.formContainer}>
+          {error && (
+            <Alert className={classes.mtLg} severity="error">
+              {error}
+            </Alert>
+          )}
           {res && (
             <Alert className={classes.errorText} severity="success">
               {res}
             </Alert>
           )}
           <form onSubmit={handleSubmit()} className={classes.form}>
-            {/* <TextField
-              {...register("firstName")}
-              label="First Name"
-              helperText={errors.firstName?.message}
-              error={errors.firstName ? true : false}
-              variant="outlined"
-              value={oldData.firstName}
-              className={classes.formInput}
-            />
-            <TextField
-              {...register("lastName")}
-              label="Last Name"
-              helperText={errors.lastName?.message}
-              error={errors.lastName ? true : false}
-              variant="outlined"
-              value={oldData.lastName}
-              className={classes.formInput}
-            />
-            <TextField
-              {...register("talLine")}
-              label="Tag Line"
-              helperText={errors.tagLine?.message}
-              error={errors.tagLine ? true : false}
-              variant="outlined"
-              value={oldData.tagLine}
-              className={classes.formInput}
-            />
-            <TextField
-              {...register("location")}
-              label="Location"
-              helperText={errors.location?.message}
-              error={errors.location ? true : false}
-              variant="outlined"
-              value={oldData.location}
-              className={classes.formInput}
-            />
-            <TextField
-              {...register("description")}
-              label="Description"
-              helperText={errors.description?.message}
-              error={errors.description ? true : false}
-              variant="outlined"
-              value={oldData.description}
-              className={classes.formInput}
-            /> */}
             <TextField
               label="Avatar"
               variant="outlined"
@@ -300,6 +284,71 @@ const ProfileEdit = () => {
           </form>
         </Container>
       </Box>
+      {/* change pass form */}
+      <Container className={classes.formContainer}>
+        <Typography variant="h4" align="center" className={classes.mtLg}>
+          Change Password
+        </Typography>
+        {error && (
+          <Alert className={classes.mtLg} severity="error">
+            {error}
+          </Alert>
+        )}
+        <form onSubmit={changePassHandler} className={classes.form}>
+          <TextField
+            label="Current Password"
+            variant="outlined"
+            type="password"
+            required={true}
+            value={changePassData.currentPassword}
+            onChange={(e) =>
+              setChangePassData((prev) => {
+                return { ...prev, currentPassword: e.target.value };
+              })
+            }
+            className={classes.formInput}
+          />
+          <TextField
+            label="New Password"
+            variant="outlined"
+            type="password"
+            required={true}
+            value={changePassData.password}
+            onChange={(e) =>
+              setChangePassData((prev) => {
+                return { ...prev, password: e.target.value };
+              })
+            }
+            className={classes.formInput}
+          />
+          <TextField
+            label="Confirm Password"
+            variant="outlined"
+            type="password"
+            required={true}
+            value={changePassData.confirmPassword}
+            onChange={(e) =>
+              setChangePassData((prev) => {
+                return { ...prev, confirmPassword: e.target.value };
+              })
+            }
+            className={classes.formInput}
+          />
+
+          {isLoading ? (
+            <CircularProgress color="primary" />
+          ) : (
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              onClick={(e) => changePassHandler(e)}
+            >
+              Change
+            </Button>
+          )}
+        </form>
+      </Container>
     </Container>
   );
 };

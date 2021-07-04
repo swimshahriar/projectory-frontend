@@ -178,7 +178,7 @@ const Auth = () => {
         }
       />
 
-      <Container maxWidth="xl" className={classes.authContainer}>
+      <Container maxWidth="lg" className={classes.authContainer}>
         <Typography variant="h4" align="center">
           {!isLoginMode ? "Register" : "Login"}
         </Typography>

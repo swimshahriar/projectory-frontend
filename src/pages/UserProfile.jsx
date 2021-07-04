@@ -97,7 +97,7 @@ const UserProfile = () => {
   }
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="lg">
       {userId === uid && (
         <Box mt={3} fullWidth display="flex" justifyContent="flex-end">
           <Button
