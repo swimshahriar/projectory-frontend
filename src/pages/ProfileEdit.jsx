@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
@@ -14,6 +11,10 @@ import {
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
+import { AiFillDelete } from "react-icons/ai";
+
+// components
+import RoundedBox from "../components/RoundedBox";
 
 // acitons
 import {
@@ -24,6 +25,11 @@ import {
 
 // styles
 const useStyles = makeStyles((theme) => ({
+  hover: {
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
   mtLg: {
     marginTop: 10,
   },
@@ -51,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
     width: "100%",
   },
+  withBtn: {
+    width: "80%",
+  },
 }));
 
 const ProfileEdit = () => {
@@ -69,7 +78,16 @@ const ProfileEdit = () => {
     location: "",
     description: "",
     avatar: "",
+    skills: "",
+    languages: "",
+    educations: "",
+    linkName: "",
+    link: "",
   });
+  const [skills, setSkills] = useState(null);
+  const [languages, setLanguages] = useState(null);
+  const [educations, setEducations] = useState(null);
+  const [linkedAccounts, setLinkedAccounts] = useState(null);
   const [changePassData, setChangePassData] = useState({
     currentPassword: "",
     password: "",
@@ -80,34 +98,6 @@ const ProfileEdit = () => {
   if (!token) {
     history.push("/auth");
   }
-
-  // form schema
-  let schema;
-  if (user) {
-    schema = yup.object().shape({
-      firstName: yup.string().default(user.firstName).required("required"),
-      lastName: yup.string().default(user.lastName).required("required"),
-      tagLine: yup.string().default(user.tagLine).required("required"),
-      location: yup
-        .string()
-        .max(20)
-        .default(user.location)
-        .required("required"),
-      description: yup
-        .string()
-        .min(50)
-        .max(150)
-        .default(user.description)
-        .required("required"),
-    });
-  }
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({ resolver: yupResolver(schema) });
 
   // fetch user data
   useEffect(() => {
@@ -123,6 +113,11 @@ const ProfileEdit = () => {
         description: user.description || "",
         avatar: user.avatar || "",
       });
+
+      user.skills && setSkills([...user.skills]);
+      user.languages && setLanguages([...user.languages]);
+      user.educations && setEducations([...user.educations]);
+      user.linkedAccounts && setLinkedAccounts([...user.linkedAccounts]);
     }
 
     return async () => {
@@ -134,7 +129,15 @@ const ProfileEdit = () => {
   // handle submit
   const submitHandler = async (e) => {
     e.preventDefault();
-    await dispatch(updateUserInfo(oldData, token));
+    const data = {
+      ...oldData,
+      skills,
+      languages,
+      educations,
+      linkedAccounts,
+    };
+
+    await dispatch(updateUserInfo(data, token));
   };
 
   // change pass handler
@@ -202,7 +205,7 @@ const ProfileEdit = () => {
               {res}
             </Alert>
           )}
-          <form onSubmit={handleSubmit()} className={classes.form}>
+          <form onSubmit={submitHandler} className={classes.form}>
             <TextField
               label="Avatar"
               variant="outlined"
@@ -269,6 +272,306 @@ const ProfileEdit = () => {
               }
               className={classes.formInput}
             />
+            {/* skillS */}
+            <Box
+              border={2}
+              borderColor="textSecondary"
+              borderRadius={5}
+              padding={2}
+              width="90%"
+            >
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <TextField
+                  label="Skills"
+                  variant="outlined"
+                  value={oldData.skills}
+                  onChange={(e) =>
+                    setOldData((prev) => {
+                      return { ...prev, skills: e.target.value };
+                    })
+                  }
+                  className={classes.formInput + " " + classes.withBtn}
+                />
+                <Box ml={1} mt={-5}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      if (oldData.skills === "") return;
+                      setSkills((prev) =>
+                        prev ? [...prev, oldData.skills] : [oldData.skills]
+                      );
+                      setOldData((prev) => {
+                        return { ...prev, skills: "" };
+                      });
+                    }}
+                  >
+                    Add
+                  </Button>
+                </Box>
+              </Box>
+              <Box display="flex" flexWrap="wrap">
+                {!skills ? (
+                  <Typography>Not yet added.</Typography>
+                ) : (
+                  skills.map((skill, idx) => (
+                    <Box
+                      className={classes.hover}
+                      onClick={() =>
+                        setSkills((prev) =>
+                          prev.filter((item) => item !== skill)
+                        )
+                      }
+                    >
+                      <RoundedBox
+                        key={idx}
+                        light={true}
+                        icon={true}
+                        borderColor={
+                          idx % 2 == 0 ? "primary.main" : "secondary.main"
+                        }
+                      >
+                        {skill}
+                        <AiFillDelete />
+                      </RoundedBox>
+                    </Box>
+                  ))
+                )}
+              </Box>
+            </Box>
+
+            {/* languages */}
+            <Box
+              border={2}
+              borderColor="textSecondary"
+              borderRadius={5}
+              padding={2}
+              mt={2}
+              width="90%"
+            >
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <TextField
+                  label="Languages"
+                  variant="outlined"
+                  value={oldData.languages}
+                  onChange={(e) =>
+                    setOldData((prev) => {
+                      return { ...prev, languages: e.target.value };
+                    })
+                  }
+                  className={classes.formInput + " " + classes.withBtn}
+                />
+                <Box ml={1} mt={-5}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      if (oldData.languages === "") return;
+                      setLanguages((prev) =>
+                        prev
+                          ? [...prev, oldData.languages]
+                          : [oldData.languages]
+                      );
+                      setOldData((prev) => {
+                        return { ...prev, languages: "" };
+                      });
+                    }}
+                  >
+                    Add
+                  </Button>
+                </Box>
+              </Box>
+              <Box display="flex" flexWrap="wrap">
+                {!languages ? (
+                  <Typography>Not yet added.</Typography>
+                ) : (
+                  languages.map((lan, idx) => (
+                    <Box
+                      className={classes.hover}
+                      onClick={() =>
+                        setLanguages((prev) =>
+                          prev.filter((item) => item !== lan)
+                        )
+                      }
+                    >
+                      <RoundedBox
+                        key={idx}
+                        light={true}
+                        icon={true}
+                        borderColor={
+                          idx % 2 == 0 ? "primary.main" : "secondary.main"
+                        }
+                      >
+                        {lan}
+                        <AiFillDelete />
+                      </RoundedBox>
+                    </Box>
+                  ))
+                )}
+              </Box>
+            </Box>
+
+            {/* education */}
+            <Box
+              border={2}
+              borderColor="textSecondary"
+              borderRadius={5}
+              padding={2}
+              mt={2}
+              width="90%"
+            >
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <TextField
+                  label="Educations"
+                  variant="outlined"
+                  value={oldData.educations}
+                  onChange={(e) =>
+                    setOldData((prev) => {
+                      return { ...prev, educations: e.target.value };
+                    })
+                  }
+                  className={classes.formInput + " " + classes.withBtn}
+                />
+                <Box ml={1} mt={-5}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      if (oldData.educations === "") return;
+                      setEducations((prev) =>
+                        prev
+                          ? [...prev, oldData.educations]
+                          : [oldData.educations]
+                      );
+                      setOldData((prev) => {
+                        return { ...prev, educations: "" };
+                      });
+                    }}
+                  >
+                    Add
+                  </Button>
+                </Box>
+              </Box>
+              <Box display="flex" flexWrap="wrap">
+                {!educations ? (
+                  <Typography>Not yet added.</Typography>
+                ) : (
+                  educations.map((edu, idx) => (
+                    <Box
+                      className={classes.hover}
+                      onClick={() =>
+                        setEducations((prev) =>
+                          prev.filter((item) => item !== edu)
+                        )
+                      }
+                    >
+                      <RoundedBox
+                        key={idx}
+                        light={true}
+                        icon={true}
+                        borderColor={
+                          idx % 2 == 0 ? "primary.main" : "secondary.main"
+                        }
+                      >
+                        {edu}
+                        <AiFillDelete />
+                      </RoundedBox>
+                    </Box>
+                  ))
+                )}
+              </Box>
+            </Box>
+
+            {/* links */}
+            <Box
+              border={2}
+              borderColor="textSecondary"
+              borderRadius={5}
+              padding={2}
+              mt={2}
+              width="90%"
+            >
+              <Box
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <TextField
+                  label="Link Name"
+                  variant="outlined"
+                  value={oldData.linkName}
+                  onChange={(e) =>
+                    setOldData((prev) => {
+                      return { ...prev, linkName: e.target.value };
+                    })
+                  }
+                  className={classes.formInput + " " + classes.withBtn}
+                />
+                <TextField
+                  label="Url"
+                  variant="outlined"
+                  value={oldData.url}
+                  onChange={(e) =>
+                    setOldData((prev) => {
+                      return { ...prev, link: e.target.value };
+                    })
+                  }
+                  className={classes.formInput + " " + classes.withBtn}
+                />
+                <Box mt={-2}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      if (oldData.linkName === "" || oldData.url === "") return;
+                      setLinkedAccounts((prev) =>
+                        prev
+                          ? [
+                              ...prev,
+                              { title: oldData.linkName, link: oldData.link },
+                            ]
+                          : [{ title: oldData.linkName, link: oldData.link }]
+                      );
+                      setOldData((prev) => {
+                        return { ...prev, linkName: "", link: "" };
+                      });
+                    }}
+                  >
+                    Add
+                  </Button>
+                </Box>
+              </Box>
+              <Box display="flex" flexWrap="wrap" mt={2}>
+                {!linkedAccounts || linkedAccounts.length <= 0 ? (
+                  <Typography>Not yet added.</Typography>
+                ) : (
+                  linkedAccounts.map((link, idx) => (
+                    <Box
+                      className={classes.hover}
+                      onClick={() =>
+                        setLinkedAccounts((prev) =>
+                          prev.filter((item) => item.title !== link.title)
+                        )
+                      }
+                    >
+                      <RoundedBox
+                        key={idx}
+                        light={true}
+                        icon={true}
+                        borderColor={
+                          idx % 2 == 0 ? "primary.main" : "secondary.main"
+                        }
+                      >
+                        {link.title}
+                        <AiFillDelete />
+                      </RoundedBox>
+                    </Box>
+                  ))
+                )}
+              </Box>
+            </Box>
+
             {isLoading ? (
               <CircularProgress color="primary" />
             ) : (

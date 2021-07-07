@@ -99,7 +99,7 @@ const UserProfile = () => {
   return (
     <Container maxWidth="lg">
       {userId === uid && (
-        <Box mt={3} fullWidth display="flex" justifyContent="flex-end">
+        <Box mt={3} display="flex" justifyContent="flex-end">
           <Button
             variant="outlined"
             color="primary"
@@ -112,7 +112,7 @@ const UserProfile = () => {
       )}
 
       <Box display="flex" justifyContent="center" gridGap={15} mt={3}>
-        <Box flex={35}>
+        <Box flex={35} minWidth="350px">
           <Box
             display="flex"
             flexDirection="column"
@@ -275,10 +275,7 @@ const UserProfile = () => {
                   className={`${classes.mtMd} ${classes.textBold}`}
                   key={idx}
                 >
-                  {lan.title} -{" "}
-                  <Typography component="span" color="textSecondary">
-                    {lan.level}
-                  </Typography>
+                  {lan}
                 </Typography>
               ))
             )}
@@ -295,7 +292,7 @@ const UserProfile = () => {
               Linked Accounts
             </Typography>
             <Box display="flex" flexWrap="wrap" mt={2}>
-              {!user.linkedAccounts ? (
+              {!user.linkedAccounts || user.linkedAccounts.length <= 0 ? (
                 <Typography>Not yet added.</Typography>
               ) : (
                 user.linkedAccounts.map((acc, idx) => (
@@ -352,10 +349,10 @@ const UserProfile = () => {
             >
               Education{" "}
             </Typography>
-            {!user.education ? (
+            {!user.educations ? (
               <Typography>Not yet added.</Typography>
             ) : (
-              user.education.map((inst, idx) => (
+              user.educations.map((inst, idx) => (
                 <Typography
                   variant="body1"
                   align="left"
@@ -363,10 +360,7 @@ const UserProfile = () => {
                   className={`${classes.mtMd} ${classes.textBold}`}
                   key={idx}
                 >
-                  {inst.degree}
-                  <Typography variant="body1" color="textSecondary">
-                    {inst.institute}, {inst.location}. [{inst.year}]
-                  </Typography>
+                  {inst}
                 </Typography>
               ))
             )}

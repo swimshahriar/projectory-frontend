@@ -1,11 +1,23 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  iconCenter: {
+    display: "flex",
+    placeItems: "center",
+    gap: 5,
+  },
+}));
 
 const RoundedBox = ({
   children,
   light = false,
   borderColor = "textPrimary",
+  icon = false,
 }) => {
+  const classes = useStyles();
+
   return (
     <Box
       border={1.5}
@@ -17,11 +29,19 @@ const RoundedBox = ({
       minWidth={30}
     >
       {light ? (
-        <Typography variant="body1" color="textSecondary">
+        <Typography
+          variant="body1"
+          color="textSecondary"
+          className={icon ? classes.iconCenter : ""}
+        >
           {children}
         </Typography>
       ) : (
-        <Typography variant="body1" color="textPrimary">
+        <Typography
+          variant="body1"
+          color="textPrimary"
+          className={icon ? classes.iconCenter : ""}
+        >
           {children}
         </Typography>
       )}
