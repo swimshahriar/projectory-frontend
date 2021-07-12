@@ -13,8 +13,9 @@ import About from "./pages/About";
 import Jobs from "./pages/Jobs";
 import Services from "./pages/Services";
 import UserProfile from "./pages/UserProfile";
-import Error404 from "./pages/Error404";
 import ResetPass from "./pages/ResetPass";
+import AddService from "./pages/AddService";
+import Error404 from "./pages/Error404";
 
 // components
 import Header from "./components/Header/Header";
@@ -58,6 +59,13 @@ function App() {
         <Route component={About} path="/about" />
         <Route component={Jobs} path="/jobs" />
         <Route component={Services} path="/services" />
+        <PrivateRoute
+          component={AddService}
+          path="/add-service"
+          token={token}
+          samePath={true}
+          redirectUrl="/auth"
+        />
         <Route component={UserProfile} path="/user-profile/:uid" />
         <PrivateRoute
           component={ProfileEdit}
