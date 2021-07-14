@@ -6,11 +6,16 @@ import {
   Typography,
   TextField,
   Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { AiFillDelete } from "react-icons/ai";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
   formInput: {
     marginBottom: 20,
     width: "100%",
+  },
+  select: {
+    width: "100%",
+    marginBottom: 10,
   },
 }));
 
@@ -107,8 +116,49 @@ const AddService = () => {
           helperText={errors.about?.message}
           error={errors.about ? true : false}
           variant="outlined"
+          multiline
+          rows={6}
           className={classes.formInput}
         />
+        <FormControl variant="outlined" className={classes.select}>
+          <InputLabel id="category">Category</InputLabel>
+          <Select
+            {...register("category")}
+            helperText={errors.category?.message}
+            error={errors.category ? true : false}
+            labelId="category"
+            label="Category"
+            variant="outlined"
+            className={classes.select}
+          >
+            <MenuItem value="web-developement">Web Developement</MenuItem>
+            <MenuItem value="mobile-developement">Mobile Developement</MenuItem>
+            <MenuItem value="graphics-design">Graphics Design</MenuItem>
+          </Select>
+        </FormControl>
+        <Box width="100%">
+          <Box mb={2}>
+            <Typography align="center" variant="h6">
+              Package - Basic
+            </Typography>
+          </Box>
+          <TextField
+            {...register("basicName")}
+            label="Basic Name"
+            helperText={errors.basicName?.message}
+            error={errors.basicName ? true : false}
+            variant="outlined"
+            className={classes.formInput}
+          />
+          <TextField
+            {...register("basicPrice")}
+            label="Basic Price"
+            helperText={errors.basicDeliveryTime?.message}
+            error={errors.basicDeliveryTime ? true : false}
+            variant="outlined"
+            className={classes.formInput}
+          />
+        </Box>
       </form>
     </Container>
   );
