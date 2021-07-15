@@ -65,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 const schema = yup.object().shape({
   title: yup.string().max(50).required("required"),
   about: yup.string().required("required"),
-  category: yup.string().required("required"),
   basicPrice: yup.number().min(300).required("required"),
   basicDeliveryTime: yup.number().min(1).max(30).required("required(1 - 30)"),
   standardPrice: yup.number().min(300).required("required"),
@@ -134,9 +133,23 @@ const AddService = () => {
 
   // submit hanlder
   const submitHandler = async (data) => {
+    console.log("looged");
     setFormError(null);
-    if (previewSource || previewSource.length <= 0)
+    if (previewSource || previewSource.length <= 0) {
       return setFormError("Images cannot be empty!");
+    }
+    if (!category) {
+      return setFormError("Category cannot be empty!");
+    }
+
+    console.log({
+      previewSource,
+      data,
+      category,
+      basicFeatures,
+      standardFeatures,
+      premiumFeatures,
+    });
   };
 
   return (
@@ -199,7 +212,7 @@ const AddService = () => {
         <TextField
           {...register("title")}
           label="Title"
-          helpertext={errors.title?.message}
+          helperText={errors.title?.message}
           error={errors.title ? true : false}
           variant="outlined"
           className={classes.formInput}
@@ -207,7 +220,7 @@ const AddService = () => {
         <TextField
           {...register("about")}
           label="About"
-          helpertext={errors.about?.message}
+          helperText={errors.about?.message}
           error={errors.about ? true : false}
           variant="outlined"
           multiline
@@ -240,7 +253,7 @@ const AddService = () => {
           <TextField
             {...register("basicPrice")}
             label="Price"
-            helpertext={errors.basicPrice?.message}
+            helperText={errors.basicPrice?.message}
             error={errors.basicPrice ? true : false}
             variant="outlined"
             type="number"
@@ -249,7 +262,7 @@ const AddService = () => {
           <TextField
             {...register("basicDeliveryTime")}
             label="Delivery Time (days)"
-            helpertext={errors.basicDeliveryTime?.message}
+            helperText={errors.basicDeliveryTime?.message}
             error={errors.basicDeliveryTime ? true : false}
             variant="outlined"
             type="number"
@@ -260,7 +273,7 @@ const AddService = () => {
             <Box display="flex" justifyContent="center" alignItems="center">
               <TextField
                 label="Features"
-                helpertext="5 revision, 3 pages, source code, etc"
+                helperText="5 revision, 3 pages, source code, etc"
                 variant="outlined"
                 value={features.basic}
                 onChange={(e) =>
@@ -328,10 +341,10 @@ const AddService = () => {
           </Box>
 
           <TextField
-            {...register("basicPrice")}
+            {...register("standardPrice")}
             label="Price"
-            helpertext={errors.basicPrice?.message}
-            error={errors.basicPrice ? true : false}
+            helperText={errors.standardPrice?.message}
+            error={errors.standardPrice ? true : false}
             variant="outlined"
             type="number"
             className={classes.formInput}
@@ -339,7 +352,7 @@ const AddService = () => {
           <TextField
             {...register("basicDeliveryTime")}
             label="Delivery Time (days)"
-            helpertext={errors.basicDeliveryTime?.message}
+            helperText={errors.basicDeliveryTime?.message}
             error={errors.basicDeliveryTime ? true : false}
             variant="outlined"
             type="number"
@@ -350,7 +363,7 @@ const AddService = () => {
             <Box display="flex" justifyContent="center" alignItems="center">
               <TextField
                 label="Features"
-                helpertext="5 revision, 3 pages, source code, etc"
+                helperText="5 revision, 3 pages, source code, etc"
                 variant="outlined"
                 value={features.standard}
                 onChange={(e) =>
@@ -420,7 +433,7 @@ const AddService = () => {
           <TextField
             {...register("premiumPrice")}
             label="Price"
-            helpertext={errors.premiumPrice?.message}
+            helperText={errors.premiumPrice?.message}
             error={errors.premiumPrice ? true : false}
             variant="outlined"
             type="number"
@@ -429,7 +442,7 @@ const AddService = () => {
           <TextField
             {...register("premiumDeliveryTime")}
             label="Delivery Time (days)"
-            helpertext={errors.premiumDeliveryTime?.message}
+            helperText={errors.premiumDeliveryTime?.message}
             error={errors.premiumDeliveryTime ? true : false}
             variant="outlined"
             type="number"
@@ -440,7 +453,7 @@ const AddService = () => {
             <Box display="flex" justifyContent="center" alignItems="center">
               <TextField
                 label="Features"
-                helpertext="5 revision, 3 pages, source code, etc"
+                helperText="5 revision, 3 pages, source code, etc"
                 variant="outlined"
                 value={features.premium}
                 onChange={(e) =>
@@ -500,7 +513,15 @@ const AddService = () => {
           </Box>
         </Box>
 
-        <Button type="submit" variant="outlined" color="primary" size="large">
+        <Button
+          onClick={() => {
+            console.log("clicked");
+            handleSubmit(submitHandler);
+          }}
+          variant="outlined"
+          color="primary"
+          size="large"
+        >
           Submit
         </Button>
       </form>
