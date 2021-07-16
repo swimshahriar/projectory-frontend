@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   Container,
   Box,
@@ -19,6 +20,9 @@ import * as yup from "yup";
 
 // components
 import PackageInput from "../components/PackageInput";
+
+// actions
+import { addService } from "../actions/serviceAction";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -79,10 +83,10 @@ const schema = yup.object().shape({
 const AddService = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const history = useHistory();
   const [formError, setFormError] = useState(null);
   const [category, setCategory] = useState("");
-  const [imageInputState, setImageInputState] = useState("");
-  const [images, setImages] = useState(null);
+  const [imageInputState, _] = useState("");
   const [previewSource, setPreviewSource] = useState(null);
   const [features, setFeatures] = useState({
     basic: "",
@@ -99,6 +103,9 @@ const AddService = () => {
     formState: { errors },
     reset,
   } = useForm({ resolver: yupResolver(schema) });
+
+  const { token, uid } = useSelector((state) => state.auth);
+  const { error } = useSelector((state) => state.services);
 
   // preview image
   const previewImage = (image) => {
@@ -183,14 +190,41 @@ const AddService = () => {
       return setFormError("Category cannot be empty!");
     }
 
-    console.log({
-      previewSource,
-      data,
+    const finalData = {
+      images: previewSource,
+      title: data.title,
+      about: data.about,
       category,
-      basicFeatures,
-      standardFeatures,
-      premiumFeatures,
-    });
+      packages: [
+        {
+          name: "Basic",
+          price: data.basicPrice,
+          deliveryTime: data.basicDeliveryTime,
+          features: basicFeatures,
+        },
+        {
+          name: "Standard",
+          price: data.standardPrice,
+          deliveryTime: data.standardDeliveryTime,
+          features: standardFeatures,
+        },
+        {
+          name: "Premium",
+          price: data.premiumPrice,
+          deliveryTime: data.premiumDeliveryTime,
+          features: premiumFeatures,
+        },
+      ],
+    };
+
+    await dispatch(addService(finalData, token));
+
+    if (error) {
+      setFormError(error);
+    } else {
+      history.push(`/user-profile/${uid}`);
+      reset();
+    }
   };
 
   return (
