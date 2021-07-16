@@ -16,10 +16,9 @@ import { Alert } from "@material-ui/lab";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { AiFillDelete } from "react-icons/ai";
 
 // components
-import RoundedBox from "../components/RoundedBox";
+import PackageInput from "../components/PackageInput";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -131,11 +130,53 @@ const AddService = () => {
     }
   };
 
+  // set features handler for pakcageInput
+  const setFeaturesHandler = (packageName) => {
+    if (packageName === "basic") {
+      setBasicFeatures((prev) => {
+        return prev ? [...prev, features.basic] : [features.basic];
+      });
+      setFeatures((prev) => {
+        return { ...prev, basic: "" };
+      });
+    } else if (packageName === "standard") {
+      setStandardFeatures((prev) => {
+        return prev ? [...prev, features.standard] : [features.standard];
+      });
+      setFeatures((prev) => {
+        return { ...prev, standard: "" };
+      });
+    } else if (packageName === "premium") {
+      setPremiumFeatures((prev) => {
+        return prev ? [...prev, features.premium] : [features.premium];
+      });
+      setFeatures((prev) => {
+        return { ...prev, premium: "" };
+      });
+    }
+  };
+
+  // onChange handler packageInput
+  const onChangeFeatureHanlder = (packageName, value) => {
+    if (packageName === "basic") {
+      setFeatures((prev) => {
+        return { ...prev, basic: value };
+      });
+    } else if (packageName === "standard") {
+      setFeatures((prev) => {
+        return { ...prev, standard: value };
+      });
+    } else if (packageName === "premium") {
+      setFeatures((prev) => {
+        return { ...prev, premium: value };
+      });
+    }
+  };
+
   // submit hanlder
   const submitHandler = async (data) => {
-    console.log("looged");
     setFormError(null);
-    if (previewSource || previewSource.length <= 0) {
+    if (!previewSource || previewSource.length <= 0) {
       return setFormError("Images cannot be empty!");
     }
     if (!category) {
@@ -209,6 +250,7 @@ const AddService = () => {
             />
           </Button>
         </Box>
+
         <TextField
           {...register("title")}
           label="Title"
@@ -242,286 +284,50 @@ const AddService = () => {
             <MenuItem value="graphics-designing">Graphics Designing</MenuItem>
           </Select>
         </FormControl>
+
         {/* basic package */}
-        <Box width="100%" mt={3}>
-          <Box mb={2}>
-            <Typography align="center" variant="h6">
-              Package - Basic
-            </Typography>
-          </Box>
+        <PackageInput
+          classes={classes}
+          register={register}
+          errorsPrice={errors.basicPrice}
+          errorsDeliveryTime={errors.basicDeliveryTime}
+          packageName="basic"
+          features={features.basic}
+          setFeatures={setFeaturesHandler}
+          onChangeFeatureHanlder={onChangeFeatureHanlder}
+          typeFeatures={basicFeatures}
+          setTypeFeatures={setBasicFeatures}
+        />
 
-          <TextField
-            {...register("basicPrice")}
-            label="Price"
-            helperText={errors.basicPrice?.message}
-            error={errors.basicPrice ? true : false}
-            variant="outlined"
-            type="number"
-            className={classes.formInput}
-          />
-          <TextField
-            {...register("basicDeliveryTime")}
-            label="Delivery Time (days)"
-            helperText={errors.basicDeliveryTime?.message}
-            error={errors.basicDeliveryTime ? true : false}
-            variant="outlined"
-            type="number"
-            className={classes.formInput}
-          />
-          {/* features */}
-          <Box width="100%">
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <TextField
-                label="Features"
-                helperText="5 revision, 3 pages, source code, etc"
-                variant="outlined"
-                value={features.basic}
-                onChange={(e) =>
-                  setFeatures((prev) => {
-                    return { ...prev, basic: e.target.value };
-                  })
-                }
-                className={classes.formInput}
-              />
-              <Box ml={1} mt={-7}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={(e) => {
-                    if (features.basic === "") return;
-                    setBasicFeatures((prev) =>
-                      prev ? [...prev, features.basic] : [features.basic]
-                    );
-
-                    setFeatures((prev) => {
-                      return { ...prev, basic: "" };
-                    });
-                  }}
-                >
-                  Add
-                </Button>
-              </Box>
-            </Box>
-            <Box display="flex" flexWrap="wrap">
-              {!basicFeatures || basicFeatures.length <= 0 ? (
-                <Typography>Not yet added.</Typography>
-              ) : (
-                basicFeatures.map((feature, idx) => (
-                  <Box
-                    className={classes.hover}
-                    onClick={() =>
-                      setBasicFeatures((prev) =>
-                        prev.filter((item) => item !== feature)
-                      )
-                    }
-                  >
-                    <RoundedBox
-                      key={idx}
-                      light={true}
-                      icon={true}
-                      borderColor={
-                        idx % 2 == 0 ? "primary.main" : "secondary.main"
-                      }
-                    >
-                      {feature}
-                      <AiFillDelete />
-                    </RoundedBox>
-                  </Box>
-                ))
-              )}
-            </Box>
-          </Box>
-        </Box>
         {/* standard package */}
-        <Box width="100%" mt={3}>
-          <Box mb={2}>
-            <Typography align="center" variant="h6">
-              Package - Standard
-            </Typography>
-          </Box>
+        <PackageInput
+          classes={classes}
+          register={register}
+          errorsPrice={errors.standardPrice}
+          errorsDeliveryTime={errors.standardDeliveryTime}
+          packageName="standard"
+          features={features.standard}
+          setFeatures={setFeaturesHandler}
+          onChangeFeatureHanlder={onChangeFeatureHanlder}
+          typeFeatures={standardFeatures}
+          setTypeFeatures={setStandardFeatures}
+        />
 
-          <TextField
-            {...register("standardPrice")}
-            label="Price"
-            helperText={errors.standardPrice?.message}
-            error={errors.standardPrice ? true : false}
-            variant="outlined"
-            type="number"
-            className={classes.formInput}
-          />
-          <TextField
-            {...register("basicDeliveryTime")}
-            label="Delivery Time (days)"
-            helperText={errors.basicDeliveryTime?.message}
-            error={errors.basicDeliveryTime ? true : false}
-            variant="outlined"
-            type="number"
-            className={classes.formInput}
-          />
-          {/* features */}
-          <Box width="100%">
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <TextField
-                label="Features"
-                helperText="5 revision, 3 pages, source code, etc"
-                variant="outlined"
-                value={features.standard}
-                onChange={(e) =>
-                  setFeatures((prev) => {
-                    return { ...prev, standard: e.target.value };
-                  })
-                }
-                className={classes.formInput}
-              />
-              <Box ml={1} mt={-7}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={(e) => {
-                    if (features.standard === "") return;
-                    setStandardFeatures((prev) =>
-                      prev ? [...prev, features.standard] : [features.standard]
-                    );
-
-                    setFeatures((prev) => {
-                      return { ...prev, standard: "" };
-                    });
-                  }}
-                >
-                  Add
-                </Button>
-              </Box>
-            </Box>
-            <Box display="flex" flexWrap="wrap">
-              {!standardFeatures || standardFeatures.length <= 0 ? (
-                <Typography>Not yet added.</Typography>
-              ) : (
-                standardFeatures.map((feature, idx) => (
-                  <Box
-                    className={classes.hover}
-                    onClick={() =>
-                      setStandardFeatures((prev) =>
-                        prev.filter((item) => item !== feature)
-                      )
-                    }
-                  >
-                    <RoundedBox
-                      key={idx}
-                      light={true}
-                      icon={true}
-                      borderColor={
-                        idx % 2 == 0 ? "primary.main" : "secondary.main"
-                      }
-                    >
-                      {feature}
-                      <AiFillDelete />
-                    </RoundedBox>
-                  </Box>
-                ))
-              )}
-            </Box>
-          </Box>
-        </Box>
         {/* premium package */}
-        <Box width="100%" mt={3}>
-          <Box mb={2}>
-            <Typography align="center" variant="h6">
-              Package - Premium
-            </Typography>
-          </Box>
+        <PackageInput
+          classes={classes}
+          register={register}
+          errorsPrice={errors.premiumPrice}
+          errorsDeliveryTime={errors.premiumDeliveryTime}
+          packageName="premium"
+          features={features.premium}
+          setFeatures={setFeaturesHandler}
+          onChangeFeatureHanlder={onChangeFeatureHanlder}
+          typeFeatures={premiumFeatures}
+          setTypeFeatures={setPremiumFeatures}
+        />
 
-          <TextField
-            {...register("premiumPrice")}
-            label="Price"
-            helperText={errors.premiumPrice?.message}
-            error={errors.premiumPrice ? true : false}
-            variant="outlined"
-            type="number"
-            className={classes.formInput}
-          />
-          <TextField
-            {...register("premiumDeliveryTime")}
-            label="Delivery Time (days)"
-            helperText={errors.premiumDeliveryTime?.message}
-            error={errors.premiumDeliveryTime ? true : false}
-            variant="outlined"
-            type="number"
-            className={classes.formInput}
-          />
-          {/* features */}
-          <Box width="100%">
-            <Box display="flex" justifyContent="center" alignItems="center">
-              <TextField
-                label="Features"
-                helperText="5 revision, 3 pages, source code, etc"
-                variant="outlined"
-                value={features.premium}
-                onChange={(e) =>
-                  setFeatures((prev) => {
-                    return { ...prev, premium: e.target.value };
-                  })
-                }
-                className={classes.formInput}
-              />
-              <Box ml={1} mt={-7}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={(e) => {
-                    if (features.premium === "") return;
-                    setPremiumFeatures((prev) =>
-                      prev ? [...prev, features.premium] : [features.premium]
-                    );
-
-                    setFeatures((prev) => {
-                      return { ...prev, premium: "" };
-                    });
-                  }}
-                >
-                  Add
-                </Button>
-              </Box>
-            </Box>
-            <Box display="flex" flexWrap="wrap">
-              {!premiumFeatures || premiumFeatures.length <= 0 ? (
-                <Typography>Not yet added.</Typography>
-              ) : (
-                premiumFeatures.map((feature, idx) => (
-                  <Box
-                    className={classes.hover}
-                    onClick={() =>
-                      setPremiumFeatures((prev) =>
-                        prev.filter((item) => item !== feature)
-                      )
-                    }
-                  >
-                    <RoundedBox
-                      key={idx}
-                      light={true}
-                      icon={true}
-                      borderColor={
-                        idx % 2 == 0 ? "primary.main" : "secondary.main"
-                      }
-                    >
-                      {feature}
-                      <AiFillDelete />
-                    </RoundedBox>
-                  </Box>
-                ))
-              )}
-            </Box>
-          </Box>
-        </Box>
-
-        <Button
-          onClick={() => {
-            console.log("clicked");
-            handleSubmit(submitHandler);
-          }}
-          variant="outlined"
-          color="primary"
-          size="large"
-        >
+        <Button type="submit" variant="outlined" color="primary" size="large">
           Submit
         </Button>
       </form>
