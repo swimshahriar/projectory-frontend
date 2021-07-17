@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
@@ -11,6 +11,7 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Alert } from "@material-ui/lab";
@@ -105,7 +106,29 @@ const AddService = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const { token, uid } = useSelector((state) => state.auth);
-  const { error } = useSelector((state) => state.services);
+  const { error, res, isLoading } = useSelector((state) => state.services);
+
+  // check for error and success
+  useEffect(() => {
+    if (error) {
+      setFormError(error);
+    }
+
+    if (res) {
+      reset();
+      setCategory("");
+      setBasicFeatures(null);
+      setStandardFeatures(null);
+      setPremiumFeatures(null);
+      setPreviewSource(null);
+
+      setTimeout(() => {
+        history.push(`/user-profile/${uid}`);
+      }, 500);
+    }
+
+    return () => dispatch({ type: "RESET_SERVICES" });
+  }, [error, res]);
 
   // preview image
   const previewImage = (image) => {
@@ -218,13 +241,6 @@ const AddService = () => {
     };
 
     await dispatch(addService(finalData, token));
-
-    if (error) {
-      setFormError(error);
-    } else {
-      history.push(`/user-profile/${uid}`);
-      reset();
-    }
   };
 
   return (
@@ -242,6 +258,7 @@ const AddService = () => {
       <form onSubmit={handleSubmit(submitHandler)} className={classes.form}>
         <Box mb={3}>
           {formError && <Alert severity="error">{formError}</Alert>}
+          {error && <Alert severity="error">{error}</Alert>}
         </Box>
         <Box
           display="flex"
@@ -361,9 +378,13 @@ const AddService = () => {
           setTypeFeatures={setPremiumFeatures}
         />
 
-        <Button type="submit" variant="outlined" color="primary" size="large">
-          Submit
-        </Button>
+        {isLoading ? (
+          <CircularProgress color="primary" />
+        ) : (
+          <Button type="submit" variant="outlined" color="primary" size="large">
+            Submit
+          </Button>
+        )}
       </form>
     </Container>
   );

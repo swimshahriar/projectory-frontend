@@ -2,12 +2,13 @@ const initialState = {
   isLoading: false,
   error: null,
   services: null,
+  res: false,
 };
 
 const serviceReducer = (state = initialState, action) => {
   switch (action.type) {
     case "LOADING_SERVICES":
-      return { ...state, isLoading: true, error: null };
+      return { ...state, isLoading: true, error: null, res: false };
 
     case "FETCH_SERVICES":
       return {
@@ -17,11 +18,30 @@ const serviceReducer = (state = initialState, action) => {
         services: action.payload.services,
       };
 
-    case "RESET":
-      return { ...state, isLoading: false, services: null, error: null };
+    case "RESPONSE_SERVICES":
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        res: true,
+      };
 
-    case "ERROR":
-      return { ...state, isLoading: false, error: action.payload.error };
+    case "RESET_SERVICES":
+      return {
+        ...state,
+        isLoading: false,
+        services: null,
+        error: null,
+        res: false,
+      };
+
+    case "ERROR_SERVICES":
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+        res: false,
+      };
 
     default:
       return state;
