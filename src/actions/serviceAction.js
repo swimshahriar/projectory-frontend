@@ -30,3 +30,26 @@ export const addService = (data, token) => async (dispatch) => {
     });
   }
 };
+
+// fetch services
+export const fetchServices = (data) => async (dispatch) => {
+  dispatch({
+    type: "LOADING_SERVICES",
+  });
+
+  try {
+    const services = await axios.get("http://localhost:8000/api/services");
+
+    dispatch({
+      type: "FETCH_SERVICES",
+      payload: services.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_SERVICES",
+      payload: {
+        error: error.response.data.message,
+      },
+    });
+  }
+};

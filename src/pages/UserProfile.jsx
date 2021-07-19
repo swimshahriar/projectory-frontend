@@ -18,7 +18,7 @@ import { useParams, useHistory } from "react-router-dom";
 // components
 import Avatar from "../components/Avatar";
 import RoundedBox from "../components/RoundedBox";
-import GigCard from "../components/GigCard";
+import ServiceCard from "../components/ServiceCard";
 
 // actions
 import { fetchUserInfo } from "../actions/userAction";
