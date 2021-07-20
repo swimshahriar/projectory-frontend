@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { AiFillStar } from "react-icons/ai";
+import { AiFillStar, AiOutlineHeart } from "react-icons/ai";
 
 // components
 import CloudImage from "./CloudImage";
@@ -20,11 +20,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ServiceCard = ({ title, imgs, star, starCount }) => {
+const ServiceCard = ({ title, imgs, star, starCount, price }) => {
   const classes = useStyles();
 
   return (
-    <Box minWidth="250px" width="20vw">
+    <Box minWidth="250px">
       <Card>
         <CardActionArea>
           <CloudImage
@@ -62,7 +62,16 @@ const ServiceCard = ({ title, imgs, star, starCount }) => {
             </Box>
           </CardContent>
         </CardActionArea>
-        <CardActions></CardActions>
+        <CardActions>
+          <Box>
+            <AiOutlineHeart />
+          </Box>
+          <Box width="100%">
+            <Typography variant="body1" color="textSecondary" align="right">
+              Starting at {price}tk
+            </Typography>
+          </Box>
+        </CardActions>
       </Card>
     </Box>
   );
