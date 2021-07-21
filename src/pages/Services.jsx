@@ -10,7 +10,7 @@ import ServiceCard from "../components/ServiceCard";
 
 const Services = () => {
   const dispatch = useDispatch();
-  const { isLoading, services, error } = useSelector((state) => state.services);
+  const { isLoading, services } = useSelector((state) => state.services);
 
   // fetch services
   useEffect(() => {
@@ -68,6 +68,8 @@ const Services = () => {
                 star={service.rating?.rating || 0}
                 starCount={service.rating?.count || 0}
                 price={service.packages[0]?.price || 0}
+                userName={service.userName}
+                userImg={service.userImg}
               />
             ))
           ) : (

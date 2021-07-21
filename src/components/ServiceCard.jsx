@@ -8,19 +8,29 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { AiFillStar, AiOutlineHeart } from "react-icons/ai";
 
 // components
 import CloudImage from "./CloudImage";
+import RatingStarCount from "../components/RatingStarCount";
+import FavoriteBtn from "../components/FavoriteBtn";
+import AvatarWithUserName from "./AvatarWithUserName";
 
 // styles
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   title: {
     fontWeight: "bold",
   },
 }));
 
-const ServiceCard = ({ title, imgs, star, starCount, price }) => {
+const ServiceCard = ({
+  title,
+  imgs,
+  star,
+  starCount,
+  price,
+  userName,
+  userImg,
+}) => {
   const classes = useStyles();
 
   return (
@@ -35,6 +45,15 @@ const ServiceCard = ({ title, imgs, star, starCount, price }) => {
           />
 
           <CardContent>
+            <AvatarWithUserName
+              userName={userName}
+              publicId={userImg}
+              uploadPreset="projectory_services"
+              width="30"
+              height="30"
+              radius="100"
+              crop="scale"
+            />
             <Typography
               variant="body1"
               className={classes.title}
@@ -42,30 +61,11 @@ const ServiceCard = ({ title, imgs, star, starCount, price }) => {
             >
               {title}
             </Typography>
-            <Box
-              display="flex"
-              justifyItems="center"
-              alignItems="center"
-              gridGap={5}
-            >
-              <AiFillStar color={star < 4 ? "#ff61ad" : "#1cbf73"} />
-              <Typography variant="body1" color="textSecondary">
-                <Typography
-                  variant="body1"
-                  component="span"
-                  color={star < 4 ? "secondary" : "primary"}
-                >
-                  {star}
-                </Typography>{" "}
-                ({starCount})
-              </Typography>
-            </Box>
+            <RatingStarCount star={star} starCount={starCount} />
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Box>
-            <AiOutlineHeart />
-          </Box>
+          <FavoriteBtn />
           <Box width="100%">
             <Typography variant="body1" color="textSecondary" align="right">
               Starting at {price}tk
