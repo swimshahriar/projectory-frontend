@@ -63,6 +63,7 @@ const Services = () => {
             services.map((service, idx) => (
               <ServiceCard
                 key={idx}
+                userId={service.userId}
                 title={service.title}
                 imgs={service.images}
                 star={service.rating?.rating || 0}

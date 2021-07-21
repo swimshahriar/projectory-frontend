@@ -7,7 +7,9 @@ import {
   CardContent,
   Typography,
 } from "@material-ui/core";
+import { AiFillDelete } from "react-icons/ai";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
 
 // components
 import CloudImage from "./CloudImage";
@@ -15,10 +17,16 @@ import RatingStarCount from "../components/RatingStarCount";
 import FavoriteBtn from "../components/FavoriteBtn";
 import AvatarWithUserName from "./AvatarWithUserName";
 
+// actions
+import { deleteService } from "../actions/serviceAction";
+
 // styles
 const useStyles = makeStyles(() => ({
   title: {
     fontWeight: "bold",
+  },
+  delBtn: {
+    cursor: "pointer",
   },
 }));
 
@@ -30,13 +38,18 @@ const ServiceCard = ({
   price,
   userName,
   userImg,
+  onclick,
+  userId = null,
+  sid = null,
 }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { uid, token } = useSelector((state) => state.auth);
 
   return (
     <Box minWidth="250px">
       <Card>
-        <CardActionArea>
+        <CardActionArea onClick={onclick ? onclick : null}>
           <CloudImage
             publicId={imgs[0]}
             uploadPreset="projectory_services"
@@ -65,6 +78,17 @@ const ServiceCard = ({
           </CardContent>
         </CardActionArea>
         <CardActions>
+          {uid === userId && (
+            <Typography
+              className={classes.delBtn}
+              color="error"
+              onClick={async () => {
+                await dispatch(deleteService(sid, token, uid));
+              }}
+            >
+              <AiFillDelete />
+            </Typography>
+          )}
           <FavoriteBtn />
           <Box width="100%">
             <Typography variant="body1" color="textSecondary" align="right">

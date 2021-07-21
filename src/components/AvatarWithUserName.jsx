@@ -14,7 +14,13 @@ const AvatarWithUserName = ({
   userName,
 }) => {
   return (
-    <Box display="flex" alignItems="center" justifyContent="start" gridGap={10} my={1}>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="start"
+      gridGap={10}
+      my={1}
+    >
       {height ? (
         <CloudImage
           publicId={publicId}

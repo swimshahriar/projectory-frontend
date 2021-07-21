@@ -58,7 +58,7 @@ function App() {
         />
         <Route component={About} path="/about" />
         <Route component={Jobs} path="/jobs" />
-        <Route component={Services} path="/services" />
+        <Route component={Services} path="/services" exact />
         <PrivateRoute
           component={AddService}
           path="/add-service"

@@ -22,6 +22,7 @@ import ServiceCard from "../components/ServiceCard";
 
 // actions
 import { fetchUserInfo } from "../actions/userAction";
+import { fetchServices } from "../actions/serviceAction";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -61,18 +62,24 @@ const useStyles = makeStyles((theme) => ({
 const UserProfile = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { uid, token } = useSelector((state) => state.auth);
-  const { user, isLoading, error } = useSelector((state) => state.user);
+  const { uid } = useSelector((state) => state.auth);
+  const { user, isLoading } = useSelector((state) => state.user);
+  const { services, isLoading: isServicesLoading } = useSelector(
+    (state) => state.services
+  );
   const { uid: userId } = useParams();
   const history = useHistory();
 
   useEffect(() => {
-    const fetchInfo = async () => await dispatch(fetchUserInfo(userId));
-    fetchInfo();
+    (async () => {
+      await dispatch(fetchUserInfo(userId));
+      await dispatch(fetchServices({ uid }));
+    })();
 
     return async () => {
       await dispatch({ type: "LOADING_USER" });
       await dispatch({ type: "CLEAR_USER" });
+      await dispatch({ type: "RESET_SERVICES" });
     };
   }, []);
 
@@ -366,6 +373,7 @@ const UserProfile = () => {
             )}
           </Box>
         </Box>
+
         {/* Right Site */}
         <Box flex={65}>
           <Box
@@ -385,10 +393,52 @@ const UserProfile = () => {
                 color="textPrimary"
                 className={classes.mtMd}
               >
-                Active Gigs
+                Services{" "}
+                <Typography component="span" color="textSecondary">
+                  ({services?.length})
+                </Typography>
               </Typography>
               <Divider className={classes.mtMd} />
             </Box>
+          </Box>
+          {isServicesLoading && (
+            <Box mt={3}>
+              <Typography variant="h6" align="center">
+                Loading services...
+              </Typography>
+            </Box>
+          )}
+          <Box
+            display="flex"
+            justifyContent="center"
+            flexWrap="wrap"
+            gridGap={15}
+            mt={5}
+            flex="80%"
+          >
+            {services && services.length > 0 ? (
+              services.map((service, idx) => (
+                <ServiceCard
+                  key={idx}
+                  userId={service.userId}
+                  sid={service._id}
+                  title={service.title}
+                  imgs={service.images}
+                  star={service.rating?.rating || 0}
+                  starCount={service.rating?.count || 0}
+                  price={service.packages[0]?.price || 0}
+                  userName={service.userName}
+                  userImg={service.userImg}
+                  onclick={() => history.push(`/services/${service._id}`)}
+                />
+              ))
+            ) : (
+              <Box mt={3}>
+                <Typography variant="h6" align="center">
+                  No services found!
+                </Typography>
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
