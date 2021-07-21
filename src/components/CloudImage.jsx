@@ -7,7 +7,7 @@ const CloudImage = ({
   width,
   height = null,
   crop = null,
-  radius,
+  radius = null,
 }) => {
   let btn;
 

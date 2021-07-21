@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,6 +8,10 @@ import {
   TextField,
   CircularProgress,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,6 +19,7 @@ import { AiFillDelete } from "react-icons/ai";
 
 // components
 import RoundedBox from "../components/RoundedBox";
+import CloudImage from "../components/CloudImage";
 
 // acitons
 import {
@@ -60,6 +65,10 @@ const useStyles = makeStyles((theme) => ({
   withBtn: {
     width: "80%",
   },
+  select: {
+    width: "100%",
+    marginBottom: 10,
+  },
 }));
 
 const ProfileEdit = () => {
@@ -71,6 +80,8 @@ const ProfileEdit = () => {
   const { token } = useSelector((state) => state.auth);
   const userId = pathname.split("/")[2];
 
+  const [imageInputState, _] = useState("");
+  const [previewSource, setPreviewSource] = useState(null);
   const [oldData, setOldData] = useState({
     firstName: "",
     lastName: "",
@@ -83,6 +94,8 @@ const ProfileEdit = () => {
     educations: "",
     linkName: "",
     link: "",
+    birthday: "",
+    gender: "",
   });
   const [skills, setSkills] = useState(null);
   const [languages, setLanguages] = useState(null);
@@ -101,10 +114,11 @@ const ProfileEdit = () => {
 
   // fetch user data
   useEffect(() => {
-    const fetchInfo = async () => await dispatch(fetchUserInfo(userId));
-    fetchInfo();
+    (async () => {
+      await dispatch(fetchUserInfo(userId));
+    })();
 
-    if (user) {
+    if (!isLoading && user) {
       setOldData({
         firstName: user.firstName || "",
         lastName: user.lastName || "",
@@ -112,6 +126,8 @@ const ProfileEdit = () => {
         location: user.location || "",
         description: user.description || "",
         avatar: user.avatar || "",
+        birthday: user.birthday || "",
+        gender: user.gender || "",
       });
 
       user.skills && setSkills([...user.skills]);
@@ -126,16 +142,35 @@ const ProfileEdit = () => {
     };
   }, []);
 
+  // file input hanlder
+  const fileInputHanlder = (e) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
+
   // handle submit
   const submitHandler = async (e) => {
     e.preventDefault();
-    const data = {
+    let data = {
       ...oldData,
       skills,
       languages,
       educations,
       linkedAccounts,
     };
+    if (previewSource) {
+      data = {
+        ...oldData,
+        skills,
+        languages,
+        educations,
+        linkedAccounts,
+        avatar: previewSource,
+      };
+    }
 
     await dispatch(updateUserInfo(data, token));
   };
@@ -153,7 +188,7 @@ const ProfileEdit = () => {
     await dispatch(changePass(changePassData, token));
   };
 
-  if (isLoading) {
+  if (isLoading && !user) {
     return (
       <Container>
         <Typography variant="h4" align="center">
@@ -206,17 +241,53 @@ const ProfileEdit = () => {
             </Alert>
           )}
           <form onSubmit={submitHandler} className={classes.form}>
-            <TextField
-              label="Avatar"
-              variant="outlined"
-              value={oldData.avatar}
-              onChange={(e) =>
-                setOldData((prev) => {
-                  return { ...prev, avatar: e.target.value };
-                })
-              }
-              className={classes.formInput}
-            />
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gridGap={5}
+              flexWrap="wrap"
+            >
+              {oldData.avatar && !previewSource && (
+                <CloudImage
+                  uploadPreset="projectory_avatars"
+                  publicId={oldData.avatar}
+                  width="200"
+                  height="200"
+                  radius="max"
+                  crop="fill"
+                />
+              )}
+
+              {previewSource && (
+                <img
+                  src={previewSource}
+                  alt="choosen"
+                  className={classes.hover}
+                  style={{
+                    width: "200px",
+                    minWidth: "100px",
+                    height: "200px",
+                    minHeight: "100px",
+                  }}
+                  onClick={() => {
+                    setPreviewSource(null);
+                  }}
+                />
+              )}
+            </Box>
+            <Box m={3}>
+              <Button variant="outlined" color="secondary" component="label">
+                Choose Avatar
+                <input
+                  type="file"
+                  value={imageInputState}
+                  onChange={fileInputHanlder}
+                  hidden
+                />
+              </Button>
+            </Box>
+
             <TextField
               label="First Name"
               variant="outlined"
@@ -261,7 +332,42 @@ const ProfileEdit = () => {
               }
               className={classes.formInput}
             />
+            <FormControl variant="outlined" className={classes.select}>
+              <InputLabel id="gender">Gender</InputLabel>
+              <Select
+                labelId="gender"
+                label="Gender"
+                variant="outlined"
+                value={oldData.gender}
+                onChange={(e) =>
+                  setOldData((prev) => {
+                    return { ...prev, gender: e.target.value };
+                  })
+                }
+                className={classes.select}
+              >
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+                <MenuItem value="others">Others</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
+              label="Birthday"
+              variant="outlined"
+              type="date"
+              value={oldData.birthday}
+              onChange={(e) =>
+                setOldData((prev) => {
+                  return { ...prev, birthday: e.target.value };
+                })
+              }
+              className={classes.formInput}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              multiline
               label="Description"
               variant="outlined"
               value={oldData.description}
@@ -316,6 +422,7 @@ const ProfileEdit = () => {
                 ) : (
                   skills.map((skill, idx) => (
                     <Box
+                      key={idx}
                       className={classes.hover}
                       onClick={() =>
                         setSkills((prev) =>
@@ -324,7 +431,6 @@ const ProfileEdit = () => {
                       }
                     >
                       <RoundedBox
-                        key={idx}
                         light={true}
                         icon={true}
                         borderColor={
@@ -387,6 +493,7 @@ const ProfileEdit = () => {
                 ) : (
                   languages.map((lan, idx) => (
                     <Box
+                      key={idx}
                       className={classes.hover}
                       onClick={() =>
                         setLanguages((prev) =>
@@ -395,7 +502,6 @@ const ProfileEdit = () => {
                       }
                     >
                       <RoundedBox
-                        key={idx}
                         light={true}
                         icon={true}
                         borderColor={
@@ -458,6 +564,7 @@ const ProfileEdit = () => {
                 ) : (
                   educations.map((edu, idx) => (
                     <Box
+                      key={idx}
                       className={classes.hover}
                       onClick={() =>
                         setEducations((prev) =>
@@ -466,7 +573,6 @@ const ProfileEdit = () => {
                       }
                     >
                       <RoundedBox
-                        key={idx}
                         light={true}
                         icon={true}
                         borderColor={
@@ -548,6 +654,7 @@ const ProfileEdit = () => {
                 ) : (
                   linkedAccounts.map((link, idx) => (
                     <Box
+                      key={idx}
                       className={classes.hover}
                       onClick={() =>
                         setLinkedAccounts((prev) =>
@@ -556,7 +663,6 @@ const ProfileEdit = () => {
                       }
                     >
                       <RoundedBox
-                        key={idx}
                         light={true}
                         icon={true}
                         borderColor={

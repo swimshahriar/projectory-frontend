@@ -14,9 +14,9 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { GoPrimitiveDot } from "react-icons/go";
 import { FaEdit } from "react-icons/fa";
 import { useParams, useHistory } from "react-router-dom";
+import { Image } from "cloudinary-react";
 
 // components
-import Avatar from "../components/Avatar";
 import RoundedBox from "../components/RoundedBox";
 import ServiceCard from "../components/ServiceCard";
 
@@ -139,12 +139,18 @@ const UserProfile = () => {
                   <GoPrimitiveDot /> Online
                 </Typography>
               </Box>
-              <Avatar
-                alt={user.userName}
-                src={user.avatar || "https://i.pravatar.cc/300?img=57"}
-                size="large"
-                position="center"
-              />
+
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <Image
+                  cloud_name="swimshahriar"
+                  public_id={user.avatar}
+                  upload_preset="projectory_avatars"
+                  width="200"
+                  height="200"
+                  radius="max"
+                  crop="fill"
+                />
+              </Box>
               <Typography
                 variant="h6"
                 component="h6"
