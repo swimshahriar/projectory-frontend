@@ -1,14 +1,30 @@
-import React from "react";
-import { Box, Button } from "@material-ui/core";
-import { AiOutlineHeart } from "react-icons/ai";
+import React, { useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Typography } from "@material-ui/core";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
-const FavoriteBtn = () => {
+// actions
+import { makeFavoriteService } from "../actions/serviceAction";
+
+const FavoriteBtn = ({ sid, token }) => {
+  const [isFavService, setIsFavService] = useState(false);
+  const dispatch = useDispatch();
+  const { favServices } = useSelector((state) => state.services);
+
+  useMemo(() => {
+    if (favServices && favServices.some((service) => service._id === sid)) {
+      setIsFavService((prev) => !prev);
+    }
+  }, [token, favServices]);
+
   return (
-    <Box>
-      <Button>
-        <AiOutlineHeart />
-      </Button>
-    </Box>
+    <Typography
+      style={{ cursor: "pointer" }}
+      color="error"
+      onClick={async () => await dispatch(makeFavoriteService(sid, token))}
+    >
+      {isFavService ? <AiFillHeart /> : <AiOutlineHeart />}
+    </Typography>
   );
 };
 

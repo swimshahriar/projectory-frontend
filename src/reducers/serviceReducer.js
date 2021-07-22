@@ -3,12 +3,16 @@ const initialState = {
   error: null,
   services: null,
   res: false,
+  favServices: null,
 };
 
 const serviceReducer = (state = initialState, action) => {
   switch (action.type) {
     case "LOADING_SERVICES":
       return { ...state, isLoading: true, error: null, res: false };
+
+    case "STOP_LOADING_SERVICES":
+      return { ...state, isLoading: false };
 
     case "FETCH_SERVICES":
       return {
@@ -24,6 +28,14 @@ const serviceReducer = (state = initialState, action) => {
         isLoading: false,
         error: null,
         res: true,
+      };
+
+    case "FETCH_FAV_SERVICES":
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        favServices: action.payload.services,
       };
 
     case "RESET_SERVICES":

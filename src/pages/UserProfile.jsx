@@ -73,15 +73,14 @@ const UserProfile = () => {
   useEffect(() => {
     (async () => {
       await dispatch(fetchUserInfo(userId));
-      await dispatch(fetchServices({ uid }));
+      await dispatch(fetchServices({ uid: userId }));
     })();
 
     return async () => {
-      await dispatch({ type: "LOADING_USER" });
       await dispatch({ type: "CLEAR_USER" });
       await dispatch({ type: "RESET_SERVICES" });
     };
-  }, []);
+  }, [userId]);
 
   // format date
   let memberSince = null;
@@ -171,7 +170,7 @@ const UserProfile = () => {
                 {user.tagLine ? (
                   user.tagLine
                 ) : (
-                  <Typography>No tagline added.</Typography>
+                  <Typography component="span">No tagline added.</Typography>
                 )}
               </Typography>
               <Divider className={classes.mtMd} />
@@ -198,7 +197,7 @@ const UserProfile = () => {
                   {user.location ? (
                     user.location
                   ) : (
-                    <Typography>Not yet added.</Typography>
+                    <Typography component="span">Not yet added.</Typography>
                   )}
                 </Typography>
               </Box>
@@ -225,7 +224,7 @@ const UserProfile = () => {
                   {user.createdAt ? (
                     memberSince
                   ) : (
-                    <Typography>Not yet added.</Typography>
+                    <Typography component="span">Not yet added.</Typography>
                   )}
                 </Typography>
               </Box>
@@ -262,7 +261,7 @@ const UserProfile = () => {
               {user.description ? (
                 user.description
               ) : (
-                <Typography>Not yet added.</Typography>
+                <Typography component="span">Not yet added.</Typography>
               )}
             </Typography>
             <Divider className={classes.mtMd} />
@@ -277,7 +276,7 @@ const UserProfile = () => {
               Languages
             </Typography>
             {!user.languages ? (
-              <Typography>Not yet added.</Typography>
+              <Typography component="span">Not yet added.</Typography>
             ) : (
               user.languages.map((lan, idx) => (
                 <Typography
@@ -306,7 +305,7 @@ const UserProfile = () => {
             </Typography>
             <Box display="flex" flexWrap="wrap" mt={2}>
               {!user.linkedAccounts || user.linkedAccounts.length <= 0 ? (
-                <Typography>Not yet added.</Typography>
+                <Typography component="span">Not yet added.</Typography>
               ) : (
                 user.linkedAccounts.map((acc, idx) => (
                   <RoundedBox
@@ -335,7 +334,7 @@ const UserProfile = () => {
             </Typography>
             <Box display="flex" flexWrap="wrap" mt={2}>
               {!user.skills ? (
-                <Typography>Not yet added.</Typography>
+                <Typography component="span">Not yet added.</Typography>
               ) : (
                 user.skills.map((skill, idx) => (
                   <RoundedBox
@@ -363,7 +362,7 @@ const UserProfile = () => {
               Education{" "}
             </Typography>
             {!user.educations ? (
-              <Typography>Not yet added.</Typography>
+              <Typography component="span">Not yet added.</Typography>
             ) : (
               user.educations.map((inst, idx) => (
                 <Typography
@@ -400,7 +399,11 @@ const UserProfile = () => {
                 className={classes.mtMd}
               >
                 Services{" "}
-                <Typography component="span" color="textSecondary">
+                <Typography
+                  component="span"
+                  variant="body1"
+                  color="textSecondary"
+                >
                   ({services?.length})
                 </Typography>
               </Typography>
@@ -426,6 +429,7 @@ const UserProfile = () => {
               services.map((service, idx) => (
                 <ServiceCard
                   key={idx}
+                  sid={service._id}
                   userId={service.userId}
                   sid={service._id}
                   title={service.title}

@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Container, Typography, Box } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 // actions
-import { fetchServices } from "../actions/serviceAction";
+import { fetchServices, fetchFavoriteServices } from "../actions/serviceAction";
 
 // components
 import ServiceCard from "../components/ServiceCard";
 
 const Services = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { isLoading, services } = useSelector((state) => state.services);
 
@@ -63,6 +65,8 @@ const Services = () => {
             services.map((service, idx) => (
               <ServiceCard
                 key={idx}
+                sid={service._id}
+                onclick={() => history.push(`/services/${service._id}`)}
                 userId={service.userId}
                 title={service.title}
                 imgs={service.images}

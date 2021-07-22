@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { fetchFavoriteServices } from "./serviceAction";
+
 // login
 export const loginHandler = (data) => async (dispatch) => {
   dispatch({
@@ -29,6 +31,7 @@ export const loginHandler = (data) => async (dispatch) => {
     };
 
     localStorage.setItem("auth", JSON.stringify(localData));
+    await dispatch(fetchFavoriteServices(loginData.data.token));
   } catch (error) {
     dispatch({
       type: "ERROR",
@@ -68,6 +71,7 @@ export const registerHandler = (data) => async (dispatch) => {
     };
 
     localStorage.setItem("auth", JSON.stringify(localData));
+    await dispatch(fetchFavoriteServices(registerData.data.token));
   } catch (error) {
     dispatch({
       type: "ERROR",
@@ -186,6 +190,8 @@ export const checkForAuth = () => async (dispatch) => {
             expiresAt: authData.expiresAt,
           },
         });
+
+        await dispatch(fetchFavoriteServices(authData.token));
       } else {
         dispatch({
           type: "LOGOUT",

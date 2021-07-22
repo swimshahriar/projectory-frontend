@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { AiFillDelete } from "react-icons/ai";
+import { BiEdit } from "react-icons/bi";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -25,7 +26,7 @@ const useStyles = makeStyles(() => ({
   title: {
     fontWeight: "bold",
   },
-  delBtn: {
+  btn: {
     cursor: "pointer",
   },
 }));
@@ -47,7 +48,7 @@ const ServiceCard = ({
   const { uid, token } = useSelector((state) => state.auth);
 
   return (
-    <Box minWidth="250px">
+    <Box minWidth="250px" width="250px">
       <Card>
         <CardActionArea onClick={onclick ? onclick : null}>
           <CloudImage
@@ -64,8 +65,8 @@ const ServiceCard = ({
               uploadPreset="projectory_services"
               width="30"
               height="30"
-              radius="100"
-              crop="scale"
+              radius="max"
+              crop="fill"
             />
             <Typography
               variant="body1"
@@ -79,17 +80,26 @@ const ServiceCard = ({
         </CardActionArea>
         <CardActions>
           {uid === userId && (
-            <Typography
-              className={classes.delBtn}
-              color="error"
-              onClick={async () => {
-                await dispatch(deleteService(sid, token, uid));
-              }}
-            >
-              <AiFillDelete />
-            </Typography>
+            <>
+              <Typography
+                className={classes.btn}
+                color="primary"
+                onClick={() => {}}
+              >
+                <BiEdit />
+              </Typography>
+              <Typography
+                className={classes.btn}
+                color="error"
+                onClick={async () => {
+                  await dispatch(deleteService(sid, token, uid));
+                }}
+              >
+                <AiFillDelete />
+              </Typography>
+            </>
           )}
-          <FavoriteBtn />
+          {token && <FavoriteBtn sid={sid} token={token} />}
           <Box width="100%">
             <Typography variant="body1" color="textSecondary" align="right">
               Starting at {price}tk

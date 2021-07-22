@@ -4,7 +4,13 @@ import { AiFillStar } from "react-icons/ai";
 
 const RatingStarCount = ({ star, starCount }) => {
   return (
-    <Box display="flex" justifyItems="center" alignItems="center" gridGap={5}>
+    <Box
+      display="flex"
+      justifyItems="center"
+      alignItems="center"
+      gridGap={5}
+      mt={1}
+    >
       <AiFillStar color={star < 4 ? "#ff61ad" : "#1cbf73"} />
       <Typography variant="body1" color="textSecondary">
         <Typography

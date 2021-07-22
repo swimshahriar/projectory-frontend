@@ -368,6 +368,7 @@ const ProfileEdit = () => {
             />
             <TextField
               multiline
+              rows={8}
               label="Description"
               variant="outlined"
               value={oldData.description}
@@ -630,7 +631,7 @@ const ProfileEdit = () => {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                      if (oldData.linkName === "" || oldData.url === "") return;
+                      if (oldData.linkName === "" || oldData.link === "") return;
                       setLinkedAccounts((prev) =>
                         prev
                           ? [

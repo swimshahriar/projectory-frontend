@@ -39,7 +39,7 @@ export const fetchServices = (data) => async (dispatch) => {
 
   let reqUrl = "http://localhost:8000/api/services";
   if (data?.uid) {
-    reqUrl = `http://localhost:8000/api/services?sid=${data.uid}`;
+    reqUrl = `http://localhost:8000/api/services?uid=${data.uid}`;
   } else if (data?.sid) {
     reqUrl = `http://localhost:8000/api/services?sid=${data.sid}`;
   }
@@ -50,6 +50,70 @@ export const fetchServices = (data) => async (dispatch) => {
     dispatch({
       type: "FETCH_SERVICES",
       payload: services.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_SERVICES",
+      payload: {
+        error: error.response.data.message,
+      },
+    });
+  }
+};
+
+// get fav services
+export const fetchFavoriteServices = (token) => async (dispatch) => {
+  dispatch({
+    type: "LOADING_SERVICES",
+  });
+  try {
+    const services = await axios.get(
+      "http://localhost:8000/api/services/favorites",
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    dispatch({
+      type: "FETCH_FAV_SERVICES",
+      payload: {
+        services: services.data.services,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_SERVICES",
+      payload: {
+        error: error.response.data.message,
+      },
+    });
+  }
+};
+
+// save a service to fav
+export const makeFavoriteService = (sid, token) => async (dispatch) => {
+  dispatch({
+    type: "LOADING_SERVICES",
+  });
+
+  try {
+    const services = await axios.post(
+      `http://localhost:8000/api/services/favorites/${sid}`,
+      {},
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    dispatch({
+      type: "FETCH_FAV_SERVICES",
+      payload: {
+        services: services.data.services,
+      },
     });
   } catch (error) {
     dispatch({
