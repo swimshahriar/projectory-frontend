@@ -15,6 +15,7 @@ import Services from "./pages/Services";
 import UserProfile from "./pages/UserProfile";
 import ResetPass from "./pages/ResetPass";
 import AddService from "./pages/AddService";
+import EditService from "./pages/EditService";
 import Error404 from "./pages/Error404";
 
 // components
@@ -59,6 +60,13 @@ function App() {
         <Route component={About} path="/about" />
         <Route component={Jobs} path="/jobs" />
         <Route component={Services} path="/services" exact />
+        <PrivateRoute
+          component={EditService}
+          path="/edit-service/:sid"
+          token={token}
+          samePath={true}
+          redirectUrl="/auth"
+        />
         <PrivateRoute
           component={AddService}
           path="/add-service"

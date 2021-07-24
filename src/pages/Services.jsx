@@ -61,7 +61,7 @@ const Services = () => {
           mt={5}
           flex="80%"
         >
-          {services ? (
+          {services && services.length > 0 ? (
             services.map((service, idx) => (
               <ServiceCard
                 key={idx}

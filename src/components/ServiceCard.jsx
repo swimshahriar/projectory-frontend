@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import {
   Box,
   Card,
@@ -46,6 +47,7 @@ const ServiceCard = ({
   const classes = useStyles();
   const dispatch = useDispatch();
   const { uid, token } = useSelector((state) => state.auth);
+  const history = useHistory();
 
   return (
     <Box minWidth="250px" width="250px">
@@ -84,7 +86,7 @@ const ServiceCard = ({
               <Typography
                 className={classes.btn}
                 color="primary"
-                onClick={() => {}}
+                onClick={() => history.push(`/edit-service/${sid}`)}
               >
                 <BiEdit />
               </Typography>

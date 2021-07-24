@@ -19,6 +19,7 @@ import { Image } from "cloudinary-react";
 // components
 import RoundedBox from "../components/RoundedBox";
 import ServiceCard from "../components/ServiceCard";
+import UserLinks from "../components/UserLinks";
 
 // actions
 import { fetchUserInfo } from "../actions/userAction";
@@ -104,7 +105,7 @@ const UserProfile = () => {
 
   return (
     <Container maxWidth="lg">
-      {userId === uid && (
+      {uid && userId === uid && (
         <Box mt={3} display="flex" justifyContent="flex-end">
           <Button
             variant="outlined"
@@ -116,6 +117,8 @@ const UserProfile = () => {
           </Button>
         </Box>
       )}
+
+      {uid && uid === userId && <UserLinks uid={uid} userId={userId} />}
 
       <Box display="flex" justifyContent="center" gridGap={15} mt={3}>
         <Box flex={35} minWidth="350px">
