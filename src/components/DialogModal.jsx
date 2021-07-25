@@ -1,33 +1,24 @@
-import React from "react";
 import {
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions,
+  DialogTitle
 } from "@material-ui/core";
+import React from "react";
 
-const DialogModal = ({
-  open,
-  setOpen,
-  title,
-  bodyText,
-  body = "",
-  actions,
-}) => {
-  return (
-    <div>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{bodyText}</DialogContentText>
-          {body}
-        </DialogContent>
+const DialogModal = ({ open, setOpen, title, bodyText, body = "", actions }) => (
+  <div>
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>{bodyText}</DialogContentText>
+        {body}
+      </DialogContent>
 
-        <DialogActions>{actions}</DialogActions>
-      </Dialog>
-    </div>
-  );
-};
+      <DialogActions>{actions}</DialogActions>
+    </Dialog>
+  </div>
+);
 
 export default DialogModal;

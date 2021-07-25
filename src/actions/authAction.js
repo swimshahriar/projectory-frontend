@@ -1,5 +1,4 @@
 import axios from "axios";
-
 import { fetchFavoriteServices } from "./serviceAction";
 
 // login
@@ -104,12 +103,9 @@ export const forgotPassHandler = (data) => async (dispatch) => {
   });
 
   try {
-    const { data: res } = await axios.post(
-      "http://localhost:8000/api/user/forgot-password",
-      {
-        email: data,
-      }
-    );
+    const { data: res } = await axios.post("http://localhost:8000/api/user/forgot-password", {
+      email: data,
+    });
 
     dispatch({
       type: "FORGOT_PASSWORD",

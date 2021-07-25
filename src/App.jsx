@@ -1,27 +1,24 @@
-import React, { useEffect } from "react";
-import { Route, Switch } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { Container, Typography } from "@material-ui/core";
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Route, Switch } from "react-router-dom";
 // reducers
 import { checkForAuth } from "./actions/authAction";
-
-// pages
-import Home from "./pages/Home";
-import Auth from "./pages/Auth";
-import About from "./pages/About";
-import Jobs from "./pages/Jobs";
-import Services from "./pages/Services";
-import UserProfile from "./pages/UserProfile";
-import ResetPass from "./pages/ResetPass";
-import AddService from "./pages/AddService";
-import EditService from "./pages/EditService";
-import Error404 from "./pages/Error404";
-
 // components
 import Header from "./components/Header/Header";
 import PrivateRoute from "./helpers/PrivateRoute";
+import About from "./pages/About";
+import AddService from "./pages/AddService";
+import Auth from "./pages/Auth";
+import EditService from "./pages/EditService";
+import Error404 from "./pages/Error404";
+// pages
+import Home from "./pages/Home";
+import Jobs from "./pages/Jobs";
 import ProfileEdit from "./pages/ProfileEdit";
+import ResetPass from "./pages/ResetPass";
+import Services from "./pages/Services";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,7 +28,7 @@ function App() {
     (async () => {
       await dispatch(checkForAuth());
     })();
-  }, []);
+  }, [dispatch]);
 
   if (isAuthCheck) {
     return (
@@ -64,14 +61,14 @@ function App() {
           component={EditService}
           path="/edit-service/:sid"
           token={token}
-          samePath={true}
+          samePath
           redirectUrl="/auth"
         />
         <PrivateRoute
           component={AddService}
           path="/add-service"
           token={token}
-          samePath={true}
+          samePath
           redirectUrl="/auth"
         />
         <Route component={UserProfile} path="/user-profile/:uid" />
@@ -79,7 +76,7 @@ function App() {
           component={ProfileEdit}
           path={`/profile-edit/${uid}`}
           token={token}
-          samePath={true}
+          samePath
           redirectUrl="/auth"
         />
         <PrivateRoute

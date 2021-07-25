@@ -1,8 +1,7 @@
-import React, { useState, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Typography } from "@material-ui/core";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-
+import React, { useMemo, useState } from "react";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
 // actions
 import { makeFavoriteService } from "../actions/serviceAction";
 
@@ -15,13 +14,15 @@ const FavoriteBtn = ({ sid, token }) => {
     if (favServices && favServices.some((service) => service._id === sid)) {
       setIsFavService((prev) => !prev);
     }
-  }, [token, favServices]);
+  }, [favServices, sid]);
 
   return (
     <Typography
       style={{ cursor: "pointer" }}
       color="error"
-      onClick={async () => await dispatch(makeFavoriteService(sid, token))}
+      onClick={async () => {
+        await dispatch(makeFavoriteService(sid, token));
+      }}
     >
       {isFavService ? <AiFillHeart /> : <AiOutlineHeart />}
     </Typography>

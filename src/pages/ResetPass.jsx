@@ -1,24 +1,16 @@
-import React, { useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  CircularProgress,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core/styles";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { Button, CircularProgress, Container, TextField, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useHistory, useParams } from "react-router-dom";
+import * as yup from "yup";
+// actions
+import { forgotPassHandler, resetPassHandler } from "../actions/authAction";
 // components
 import DialogModal from "../components/DialogModal";
-
-// actions
-import { resetPassHandler, forgotPassHandler } from "../actions/authAction";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -118,7 +110,7 @@ const ResetPass = () => {
             <TextField
               variant="outlined"
               label="Email"
-              required={true}
+              required
               value={modalEmail}
               onChange={(e) => setModalEmail(e.target.value)}
             />
@@ -183,7 +175,7 @@ const ResetPass = () => {
             type="password"
             label="New Password"
             helperText={errors.password?.message}
-            error={errors.password ? true : false}
+            error={!!errors.password}
             variant="outlined"
             className={classes.formInput}
           />
@@ -192,7 +184,7 @@ const ResetPass = () => {
             type="password"
             label="Confirm password"
             helperText={errors.confirmPassword?.message}
-            error={errors.confirmPassword ? true : false}
+            error={!!errors.confirmPassword}
             variant="outlined"
             className={classes.formInput}
           />
@@ -210,11 +202,7 @@ const ResetPass = () => {
             </Button>
           )}
         </form>
-        <Typography
-          variant="body1"
-          align="center"
-          className={classes.lowerHalf}
-        >
+        <Typography variant="body1" align="center" className={classes.lowerHalf}>
           Invalid or expired token?{" "}
           <Button
             color="secondary"

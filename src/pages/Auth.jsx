@@ -1,25 +1,13 @@
-import React, { useState } from "react";
-import {
-  Container,
-  Typography,
-  TextField,
-  Button,
-  CircularProgress,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core/styles";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { Button, CircularProgress, Container, TextField, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-
+import * as yup from "yup";
 // actions
-import {
-  loginHandler,
-  registerHandler,
-  forgotPassHandler,
-} from "../actions/authAction";
-
+import { forgotPassHandler, loginHandler, registerHandler } from "../actions/authAction";
 // components
 import DialogModal from "../components/DialogModal";
 
@@ -94,7 +82,7 @@ const Auth = () => {
   const dispatch = useDispatch();
 
   // grab state from auth state
-  const { error, isLoading, res } = useSelector((state) => state.auth);
+  const { error, isLoading, res, token } = useSelector((state) => state.auth);
 
   const {
     register,
@@ -132,7 +120,7 @@ const Auth = () => {
             <TextField
               variant="outlined"
               label="Email"
-              required={true}
+              required
               value={modalEmail}
               onChange={(e) => setModalEmail(e.target.value)}
             />
@@ -199,7 +187,7 @@ const Auth = () => {
                 {...register("firstName")}
                 label="First Name"
                 helperText={errors.firstName?.message}
-                error={errors.firstName ? true : false}
+                error={!!errors.firstName}
                 variant="outlined"
                 className={classes.formInput}
               />
@@ -208,7 +196,7 @@ const Auth = () => {
                 {...register("lastName")}
                 label="Last Name"
                 helperText={errors.lastName?.message}
-                error={errors.lastName ? true : false}
+                error={!!errors.lastName}
                 variant="outlined"
                 className={classes.formInput}
               />
@@ -217,7 +205,7 @@ const Auth = () => {
                 {...register("userName")}
                 label="User Name"
                 helperText={errors.userName?.message}
-                error={errors.userName ? true : false}
+                error={!!errors.userName}
                 variant="outlined"
                 className={classes.formInput}
               />
@@ -226,7 +214,7 @@ const Auth = () => {
                 {...register("email")}
                 label="Email"
                 helperText={errors.email?.message}
-                error={errors.email ? true : false}
+                error={!!errors.email}
                 variant="outlined"
                 className={classes.formInput}
               />
@@ -236,7 +224,7 @@ const Auth = () => {
                 type="password"
                 label="Password"
                 helperText={errors.password?.message}
-                error={errors.password ? true : false}
+                error={!!errors.password}
                 variant="outlined"
                 className={classes.formInput}
               />
@@ -246,7 +234,7 @@ const Auth = () => {
                 type="password"
                 label="Confirm password"
                 helperText={errors.confirmPassword?.message}
-                error={errors.confirmPassword ? true : false}
+                error={!!errors.confirmPassword}
                 variant="outlined"
                 className={classes.formInput}
               />
@@ -257,7 +245,7 @@ const Auth = () => {
                 {...register("email")}
                 label="Email"
                 helperText={errors.email?.message}
-                error={errors.email ? true : false}
+                error={!!errors.email}
                 variant="outlined"
                 className={classes.formInput}
               />
@@ -267,7 +255,7 @@ const Auth = () => {
                 type="password"
                 label="Password"
                 helperText={errors.password?.message}
-                error={errors.password ? true : false}
+                error={!!errors.password}
                 variant="outlined"
                 className={classes.formInput}
               />
@@ -301,11 +289,7 @@ const Auth = () => {
           )}
         </form>
 
-        <Typography
-          variant="body1"
-          align="center"
-          className={classes.lowerHalf}
-        >
+        <Typography variant="body1" align="center" className={classes.lowerHalf}>
           {isLoginMode ? "Don't have an account?" : "Already have an account?"}
           <span>
             <Button

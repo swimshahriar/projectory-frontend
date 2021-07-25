@@ -1,32 +1,26 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useLocation, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  Container,
-  Typography,
   Box,
-  TextField,
-  CircularProgress,
   Button,
+  CircularProgress,
+  Container,
   FormControl,
   InputLabel,
-  Select,
   MenuItem,
+  Select,
+  TextField,
+  Typography
 } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
+import React, { useEffect, useMemo, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+// acitons
+import { changePass, fetchUserInfo, updateUserInfo } from "../actions/userAction";
+import CloudImage from "../components/CloudImage";
 // components
 import RoundedBox from "../components/RoundedBox";
-import CloudImage from "../components/CloudImage";
-
-// acitons
-import {
-  fetchUserInfo,
-  updateUserInfo,
-  changePass,
-} from "../actions/userAction";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -118,6 +112,13 @@ const ProfileEdit = () => {
       await dispatch(fetchUserInfo(userId));
     })();
 
+    return async () => {
+      await dispatch({ type: "LOADING_USER" });
+      await dispatch({ type: "CLEAR_USER" });
+    };
+  }, [dispatch, userId]);
+
+  useMemo(() => {
     if (!isLoading && user) {
       setOldData({
         firstName: user.firstName || "",
@@ -130,17 +131,20 @@ const ProfileEdit = () => {
         gender: user.gender || "",
       });
 
-      user.skills && setSkills([...user.skills]);
-      user.languages && setLanguages([...user.languages]);
-      user.educations && setEducations([...user.educations]);
-      user.linkedAccounts && setLinkedAccounts([...user.linkedAccounts]);
+      if (user.skills) {
+        setSkills([...user.skills]);
+      }
+      if (user.languages) {
+        setLanguages([...user.languages]);
+      }
+      if (user.educations) {
+        setEducations([...user.educations]);
+      }
+      if (user.linkedAccounts) {
+        setLinkedAccounts([...user.linkedAccounts]);
+      }
     }
-
-    return async () => {
-      await dispatch({ type: "LOADING_USER" });
-      await dispatch({ type: "CLEAR_USER" });
-    };
-  }, []);
+  }, [isLoading, user]);
 
   // file input hanlder
   const fileInputHanlder = (e) => {
@@ -260,31 +264,29 @@ const ProfileEdit = () => {
               )}
 
               {previewSource && (
-                <img
-                  src={previewSource}
-                  alt="choosen"
-                  className={classes.hover}
-                  style={{
-                    width: "200px",
-                    minWidth: "100px",
-                    height: "200px",
-                    minHeight: "100px",
-                  }}
+                <Box
                   onClick={() => {
                     setPreviewSource(null);
                   }}
-                />
+                >
+                  <img
+                    src={previewSource}
+                    alt="choosen"
+                    className={classes.hover}
+                    style={{
+                      width: "200px",
+                      minWidth: "100px",
+                      height: "200px",
+                      minHeight: "100px",
+                    }}
+                  />
+                </Box>
               )}
             </Box>
             <Box m={3}>
               <Button variant="outlined" color="secondary" component="label">
                 Choose Avatar
-                <input
-                  type="file"
-                  value={imageInputState}
-                  onChange={fileInputHanlder}
-                  hidden
-                />
+                <input type="file" value={imageInputState} onChange={fileInputHanlder} hidden />
               </Button>
             </Box>
 
@@ -292,44 +294,28 @@ const ProfileEdit = () => {
               label="First Name"
               variant="outlined"
               value={oldData.firstName}
-              onChange={(e) =>
-                setOldData((prev) => {
-                  return { ...prev, firstName: e.target.value };
-                })
-              }
+              onChange={(e) => setOldData((prev) => ({ ...prev, firstName: e.target.value }))}
               className={classes.formInput}
             />
             <TextField
               label="Last Name"
               variant="outlined"
               value={oldData.lastName}
-              onChange={(e) =>
-                setOldData((prev) => {
-                  return { ...prev, lastName: e.target.value };
-                })
-              }
+              onChange={(e) => setOldData((prev) => ({ ...prev, lastName: e.target.value }))}
               className={classes.formInput}
             />
             <TextField
               label="Tag Line"
               variant="outlined"
               value={oldData.tagLine}
-              onChange={(e) =>
-                setOldData((prev) => {
-                  return { ...prev, tagLine: e.target.value };
-                })
-              }
+              onChange={(e) => setOldData((prev) => ({ ...prev, tagLine: e.target.value }))}
               className={classes.formInput}
             />
             <TextField
               label="Location"
               variant="outlined"
               value={oldData.location}
-              onChange={(e) =>
-                setOldData((prev) => {
-                  return { ...prev, location: e.target.value };
-                })
-              }
+              onChange={(e) => setOldData((prev) => ({ ...prev, location: e.target.value }))}
               className={classes.formInput}
             />
             <FormControl variant="outlined" className={classes.select}>
@@ -339,11 +325,7 @@ const ProfileEdit = () => {
                 label="Gender"
                 variant="outlined"
                 value={oldData.gender}
-                onChange={(e) =>
-                  setOldData((prev) => {
-                    return { ...prev, gender: e.target.value };
-                  })
-                }
+                onChange={(e) => setOldData((prev) => ({ ...prev, gender: e.target.value }))}
                 className={classes.select}
               >
                 <MenuItem value="male">Male</MenuItem>
@@ -356,11 +338,7 @@ const ProfileEdit = () => {
               variant="outlined"
               type="date"
               value={oldData.birthday}
-              onChange={(e) =>
-                setOldData((prev) => {
-                  return { ...prev, birthday: e.target.value };
-                })
-              }
+              onChange={(e) => setOldData((prev) => ({ ...prev, birthday: e.target.value }))}
               className={classes.formInput}
               InputLabelProps={{
                 shrink: true,
@@ -372,32 +350,18 @@ const ProfileEdit = () => {
               label="Description"
               variant="outlined"
               value={oldData.description}
-              onChange={(e) =>
-                setOldData((prev) => {
-                  return { ...prev, description: e.target.value };
-                })
-              }
+              onChange={(e) => setOldData((prev) => ({ ...prev, description: e.target.value }))}
               className={classes.formInput}
             />
             {/* skillS */}
-            <Box
-              border={2}
-              borderColor="textSecondary"
-              borderRadius={5}
-              padding={2}
-              width="90%"
-            >
+            <Box border={2} borderColor="textSecondary" borderRadius={5} padding={2} width="90%">
               <Box display="flex" justifyContent="center" alignItems="center">
                 <TextField
                   label="Skills"
                   variant="outlined"
                   value={oldData.skills}
-                  onChange={(e) =>
-                    setOldData((prev) => {
-                      return { ...prev, skills: e.target.value };
-                    })
-                  }
-                  className={classes.formInput + " " + classes.withBtn}
+                  onChange={(e) => setOldData((prev) => ({ ...prev, skills: e.target.value }))}
+                  className={`${classes.formInput} ${classes.withBtn}`}
                 />
                 <Box ml={1} mt={-5}>
                   <Button
@@ -405,12 +369,8 @@ const ProfileEdit = () => {
                     color="primary"
                     onClick={() => {
                       if (oldData.skills === "") return;
-                      setSkills((prev) =>
-                        prev ? [...prev, oldData.skills] : [oldData.skills]
-                      );
-                      setOldData((prev) => {
-                        return { ...prev, skills: "" };
-                      });
+                      setSkills((prev) => (prev ? [...prev, oldData.skills] : [oldData.skills]));
+                      setOldData((prev) => ({ ...prev, skills: "" }));
                     }}
                   >
                     Add
@@ -425,18 +385,12 @@ const ProfileEdit = () => {
                     <Box
                       key={idx}
                       className={classes.hover}
-                      onClick={() =>
-                        setSkills((prev) =>
-                          prev.filter((item) => item !== skill)
-                        )
-                      }
+                      onClick={() => setSkills((prev) => prev.filter((item) => item !== skill))}
                     >
                       <RoundedBox
-                        light={true}
-                        icon={true}
-                        borderColor={
-                          idx % 2 == 0 ? "primary.main" : "secondary.main"
-                        }
+                        light
+                        icon
+                        borderColor={idx % 2 === 0 ? "primary.main" : "secondary.main"}
                       >
                         {skill}
                         <AiFillDelete />
@@ -461,12 +415,8 @@ const ProfileEdit = () => {
                   label="Languages"
                   variant="outlined"
                   value={oldData.languages}
-                  onChange={(e) =>
-                    setOldData((prev) => {
-                      return { ...prev, languages: e.target.value };
-                    })
-                  }
-                  className={classes.formInput + " " + classes.withBtn}
+                  onChange={(e) => setOldData((prev) => ({ ...prev, languages: e.target.value }))}
+                  className={`${classes.formInput} ${classes.withBtn}`}
                 />
                 <Box ml={1} mt={-5}>
                   <Button
@@ -475,13 +425,9 @@ const ProfileEdit = () => {
                     onClick={() => {
                       if (oldData.languages === "") return;
                       setLanguages((prev) =>
-                        prev
-                          ? [...prev, oldData.languages]
-                          : [oldData.languages]
+                        prev ? [...prev, oldData.languages] : [oldData.languages]
                       );
-                      setOldData((prev) => {
-                        return { ...prev, languages: "" };
-                      });
+                      setOldData((prev) => ({ ...prev, languages: "" }));
                     }}
                   >
                     Add
@@ -496,18 +442,12 @@ const ProfileEdit = () => {
                     <Box
                       key={idx}
                       className={classes.hover}
-                      onClick={() =>
-                        setLanguages((prev) =>
-                          prev.filter((item) => item !== lan)
-                        )
-                      }
+                      onClick={() => setLanguages((prev) => prev.filter((item) => item !== lan))}
                     >
                       <RoundedBox
-                        light={true}
-                        icon={true}
-                        borderColor={
-                          idx % 2 == 0 ? "primary.main" : "secondary.main"
-                        }
+                        light
+                        icon
+                        borderColor={idx % 2 === 0 ? "primary.main" : "secondary.main"}
                       >
                         {lan}
                         <AiFillDelete />
@@ -532,12 +472,8 @@ const ProfileEdit = () => {
                   label="Educations"
                   variant="outlined"
                   value={oldData.educations}
-                  onChange={(e) =>
-                    setOldData((prev) => {
-                      return { ...prev, educations: e.target.value };
-                    })
-                  }
-                  className={classes.formInput + " " + classes.withBtn}
+                  onChange={(e) => setOldData((prev) => ({ ...prev, educations: e.target.value }))}
+                  className={`${classes.formInput} ${classes.withBtn}`}
                 />
                 <Box ml={1} mt={-5}>
                   <Button
@@ -546,13 +482,9 @@ const ProfileEdit = () => {
                     onClick={() => {
                       if (oldData.educations === "") return;
                       setEducations((prev) =>
-                        prev
-                          ? [...prev, oldData.educations]
-                          : [oldData.educations]
+                        prev ? [...prev, oldData.educations] : [oldData.educations]
                       );
-                      setOldData((prev) => {
-                        return { ...prev, educations: "" };
-                      });
+                      setOldData((prev) => ({ ...prev, educations: "" }));
                     }}
                   >
                     Add
@@ -567,18 +499,12 @@ const ProfileEdit = () => {
                     <Box
                       key={idx}
                       className={classes.hover}
-                      onClick={() =>
-                        setEducations((prev) =>
-                          prev.filter((item) => item !== edu)
-                        )
-                      }
+                      onClick={() => setEducations((prev) => prev.filter((item) => item !== edu))}
                     >
                       <RoundedBox
-                        light={true}
-                        icon={true}
-                        borderColor={
-                          idx % 2 == 0 ? "primary.main" : "secondary.main"
-                        }
+                        light
+                        icon
+                        borderColor={idx % 2 === 0 ? "primary.main" : "secondary.main"}
                       >
                         {edu}
                         <AiFillDelete />
@@ -608,23 +534,15 @@ const ProfileEdit = () => {
                   label="Link Name"
                   variant="outlined"
                   value={oldData.linkName}
-                  onChange={(e) =>
-                    setOldData((prev) => {
-                      return { ...prev, linkName: e.target.value };
-                    })
-                  }
-                  className={classes.formInput + " " + classes.withBtn}
+                  onChange={(e) => setOldData((prev) => ({ ...prev, linkName: e.target.value }))}
+                  className={`${classes.formInput} ${classes.withBtn}`}
                 />
                 <TextField
                   label="Url"
                   variant="outlined"
                   value={oldData.url}
-                  onChange={(e) =>
-                    setOldData((prev) => {
-                      return { ...prev, link: e.target.value };
-                    })
-                  }
-                  className={classes.formInput + " " + classes.withBtn}
+                  onChange={(e) => setOldData((prev) => ({ ...prev, link: e.target.value }))}
+                  className={`${classes.formInput} ${classes.withBtn}`}
                 />
                 <Box mt={-2}>
                   <Button
@@ -634,15 +552,10 @@ const ProfileEdit = () => {
                       if (oldData.linkName === "" || oldData.link === "") return;
                       setLinkedAccounts((prev) =>
                         prev
-                          ? [
-                              ...prev,
-                              { title: oldData.linkName, link: oldData.link },
-                            ]
+                          ? [...prev, { title: oldData.linkName, link: oldData.link }]
                           : [{ title: oldData.linkName, link: oldData.link }]
                       );
-                      setOldData((prev) => {
-                        return { ...prev, linkName: "", link: "" };
-                      });
+                      setOldData((prev) => ({ ...prev, linkName: "", link: "" }));
                     }}
                   >
                     Add
@@ -664,11 +577,9 @@ const ProfileEdit = () => {
                       }
                     >
                       <RoundedBox
-                        light={true}
-                        icon={true}
-                        borderColor={
-                          idx % 2 == 0 ? "primary.main" : "secondary.main"
-                        }
+                        light
+                        icon
+                        borderColor={idx % 2 === 0 ? "primary.main" : "secondary.main"}
                       >
                         {link.title}
                         <AiFillDelete />
@@ -682,12 +593,7 @@ const ProfileEdit = () => {
             {isLoading ? (
               <CircularProgress color="primary" />
             ) : (
-              <Button
-                variant="outlined"
-                color="primary"
-                size="large"
-                onClick={submitHandler}
-              >
+              <Button variant="outlined" color="primary" size="large" onClick={submitHandler}>
                 Update
               </Button>
             )}
@@ -709,12 +615,10 @@ const ProfileEdit = () => {
             label="Current Password"
             variant="outlined"
             type="password"
-            required={true}
+            required
             value={changePassData.currentPassword}
             onChange={(e) =>
-              setChangePassData((prev) => {
-                return { ...prev, currentPassword: e.target.value };
-              })
+              setChangePassData((prev) => ({ ...prev, currentPassword: e.target.value }))
             }
             className={classes.formInput}
           />
@@ -722,25 +626,19 @@ const ProfileEdit = () => {
             label="New Password"
             variant="outlined"
             type="password"
-            required={true}
+            required
             value={changePassData.password}
-            onChange={(e) =>
-              setChangePassData((prev) => {
-                return { ...prev, password: e.target.value };
-              })
-            }
+            onChange={(e) => setChangePassData((prev) => ({ ...prev, password: e.target.value }))}
             className={classes.formInput}
           />
           <TextField
             label="Confirm Password"
             variant="outlined"
             type="password"
-            required={true}
+            required
             value={changePassData.confirmPassword}
             onChange={(e) =>
-              setChangePassData((prev) => {
-                return { ...prev, confirmPassword: e.target.value };
-              })
+              setChangePassData((prev) => ({ ...prev, confirmPassword: e.target.value }))
             }
             className={classes.formInput}
           />

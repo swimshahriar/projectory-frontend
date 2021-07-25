@@ -1,5 +1,5 @@
-import React from "react";
 import { Image } from "cloudinary-react";
+import React from "react";
 
 const CloudImage = ({
   publicId,

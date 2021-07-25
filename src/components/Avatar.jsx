@@ -1,6 +1,6 @@
+import { Avatar as Image } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { Avatar as Image, Badge } from "@material-ui/core";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -27,14 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Avatar = ({
-  alt,
-  src,
-  size = 12,
-  position = "center",
-  variant = "circle",
-  ...props
-}) => {
+const Avatar = ({ alt, src, size = 12, position = "center", variant = "circle", ...props }) => {
   const classes = useStyles();
 
   return (

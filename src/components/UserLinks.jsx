@@ -1,13 +1,8 @@
-import React from "react";
 import { Box, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import { useHistory } from "react-router-dom";
 
-// styles
-const useStyles = makeStyles(() => ({}));
-
 const UserLinks = ({ uid, userId }) => {
-  const classes = useStyles();
   const history = useHistory();
 
   return (
@@ -23,38 +18,30 @@ const UserLinks = ({ uid, userId }) => {
       flexWrap="wrap"
       gridGap={10}
     >
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={() => history.push("/add-service")}
-      >
+      <Button color="primary" variant="outlined" onClick={() => history.push("/add-service")}>
         Add Service
       </Button>
       <Button
         color="secondary"
         variant="outlined"
-        onClick={() => history.push("/fav-services")}
+        onClick={() => history.push(`/fav-services/${uid}`)}
       >
         Favorite Services
       </Button>
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={() => history.push("/add-job")}
-      >
+      <Button color="primary" variant="outlined" onClick={() => history.push("/add-job")}>
         Add Job
       </Button>
-      <Button
-        color="secondary"
-        variant="outlined"
-        onClick={() => history.push("/orders")}
-      >
+      <Button color="secondary" variant="outlined" onClick={() => history.push(`/orders/${uid}`)}>
         Orders
       </Button>
       <Button
         color="primary"
         variant="outlined"
-        onClick={() => history.push("/earnings")}
+        onClick={() => {
+          if (uid === userId) {
+            history.push(`/earnings/${uid}`);
+          }
+        }}
       >
         Earnings
       </Button>

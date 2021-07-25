@@ -1,14 +1,12 @@
-import React, { useState } from "react";
-import { NavLink, useHistory } from "react-router-dom";
-import { HiMenuAlt3 } from "react-icons/hi";
-import { AiOutlineClose } from "react-icons/ai";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector, useDispatch } from "react-redux";
-
+import React, { useState } from "react";
+import { AiOutlineClose } from "react-icons/ai";
+import { HiMenuAlt3 } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useHistory } from "react-router-dom";
 // action
 import { logOutHandler } from "../../actions/authAction";
-
 // styles
 import "./Header.css";
 
@@ -116,14 +114,22 @@ const Header = () => {
           </li>
         )}
       </nav>
-      <div
-        className="header__menu"
-        onClick={() => {
-          setIsMenuOpen((prev) => !prev);
-          document.getElementById("nav").classList.toggle("show");
-        }}
-      >
-        {isMenuOpen ? <AiOutlineClose /> : <HiMenuAlt3 />}
+      <div className="header__menu">
+        {isMenuOpen ? (
+          <AiOutlineClose
+            onClick={() => {
+              setIsMenuOpen((prev) => !prev);
+              document.getElementById("nav").classList.toggle("show");
+            }}
+          />
+        ) : (
+          <HiMenuAlt3
+            onClick={() => {
+              setIsMenuOpen((prev) => !prev);
+              document.getElementById("nav").classList.toggle("show");
+            }}
+          />
+        )}
       </div>
     </div>
   );

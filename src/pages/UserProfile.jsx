@@ -1,29 +1,20 @@
-import React, { useEffect } from "react";
-import {
-  Container,
-  Typography,
-  Box,
-  Divider,
-  Link,
-  Button,
-} from "@material-ui/core";
+import { Box, Button, Container, Divider, Link, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
-import { HiLocationMarker } from "react-icons/hi";
-import { BsFillPersonFill } from "react-icons/bs";
-import { GoPrimitiveDot } from "react-icons/go";
-import { FaEdit } from "react-icons/fa";
-import { useParams, useHistory } from "react-router-dom";
 import { Image } from "cloudinary-react";
-
+import React, { useEffect } from "react";
+import { BsFillPersonFill } from "react-icons/bs";
+import { FaEdit } from "react-icons/fa";
+import { GoPrimitiveDot } from "react-icons/go";
+import { HiLocationMarker } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import { fetchServices } from "../actions/serviceAction";
+// actions
+import { fetchUserInfo } from "../actions/userAction";
 // components
 import RoundedBox from "../components/RoundedBox";
 import ServiceCard from "../components/ServiceCard";
 import UserLinks from "../components/UserLinks";
-
-// actions
-import { fetchUserInfo } from "../actions/userAction";
-import { fetchServices } from "../actions/serviceAction";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -65,9 +56,7 @@ const UserProfile = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector((state) => state.auth);
   const { user, isLoading } = useSelector((state) => state.user);
-  const { services, isLoading: isServicesLoading } = useSelector(
-    (state) => state.services
-  );
+  const { services, isLoading: isServicesLoading } = useSelector((state) => state.services);
   const { uid: userId } = useParams();
   const history = useHistory();
 
@@ -81,16 +70,12 @@ const UserProfile = () => {
       await dispatch({ type: "CLEAR_USER" });
       await dispatch({ type: "RESET_SERVICES" });
     };
-  }, [userId]);
+  }, [userId, dispatch]);
 
   // format date
   let memberSince = null;
   if (user) {
-    memberSince = new Date(user.createdAt)
-      .toDateString()
-      .split(" ")
-      .splice(1, 3)
-      .join(" ");
+    memberSince = new Date(user.createdAt).toDateString().split(" ").splice(1, 3).join(" ");
   }
 
   if (isLoading) {
@@ -177,11 +162,7 @@ const UserProfile = () => {
                 )}
               </Typography>
               <Divider className={classes.mtMd} />
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                className={classes.mtMd}
-              >
+              <Box display="flex" justifyContent="space-between" className={classes.mtMd}>
                 <Typography
                   variant="body1"
                   component="p"
@@ -204,11 +185,7 @@ const UserProfile = () => {
                   )}
                 </Typography>
               </Box>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                className={classes.mtMd}
-              >
+              <Box display="flex" justifyContent="space-between" className={classes.mtMd}>
                 <Typography
                   variant="body1"
                   component="p"
@@ -313,9 +290,7 @@ const UserProfile = () => {
                 user.linkedAccounts.map((acc, idx) => (
                   <RoundedBox
                     key={idx}
-                    borderColor={
-                      idx % 2 !== 0 ? "primary.main" : "secondary.main"
-                    }
+                    borderColor={idx % 2 !== 0 ? "primary.main" : "secondary.main"}
                   >
                     <Link href={acc.link} color="textSecondary" target="_blank">
                       {acc.title}
@@ -342,10 +317,8 @@ const UserProfile = () => {
                 user.skills.map((skill, idx) => (
                   <RoundedBox
                     key={idx}
-                    light={true}
-                    borderColor={
-                      idx % 2 == 0 ? "primary.main" : "secondary.main"
-                    }
+                    light
+                    borderColor={idx % 2 == 0 ? "primary.main" : "secondary.main"}
                   >
                     {skill}
                   </RoundedBox>
@@ -402,11 +375,7 @@ const UserProfile = () => {
                 className={classes.mtMd}
               >
                 Services{" "}
-                <Typography
-                  component="span"
-                  variant="body1"
-                  color="textSecondary"
-                >
+                <Typography component="span" variant="body1" color="textSecondary">
                   ({services?.length})
                 </Typography>
               </Typography>
@@ -434,7 +403,6 @@ const UserProfile = () => {
                   key={idx}
                   sid={service._id}
                   userId={service.userId}
-                  sid={service._id}
                   title={service.title}
                   imgs={service.images}
                   star={service.rating?.rating || 0}

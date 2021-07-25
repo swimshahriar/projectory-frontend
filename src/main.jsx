@@ -1,13 +1,13 @@
+import { ThemeProvider } from "@material-ui/core/styles";
 import React from "react";
 import ReactDOM from "react-dom";
-import { ThemeProvider } from "@material-ui/core/styles";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-
-import "./index.css";
+// internal imports
 import App from "./App";
-import theme from "./theme";
+import "./index.css";
 import store from "./store/store";
+import theme from "./theme";
 
 ReactDOM.render(
   <React.StrictMode>

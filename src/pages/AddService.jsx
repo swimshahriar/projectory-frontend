@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  Container,
   Box,
-  Typography,
-  TextField,
   Button,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
   CircularProgress,
+  Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Alert } from "@material-ui/lab";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import * as yup from "yup";
-
-// components
-import PackageInput from "../components/PackageInput";
-
 // actions
 import { addService } from "../actions/serviceAction";
+// components
+import PackageInput from "../components/PackageInput";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -72,11 +70,7 @@ const schema = yup.object().shape({
   basicPrice: yup.number().min(300).required("required"),
   basicDeliveryTime: yup.number().min(1).max(30).required("required(1 - 30)"),
   standardPrice: yup.number().min(300).required("required"),
-  standardDeliveryTime: yup
-    .number()
-    .min(1)
-    .max(30)
-    .required("required(1 - 30)"),
+  standardDeliveryTime: yup.number().min(1).max(30).required("required(1 - 30)"),
   premiumPrice: yup.number().min(300).required("required"),
   premiumDeliveryTime: yup.number().min(1).max(30).required("required(1 - 30)"),
 });
@@ -128,18 +122,15 @@ const AddService = () => {
     }
 
     return () => dispatch({ type: "RESET_SERVICES" });
-  }, [error, res]);
+  }, [error, res, reset, dispatch, uid, history]);
 
   // preview image
   const previewImage = (image) => {
-    if (previewSource && previewSource.length >= 3)
-      return setFormError("Max 3 images allowed!");
+    if (previewSource && previewSource.length >= 3) return setFormError("Max 3 images allowed!");
     const reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onloadend = () => {
-      setPreviewSource((prev) =>
-        prev ? [...prev, reader.result] : [reader.result]
-      );
+      setPreviewSource((prev) => (prev ? [...prev, reader.result] : [reader.result]));
     };
   };
 
@@ -163,43 +154,25 @@ const AddService = () => {
   // set features handler for pakcageInput
   const setFeaturesHandler = (packageName) => {
     if (packageName === "basic") {
-      setBasicFeatures((prev) => {
-        return prev ? [...prev, features.basic] : [features.basic];
-      });
-      setFeatures((prev) => {
-        return { ...prev, basic: "" };
-      });
+      setBasicFeatures((prev) => (prev ? [...prev, features.basic] : [features.basic]));
+      setFeatures((prev) => ({ ...prev, basic: "" }));
     } else if (packageName === "standard") {
-      setStandardFeatures((prev) => {
-        return prev ? [...prev, features.standard] : [features.standard];
-      });
-      setFeatures((prev) => {
-        return { ...prev, standard: "" };
-      });
+      setStandardFeatures((prev) => (prev ? [...prev, features.standard] : [features.standard]));
+      setFeatures((prev) => ({ ...prev, standard: "" }));
     } else if (packageName === "premium") {
-      setPremiumFeatures((prev) => {
-        return prev ? [...prev, features.premium] : [features.premium];
-      });
-      setFeatures((prev) => {
-        return { ...prev, premium: "" };
-      });
+      setPremiumFeatures((prev) => (prev ? [...prev, features.premium] : [features.premium]));
+      setFeatures((prev) => ({ ...prev, premium: "" }));
     }
   };
 
   // onChange handler packageInput
   const onChangeFeatureHanlder = (packageName, value) => {
     if (packageName === "basic") {
-      setFeatures((prev) => {
-        return { ...prev, basic: value };
-      });
+      setFeatures((prev) => ({ ...prev, basic: value }));
     } else if (packageName === "standard") {
-      setFeatures((prev) => {
-        return { ...prev, standard: value };
-      });
+      setFeatures((prev) => ({ ...prev, standard: value }));
     } else if (packageName === "premium") {
-      setFeatures((prev) => {
-        return { ...prev, premium: value };
-      });
+      setFeatures((prev) => ({ ...prev, premium: value }));
     }
   };
 
@@ -241,14 +214,11 @@ const AddService = () => {
     };
 
     await dispatch(addService(finalData, token));
+    return null;
   };
 
   return (
-    <Container
-      maxWidth="lg"
-      component="section"
-      className={classes.formContainer}
-    >
+    <Container maxWidth="lg" component="section" className={classes.formContainer}>
       <Box mt={4}>
         <Typography variant="h4" align="center">
           Add a Service
@@ -260,33 +230,28 @@ const AddService = () => {
           {formError && <Alert severity="error">{formError}</Alert>}
           {error && <Alert severity="error">{error}</Alert>}
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          gridGap={5}
-          flexWrap="wrap"
-        >
+        <Box display="flex" justifyContent="center" alignItems="center" gridGap={5} flexWrap="wrap">
           {previewSource &&
             previewSource.map((image, idx) => (
-              <img
+              <Box
                 key={idx}
-                src={image}
-                alt="choosen"
-                className={classes.hover}
-                style={{
-                  width: "150px",
-                  minWidth: "100px",
-                  height: "150px",
-                  minHeight: "100px",
-                }}
                 onClick={() => {
                   setFormError(null);
-                  setPreviewSource((prev) =>
-                    prev.filter((img) => img !== image)
-                  );
+                  setPreviewSource((prev) => prev.filter((img) => img !== image));
                 }}
-              />
+              >
+                <img
+                  src={image}
+                  alt="choosen"
+                  className={classes.hover}
+                  style={{
+                    width: "150px",
+                    minWidth: "100px",
+                    height: "150px",
+                    minHeight: "100px",
+                  }}
+                />
+              </Box>
             ))}
         </Box>
         <Box m={3}>
@@ -306,7 +271,7 @@ const AddService = () => {
           {...register("title")}
           label="Title"
           helperText={errors.title?.message}
-          error={errors.title ? true : false}
+          error={!!errors.title}
           variant="outlined"
           className={classes.formInput}
         />
@@ -314,7 +279,7 @@ const AddService = () => {
           {...register("about")}
           label="About"
           helperText={errors.about?.message}
-          error={errors.about ? true : false}
+          error={!!errors.about}
           variant="outlined"
           multiline
           rows={6}

@@ -67,14 +67,11 @@ export const fetchFavoriteServices = (token) => async (dispatch) => {
     type: "LOADING_SERVICES",
   });
   try {
-    const services = await axios.get(
-      "http://localhost:8000/api/services/favorites",
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const services = await axios.get("http://localhost:8000/api/services/favorites", {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
 
     dispatch({
       type: "FETCH_FAV_SERVICES",

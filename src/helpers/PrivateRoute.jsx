@@ -1,13 +1,7 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 
-const PrivateRoute = ({
-  component: Component,
-  redirectUrl,
-  token = null,
-  samePath,
-  ...props
-}) => {
+const PrivateRoute = ({ component: Component, redirectUrl, token = null, samePath, ...props }) => {
   let routes = (
     <Route path={props.path} exact>
       {token ? <Component /> : <Redirect to={redirectUrl} />}

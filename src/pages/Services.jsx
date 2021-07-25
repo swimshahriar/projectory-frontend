@@ -1,11 +1,9 @@
+import { Box, Container, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { Container, Typography, Box } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useHistory } from "react-router-dom";
 // actions
-import { fetchServices, fetchFavoriteServices } from "../actions/serviceAction";
-
+import { fetchServices } from "../actions/serviceAction";
 // components
 import ServiceCard from "../components/ServiceCard";
 
@@ -24,7 +22,7 @@ const Services = () => {
         type: "RESET_SERVICES",
       });
     };
-  }, []);
+  }, [dispatch]);
 
   if (isLoading) {
     return (
@@ -53,14 +51,7 @@ const Services = () => {
           </Typography>
         </Box>
 
-        <Box
-          display="flex"
-          justifyContent="center"
-          flexWrap="wrap"
-          gridGap={15}
-          mt={5}
-          flex="80%"
-        >
+        <Box display="flex" justifyContent="center" flexWrap="wrap" gridGap={15} mt={5} flex="80%">
           {services && services.length > 0 ? (
             services.map((service, idx) => (
               <ServiceCard
