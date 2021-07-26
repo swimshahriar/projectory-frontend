@@ -38,9 +38,9 @@ export const fetchServices = (data) => async (dispatch) => {
   });
 
   let reqUrl = "http://localhost:8000/api/services";
-  if (data?.uid) {
+  if (data.uid) {
     reqUrl = `http://localhost:8000/api/services?uid=${data.uid}`;
-  } else if (data?.sid) {
+  } else if (data.sid) {
     reqUrl = `http://localhost:8000/api/services?sid=${data.sid}`;
   }
 
@@ -112,6 +112,36 @@ export const makeFavoriteService = (sid, token) => async (dispatch) => {
         services: services.data.services,
       },
     });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_SERVICES",
+      payload: {
+        error: error.response.data.message,
+      },
+    });
+  }
+};
+
+// update service
+export const updateService = (data, sid, token) => async (dispatch) => {
+  dispatch({
+    type: "LOADING_SERVICES",
+  });
+
+  try {
+    await axios.patch(
+      `http://localhost:8000/api/services/${sid}`,
+      {
+        ...data,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    await dispatch(fetchServices({ sid }));
   } catch (error) {
     dispatch({
       type: "ERROR_SERVICES",
