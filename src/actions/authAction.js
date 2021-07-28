@@ -10,7 +10,7 @@ export const loginHandler = (data) => async (dispatch) => {
   let loginData;
 
   try {
-    loginData = await axios.post("http://localhost:8000/api/user/login", {
+    loginData = await axios.post(`${import.meta.env.VITE_API_BASE_URI}/user/login`, {
       ...data,
     });
 
@@ -50,7 +50,7 @@ export const registerHandler = (data) => async (dispatch) => {
   let registerData;
 
   try {
-    registerData = await axios.post("http://localhost:8000/api/user/register", {
+    registerData = await axios.post(`${import.meta.env.VITE_API_BASE_URI}/user/register`, {
       ...data,
     });
 
@@ -103,9 +103,12 @@ export const forgotPassHandler = (data) => async (dispatch) => {
   });
 
   try {
-    const { data: res } = await axios.post("http://localhost:8000/api/user/forgot-password", {
-      email: data,
-    });
+    const { data: res } = await axios.post(
+      `${import.meta.env.VITE_API_BASE_URI}/user/forgot-password`,
+      {
+        email: data,
+      }
+    );
 
     dispatch({
       type: "FORGOT_PASSWORD",
@@ -134,7 +137,7 @@ export const resetPassHandler = (data) => async (dispatch) => {
 
   try {
     const { data: res } = await axios.patch(
-      `http://localhost:8000/api/user/reset-password/${data.token}`,
+      `${import.meta.env.VITE_API_BASE_URI}/user/reset-password/${data.token}`,
       {
         password: data.password,
         confirmPassword: data.confirmPassword,

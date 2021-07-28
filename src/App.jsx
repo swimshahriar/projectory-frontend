@@ -21,6 +21,7 @@ import Services from "./pages/Services";
 import UserProfile from "./pages/UserProfile";
 
 function App() {
+  console.log(import.meta.env.VITE_API_BASE_URI);
   const dispatch = useDispatch();
   const { token, isAuthCheck, uid } = useSelector((state) => state.auth);
 

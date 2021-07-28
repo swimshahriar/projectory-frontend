@@ -7,7 +7,7 @@ export const fetchUserInfo = (uid) => async (dispatch) => {
   });
 
   try {
-    const userInfo = await axios.get(`http://localhost:8000/api/user/${uid}`);
+    const userInfo = await axios.get(`${import.meta.env.VITE_API_BASE_URI}/user/${uid}`);
     dispatch({
       type: "FETCH_INFO",
       payload: {
@@ -32,7 +32,7 @@ export const updateUserInfo = (data, token) => async (dispatch) => {
 
   try {
     const userInfo = await axios.patch(
-      "http://localhost:8000/api/user/",
+      `${import.meta.env.VITE_API_BASE_URI}/user/`,
       {
         ...data,
       },
@@ -66,7 +66,7 @@ export const changePass = (data, token) => async (dispatch) => {
 
   try {
     await axios.patch(
-      "http://localhost:8000/api/user/change-password",
+      `${import.meta.env.VITE_API_BASE_URI}/user/change-password`,
       {
         ...data,
       },

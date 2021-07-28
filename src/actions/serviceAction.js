@@ -8,7 +8,7 @@ export const addService = (data, token) => async (dispatch) => {
 
   try {
     await axios.post(
-      "http://localhost:8000/api/services",
+      `${import.meta.env.VITE_API_BASE_URI}/services`,
       {
         ...data,
       },
@@ -37,11 +37,11 @@ export const fetchServices = (data) => async (dispatch) => {
     type: "LOADING_SERVICES",
   });
 
-  let reqUrl = "http://localhost:8000/api/services";
-  if (data.uid) {
-    reqUrl = `http://localhost:8000/api/services?uid=${data.uid}`;
-  } else if (data.sid) {
-    reqUrl = `http://localhost:8000/api/services?sid=${data.sid}`;
+  let reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services`;
+  if (data?.uid) {
+    reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?uid=${data.uid}`;
+  } else if (data?.sid) {
+    reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?sid=${data.sid}`;
   }
 
   try {
@@ -67,7 +67,7 @@ export const fetchFavoriteServices = (token) => async (dispatch) => {
     type: "LOADING_SERVICES",
   });
   try {
-    const services = await axios.get("http://localhost:8000/api/services/favorites", {
+    const services = await axios.get(`${import.meta.env.VITE_API_BASE_URI}/services/favorites`, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -97,7 +97,7 @@ export const makeFavoriteService = (sid, token) => async (dispatch) => {
 
   try {
     const services = await axios.post(
-      `http://localhost:8000/api/services/favorites/${sid}`,
+      `${import.meta.env.VITE_API_BASE_URI}/services/favorites/${sid}`,
       {},
       {
         headers: {
@@ -130,7 +130,7 @@ export const updateService = (data, sid, token) => async (dispatch) => {
 
   try {
     await axios.patch(
-      `http://localhost:8000/api/services/${sid}`,
+      `${import.meta.env.VITE_API_BASE_URI}/services/${sid}`,
       {
         ...data,
       },
@@ -159,7 +159,7 @@ export const deleteService = (sid, token, uid) => async (dispatch) => {
   });
 
   try {
-    await axios.delete(`http://localhost:8000/api/services/${sid}`, {
+    await axios.delete(`${import.meta.env.VITE_API_BASE_URI}/services/${sid}`, {
       headers: {
         authorization: `Bearer ${token}`,
       },
