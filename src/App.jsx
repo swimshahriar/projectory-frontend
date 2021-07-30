@@ -2,26 +2,26 @@ import { Container, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
-// reducers
+// internal imports
 import { checkForAuth } from "./actions/authAction";
 // components
 import Header from "./components/Header/Header";
 import PrivateRoute from "./helpers/PrivateRoute";
+// pages
 import About from "./pages/About";
 import AddService from "./pages/AddService";
 import Auth from "./pages/Auth";
 import EditService from "./pages/EditService";
 import Error404 from "./pages/Error404";
-// pages
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
 import ProfileEdit from "./pages/ProfileEdit";
 import ResetPass from "./pages/ResetPass";
+import ServiceDetails from "./pages/ServiceDetails";
 import Services from "./pages/Services";
 import UserProfile from "./pages/UserProfile";
 
 function App() {
-  console.log(import.meta.env.VITE_API_BASE_URI);
   const dispatch = useDispatch();
   const { token, isAuthCheck, uid } = useSelector((state) => state.auth);
 
@@ -72,6 +72,7 @@ function App() {
           samePath
           redirectUrl="/auth"
         />
+        <Route component={ServiceDetails} path="/services/:sid" />
         <Route component={UserProfile} path="/user-profile/:uid" />
         <PrivateRoute
           component={ProfileEdit}
