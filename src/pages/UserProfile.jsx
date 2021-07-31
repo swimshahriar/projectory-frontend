@@ -93,7 +93,7 @@ const UserProfile = () => {
       {uid && userId === uid && (
         <Box mt={3} display="flex" justifyContent="flex-end">
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
             onClick={() => history.push(`/profile-edit/${uid}`)}
           >
@@ -395,6 +395,7 @@ const UserProfile = () => {
             flexWrap="wrap"
             gridGap={15}
             mt={5}
+            mb={5}
             flex="80%"
           >
             {services && services.length > 0 ? (

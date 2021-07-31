@@ -140,7 +140,7 @@ export const updateService = (data, sid, token) => async (dispatch) => {
         },
       }
     );
-
+    await dispatch({ type: "RESPONSE_SERVICES" });
     await dispatch(fetchServices({ sid }));
   } catch (error) {
     dispatch({

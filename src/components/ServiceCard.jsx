@@ -1,19 +1,18 @@
+import { Box, Card, CardActionArea, CardActions, CardContent, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { Box, Card, CardActions, CardActionArea, CardContent, Typography } from "@material-ui/core";
 import { AiFillDelete } from "react-icons/ai";
 import { BiEdit } from "react-icons/bi";
-import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
-
-// components
-import CloudImage from "./CloudImage";
-import RatingStarCount from "./RatingStarCount";
-import FavoriteBtn from "./FavoriteBtn";
-import AvatarWithUserName from "./AvatarWithUserName";
-
+import { useHistory } from "react-router-dom";
 // actions
 import { deleteService } from "../actions/serviceAction";
+import AvatarWithUserName from "./AvatarWithUserName";
+// components
+import CloudImage from "./CloudImage";
+import FavoriteBtn from "./FavoriteBtn";
+import RatingStarCount from "./RatingStarCount";
+import SweetAlert from "./SweetAlert";
 
 // styles
 const useStyles = makeStyles(() => ({
@@ -83,7 +82,21 @@ const ServiceCard = ({
                 className={classes.btn}
                 color="error"
                 onClick={async () => {
-                  await dispatch(deleteService(sid, token, uid));
+                  SweetAlert.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#36B466",
+                    cancelButtonColor: "#F3826E",
+                    confirmButtonText: "Yes, delete it!",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      dispatch(deleteService(sid, token, uid)).then(() =>
+                        SweetAlert.fire("Deleted!", "Your file has been deleted.", "success")
+                      );
+                    }
+                  });
                 }}
               >
                 <AiFillDelete />

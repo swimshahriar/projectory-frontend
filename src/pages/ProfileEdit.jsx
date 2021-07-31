@@ -21,6 +21,7 @@ import { changePass, fetchUserInfo, updateUserInfo } from "../actions/userAction
 import CloudImage from "../components/CloudImage";
 // components
 import RoundedBox from "../components/RoundedBox";
+import SweetAlert from "../components/SweetAlert";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -191,6 +192,18 @@ const ProfileEdit = () => {
     }
     await dispatch(changePass(changePassData, token));
   };
+
+  // update success
+  if (res) {
+    SweetAlert.fire({
+      title: "Success",
+      icon: "success",
+      timer: 2000,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      position: "top-right",
+    });
+  }
 
   if (isLoading && !user) {
     return (

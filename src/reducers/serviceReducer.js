@@ -36,6 +36,7 @@ const serviceReducer = (state = initialState, action) => {
         isLoading: false,
         error: null,
         favServices: action.payload.services,
+        res: true,
       };
 
     case "RESET_SERVICES":

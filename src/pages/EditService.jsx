@@ -20,6 +20,7 @@ import { fetchServices, updateService } from "../actions/serviceAction";
 // components
 import CloudImage from "../components/CloudImage";
 import PackageInput from "../components/PackageInput";
+import SweetAlert from "../components/SweetAlert";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -125,6 +126,15 @@ const EditService = () => {
   // check for error and success
   useMemo(() => {
     if (res) {
+      SweetAlert.fire({
+        icon: "success",
+        title: "Success",
+        timer: 2000,
+        timerProgressBar: true,
+        position: "bottom-left",
+        toast: true,
+        showConfirmButton: false,
+      });
       setFormData({
         title: "",
         about: "",

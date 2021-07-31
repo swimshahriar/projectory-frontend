@@ -22,7 +22,7 @@ import * as yup from "yup";
 import { addService } from "../actions/serviceAction";
 // components
 import PackageInput from "../components/PackageInput";
-
+import SweetAlert from "../components/SweetAlert";
 // styles
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -109,6 +109,15 @@ const AddService = () => {
     }
 
     if (res) {
+      SweetAlert.fire({
+        icon: "success",
+        title: "Success",
+        timer: 2000,
+        timerProgressBar: true,
+        position: "bottom-left",
+        toast: true,
+        showConfirmButton: false,
+      });
       reset();
       setCategory("");
       setBasicFeatures(null);
@@ -118,7 +127,7 @@ const AddService = () => {
 
       setTimeout(() => {
         history.push(`/user-profile/${uid}`);
-      }, 500);
+      }, 2500);
     }
 
     return () => dispatch({ type: "RESET_SERVICES" });
