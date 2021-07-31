@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 // internal imports
 import { fetchServices } from "../actions/serviceAction";
-// components
-import CloudImage from "../components/CloudImage";
 
 const ServiceDetails = () => {
   const { sid } = useParams();
@@ -16,7 +14,7 @@ const ServiceDetails = () => {
     (async () => await dispatch(fetchServices({ sid })))();
   }, [dispatch, sid]);
 
-  if (isLoading) {
+  if (isLoading || !services) {
     return (
       <Container>
         <Typography variant="h4" align="center">

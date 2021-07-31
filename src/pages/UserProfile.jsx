@@ -66,10 +66,10 @@ const UserProfile = () => {
       await dispatch(fetchServices({ uid: userId }));
     })();
 
-    return async () => {
-      await dispatch({ type: "CLEAR_USER" });
-      await dispatch({ type: "RESET_SERVICES" });
-    };
+    // return async () => {
+    //   await dispatch({ type: "CLEAR_USER" });
+    //   await dispatch({ type: "RESET_SERVICES" });
+    // };
   }, [userId, dispatch]);
 
   // format date

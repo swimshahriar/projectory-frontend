@@ -104,7 +104,7 @@ const EditService = () => {
 
   // setting form data
   useEffect(() => {
-    if (!services.packages) return;
+    if (!services || !services.packages) return;
     setFormData({
       title: services?.title || "",
       about: services?.about || "",
@@ -239,7 +239,7 @@ const EditService = () => {
     return null;
   };
 
-  if (isLoading && !services.title) {
+  if (isLoading || !services) {
     return (
       <Container>
         <Typography variant="h4" align="center">
@@ -384,14 +384,15 @@ const EditService = () => {
           typeFeatures={premiumFeatures}
           setTypeFeatures={setPremiumFeatures}
         />
-
-        {isLoading ? (
-          <CircularProgress color="primary" />
-        ) : (
-          <Button type="submit" variant="outlined" color="primary" size="large">
-            Update
-          </Button>
-        )}
+        <Box m={3}>
+          {isLoading ? (
+            <CircularProgress color="primary" />
+          ) : (
+            <Button type="submit" variant="outlined" color="primary" size="large">
+              Update
+            </Button>
+          )}
+        </Box>
       </form>
     </Container>
   );
