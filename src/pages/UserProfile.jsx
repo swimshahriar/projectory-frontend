@@ -105,7 +105,7 @@ const UserProfile = () => {
 
       {uid && uid === userId && <UserLinks uid={uid} userId={userId} />}
 
-      <Box display="flex" justifyContent="center" gridGap={15} mt={3}>
+      <Box display="flex" justifyContent="center" flexWrap="wrap" gridGap={15} mt={3}>
         <Box flex={35} minWidth="350px">
           <Box
             display="flex"

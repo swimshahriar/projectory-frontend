@@ -7,7 +7,6 @@ const UserLinks = ({ uid, userId }) => {
 
   return (
     <Box
-      width="94%"
       mt={3}
       boxShadow={3}
       borderRadius={5}

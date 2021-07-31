@@ -103,7 +103,7 @@ const ServiceCard = ({
               </Typography>
             </>
           )}
-          {token && <FavoriteBtn sid={sid} token={token} />}
+          {token && uid !== userId && <FavoriteBtn sid={sid} token={token} />}
           <Box width="100%">
             <Typography variant="body1" color="textSecondary" align="right">
               Starting at {price}tk
