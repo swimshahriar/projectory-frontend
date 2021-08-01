@@ -1,0 +1,34 @@
+.swiper-container {
+  max-width: 600px;
+  min-width: 300px;
+}
+
+.swiper-pagination {
+  bottom: 0;
+  padding-bottom: 0.9rem;
+}
+
+.swiper-wrapper {
+  padding-inline-start: 0;
+}
+
+.swiperThumb {
+  opacity: 0.5;
+}
+.swiper-slide-thumb-active {
+  opacity: 0.9 !important;
+}
+
+@media (max-width: 600px) {
+  .swiper-container {
+    max-width: 90vw;
+  }
+  .swiperBig img {
+    width: 90vw;
+    min-width: 300px;
+  }
+  .swiperThumb img {
+    width: 30vw;
+    min-width: 100px;
+  }
+}

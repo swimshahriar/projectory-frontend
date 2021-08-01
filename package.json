@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && cp _redirects dist/",
     "serve": "vite preview"
   },
   "dependencies": {
@@ -23,6 +23,7 @@
     "redux-thunk": "^2.3.0",
     "sweetalert2": "^11.1.0",
     "sweetalert2-react-content": "^4.1.1",
+    "swiper": "^6.8.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {
