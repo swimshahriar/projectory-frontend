@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 // internal imports
 import { fetchServices } from "../actions/serviceAction";
 import AvatarWithUserName from "../components/AvatarWithUserName";
@@ -10,6 +10,7 @@ import SwiperComp from "../components/SwiperComp/SwiperComp";
 
 const ServiceDetails = () => {
   const { sid } = useParams();
+  const history = useHistory();
   const dispatch = useDispatch();
   const { error, res, isLoading, services } = useSelector((state) => state.services);
 
@@ -40,7 +41,10 @@ const ServiceDetails = () => {
         <Box my={3} flex={55}>
           <Typography variant="h5">{services.title}</Typography>
           <Box my={2} display="flex" justifyItems="center" alignItems="center" gridGap={10}>
-            <Box>
+            <Box
+              onClick={() => history.push(`/user-profile/${services?.userId}`)}
+              style={{ cursor: "pointer" }}
+            >
               <AvatarWithUserName
                 userName="swimshahriar"
                 publicId={services.userImg}
