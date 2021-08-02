@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { fetchServices } from "../actions/serviceAction";
 import { fetchRatings } from "../actions/serviceRatingAction";
 import AvatarWithUserName from "../components/AvatarWithUserName";
+import PriceTab from "../components/PriceTab";
 import RatingStarCount from "../components/RatingStarCount";
 import SwiperComp from "../components/SwiperComp/SwiperComp";
 
@@ -37,7 +38,7 @@ const ServiceDetails = () => {
       <Box
         display="flex"
         justifyContent="center"
-        alignItems="center"
+        alignItems="flex-start"
         flexWrap="wrap"
         gridGap={10}
         my={4}
@@ -86,8 +87,9 @@ const ServiceDetails = () => {
           </Box>
         </Box>
 
+        {/* -------------------------------- Price tabs ----------------------------- */}
         <Box my={3} flex={45}>
-          <Typography variant="h5">{services.title}</Typography>
+          {services?.packages && <PriceTab packages={services?.packages || false} />}
         </Box>
       </Box>
       <Box my={5}>
