@@ -5,20 +5,15 @@
   --header-height: 80px;
 
   /* color */
-  --primary-color: #1cbf73;
+  --primary-color: #00ab55;
 
   --primary-color-light: #a1f4c0;
-  --secondary-color: #ff61ad;
+  --secondary-color: #f3826f;
   --primary-text: #222425;
   --secondary-text: #404145;
 
   /* Box shadow */
   --shadow-primary: 0px 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-body {
-  margin: 0;
-  padding: 0;
 }
 
 header {
