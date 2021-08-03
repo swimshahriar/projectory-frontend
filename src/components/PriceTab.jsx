@@ -86,8 +86,8 @@ const PriceTab = ({ packages }) => {
   const premiumInfo = packages[2];
 
   return (
-    <div className={classes.root}>
-      <AppBar position="sticky">
+    <div className={classes.root} style={{ minWidth: "350px" }}>
+      <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="price tabs">
           <Tab label="Basic" {...a11yProps(0)} />
           <Tab label="Standard" {...a11yProps(1)} />

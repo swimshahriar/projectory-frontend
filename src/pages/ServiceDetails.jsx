@@ -7,6 +7,7 @@ import { fetchServices } from "../actions/serviceAction";
 import { fetchRatings } from "../actions/serviceRatingAction";
 import AvatarWithUserName from "../components/AvatarWithUserName";
 import PriceTab from "../components/PriceTab";
+import RatingReview from "../components/RatingReview";
 import RatingStarCount from "../components/RatingStarCount";
 import SwiperComp from "../components/SwiperComp/SwiperComp";
 
@@ -15,6 +16,7 @@ const ServiceDetails = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { error, res, isLoading, services } = useSelector((state) => state.services);
+  const { ratings } = useSelector((state) => state.serviceRatings);
 
   useEffect(() => {
     (async () => {
@@ -70,8 +72,10 @@ const ServiceDetails = () => {
 
           <Box>{services.images && <SwiperComp slides={services?.images} />}</Box>
 
+          {/* -------------------------------- About section ----------------------------- */}
+
           <Box my={3}>
-            <Paper elevation={3}>
+            <Paper>
               <Box py={5} px={3}>
                 <Typography component="h5" variant="h5" gutterBottom>
                   About this Service
@@ -88,12 +92,19 @@ const ServiceDetails = () => {
         </Box>
 
         {/* -------------------------------- Price tabs ----------------------------- */}
-        <Box my={3} flex={45}>
+        <Box my={3} flex={45} maxWidth="700px">
           {services?.packages && <PriceTab packages={services?.packages || false} />}
         </Box>
       </Box>
       <Box my={5}>
         <Typography variant="h5">{services?.rating?.count || 0} Reviews</Typography>
+        {services?.rating?.count > 0 && (
+          <Box my={3} maxWidth="50%">
+            {ratings &&
+              ratings.length > 0 &&
+              ratings.map((rating, idx) => <RatingReview rating={rating} key={idx} />)}
+          </Box>
+        )}
       </Box>
     </Container>
   );
