@@ -12,7 +12,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const JobCard = () => {
+const JobCard = ({ job }) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -21,40 +21,37 @@ const JobCard = () => {
       minWidth="300px"
       width="100%"
       className={classes.jobCard}
-      onClick={() => history.push("/jobs/1")}
+      onClick={() => history.push(`/jobs/${job._id}`)}
     >
       <Paper>
         <Box py={3} px={4}>
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <AvatarWithUserName
-              publicId="12"
+              publicId={job.userImg}
               uploadPreset="projectory/avatar"
               width={30}
               height={30}
               radius={50}
               crop="fill"
-              userName="swimshahriar"
+              userName={job.userName}
             />
-            <Chip label={new Date().toDateString()} />
+            <Chip label={new Date(job.createdAt).toDateString()} />
           </Box>
           <Typography variant="h6" gutterBottom>
-            I need a Frontend Web Developer
+            {job.title}
           </Typography>
           <Typography variant="body1" gutterBottom>
-            {`This is my project description. I need a person with react, material ui and firebase knowledge.`.slice(
-              0,
-              100
-            )}
+            {job.details.slice(0, 100)}
             ...
           </Typography>
 
           <Box display="flex" justifyContent="flex-start" alignItems="center" gridGap={10} mt={3}>
-            <Chip label="web-development" color="secondary" />
-            <Chip label="5 days" color="primary" />
+            <Chip label={job.category} color="secondary" />
+            <Chip label={`${job.duration} days`} color="primary" />
           </Box>
           <Box display="flex" justifyContent="space-between" alignItems="center" mt={3}>
             <Box display="flex" justifyContent="flex-start" alignItems="center" gridGap={3}>
-              {["React", "Material UI", "Firebase"].map((skill, idx) => (
+              {job.skills.map((skill, idx) => (
                 <Chip
                   label={skill}
                   key={idx}
@@ -64,7 +61,7 @@ const JobCard = () => {
               ))}
             </Box>
             <Typography variant="h6" color="primary">
-              5000Tk
+              {job.price} Tk
             </Typography>
           </Box>
         </Box>
