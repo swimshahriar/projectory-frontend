@@ -10,7 +10,7 @@ const Jobs = () => (
         Jobs
       </Typography>
     </Box>
-    <Box display="flex">
+    <Box display="flex" flexWrap="wrap">
       <Box mt={5} flex="20%">
         <Typography variant="h6" align="center" color="textPrimary">
           Filters
@@ -20,7 +20,15 @@ const Jobs = () => (
         </Typography>
       </Box>
 
-      <Box display="flex" justifyContent="center" flexWrap="wrap" gridGap={15} mt={5} flex="80%">
+      <Box
+        display="flex"
+        justifyContent="center"
+        flexWrap="wrap"
+        gridGap={15}
+        mt={5}
+        flex="80%"
+        minWidth="400px"
+      >
         <Typography variant="body1" align="center">
           No Jobs Found!
         </Typography>
