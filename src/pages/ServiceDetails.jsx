@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { fetchServices } from "../actions/serviceAction";
 import { fetchRatings } from "../actions/serviceRatingAction";
 import AvatarWithUserName from "../components/AvatarWithUserName";
+import Loading from "../components/Loading";
 import PriceTab from "../components/PriceTab";
 import RatingReview from "../components/RatingReview";
 import RatingStarCount from "../components/RatingStarCount";
@@ -26,13 +27,7 @@ const ServiceDetails = () => {
   }, [dispatch, sid]);
 
   if (isLoading || !services) {
-    return (
-      <Container>
-        <Typography variant="h4" align="center">
-          Loading...
-        </Typography>
-      </Container>
-    );
+    return <Loading />;
   }
 
   return (

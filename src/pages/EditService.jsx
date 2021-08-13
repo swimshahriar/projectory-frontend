@@ -19,6 +19,7 @@ import { useParams } from "react-router-dom";
 import { fetchServices, updateService } from "../actions/serviceAction";
 // components
 import CloudImage from "../components/CloudImage";
+import Loading from "../components/Loading";
 import PackageInput from "../components/PackageInput";
 import SweetAlert from "../components/SweetAlert";
 
@@ -250,13 +251,7 @@ const EditService = () => {
   };
 
   if (isLoading || !services) {
-    return (
-      <Container>
-        <Typography variant="h4" align="center">
-          Loading...
-        </Typography>
-      </Container>
-    );
+    return <Loading />;
   }
 
   return (

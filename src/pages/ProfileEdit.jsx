@@ -18,8 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 // acitons
 import { changePass, fetchUserInfo, updateUserInfo } from "../actions/userAction";
-import CloudImage from "../components/CloudImage";
 // components
+import CloudImage from "../components/CloudImage";
+import Loading from "../components/Loading";
 import RoundedBox from "../components/RoundedBox";
 import SweetAlert from "../components/SweetAlert";
 
@@ -206,13 +207,7 @@ const ProfileEdit = () => {
   }
 
   if (isLoading && !user) {
-    return (
-      <Container>
-        <Typography variant="h4" align="center">
-          Loading...
-        </Typography>
-      </Container>
-    );
+    return <Loading />;
   }
 
   return (

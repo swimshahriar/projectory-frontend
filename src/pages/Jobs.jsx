@@ -1,9 +1,10 @@
 import { Box, Container, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
-// internal imports
 import { useDispatch, useSelector } from "react-redux";
+// internal imports
 import { fetchJobs } from "../actions/jobAction";
 import JobCard from "../components/JobCard";
+import Loading from "../components/Loading";
 
 const Jobs = () => {
   const dispatch = useDispatch();
@@ -16,13 +17,7 @@ const Jobs = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return (
-      <Container>
-        <Typography variant="h4" align="center">
-          Loading...
-        </Typography>
-      </Container>
-    );
+    return <Loading />;
   }
 
   return (

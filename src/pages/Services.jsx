@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 // actions
 import { fetchServices } from "../actions/serviceAction";
 // components
+import Loading from "../components/Loading";
 import ServiceCard from "../components/ServiceCard";
 
 const Services = () => {
@@ -25,13 +26,7 @@ const Services = () => {
   }, [dispatch]);
 
   if (isLoading) {
-    return (
-      <Container>
-        <Typography variant="h4" align="center">
-          Loading...
-        </Typography>
-      </Container>
-    );
+    return <Loading />;
   }
 
   return (

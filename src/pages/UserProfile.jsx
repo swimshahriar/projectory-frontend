@@ -12,6 +12,7 @@ import { fetchServices } from "../actions/serviceAction";
 // actions
 import { fetchUserInfo } from "../actions/userAction";
 // components
+import Loading from "../components/Loading";
 import RoundedBox from "../components/RoundedBox";
 import ServiceCard from "../components/ServiceCard";
 import UserLinks from "../components/UserLinks";
@@ -79,13 +80,7 @@ const UserProfile = () => {
   }
 
   if (isLoading) {
-    return (
-      <Container>
-        <Typography variant="h4" align="center">
-          Loading...
-        </Typography>
-      </Container>
-    );
+    return <Loading />;
   }
 
   return (
