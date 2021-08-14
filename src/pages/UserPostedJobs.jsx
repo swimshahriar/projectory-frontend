@@ -22,7 +22,7 @@ const UserPostedJobs = () => {
   let activeJobs;
   let finishedJobs;
   let canceledJobs;
-  if (jobs && !isLoading) {
+  if (jobs && jobs.length > 0 && !isLoading) {
     publicJobs = jobs.filter((job) => job.status === "public");
     activeJobs = jobs.filter((job) => job.status === "active");
     finishedJobs = jobs.filter((job) => job.status === "finished");

@@ -19,6 +19,7 @@ const jobReducer = (state = initialState, action) => {
         isLoading: false,
         error: null,
         jobs: action.payload.jobs,
+        res: true,
       };
 
     case "RESPONSE_JOBS":

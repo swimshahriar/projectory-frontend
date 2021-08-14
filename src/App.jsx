@@ -21,6 +21,7 @@ const ServiceDetails = lazy(() => import("./pages/ServiceDetails"));
 const Services = lazy(() => import("./pages/Services"));
 const UserProfile = lazy(() => import("./pages/UserProfile"));
 const UserPostedJobs = lazy(() => import("./pages/UserPostedJobs"));
+const AddJob = lazy(() => import("./pages/AddJob"));
 
 function App() {
   const dispatch = useDispatch();
@@ -56,6 +57,13 @@ function App() {
           <PrivateRoute
             component={UserPostedJobs}
             path="/user-posted-jobs"
+            token={token}
+            samePath
+            redirectUrl="/auth"
+          />
+          <PrivateRoute
+            component={AddJob}
+            path="/add-job"
             token={token}
             samePath
             redirectUrl="/auth"
