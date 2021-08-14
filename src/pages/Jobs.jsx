@@ -41,12 +41,11 @@ const Jobs = () => {
           display="flex"
           justifyContent="center"
           flexWrap="wrap"
-          gridGap={15}
           mt={5}
           flex="80%"
           minWidth="400px"
         >
-          {jobs ? (
+          {jobs && jobs.length > 0 ? (
             jobs.map((job, idx) => <JobCard job={job} key={idx} />)
           ) : (
             <Typography variant="body1" align="center">

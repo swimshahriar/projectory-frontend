@@ -11,7 +11,7 @@ export const fetchJobs = (data) => async (dispatch) => {
   if (data?.jid) {
     fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/jobs?jid=${data.jid}`;
   } else if (data?.uid) {
-    fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/jobs?uid=${uid}`;
+    fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/jobs?uid=${data.uid}`;
   } else {
     fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/jobs`;
   }

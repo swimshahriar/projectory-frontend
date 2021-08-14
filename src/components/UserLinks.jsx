@@ -27,6 +27,9 @@ const UserLinks = ({ uid, userId }) => {
       >
         Favorite Services
       </Button>
+      <Button color="primary" variant="outlined" onClick={() => history.push("/user-posted-jobs")}>
+        Posted Jobs
+      </Button>
       <Button color="primary" variant="outlined" onClick={() => history.push("/add-job")}>
         Add Job
       </Button>

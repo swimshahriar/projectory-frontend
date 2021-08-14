@@ -20,6 +20,7 @@ const JobCard = ({ job }) => {
     <Box
       minWidth="300px"
       width="100%"
+      my={3}
       className={classes.jobCard}
       onClick={() => history.push(`/jobs/${job._id}`)}
     >
@@ -48,6 +49,7 @@ const JobCard = ({ job }) => {
           <Box display="flex" justifyContent="flex-start" alignItems="center" gridGap={10} mt={3}>
             <Chip label={job.category} color="secondary" />
             <Chip label={`${job.duration} days`} color="primary" />
+            <Chip label={job.status} color="secondary" />
           </Box>
           <Box display="flex" justifyContent="space-between" alignItems="center" mt={3}>
             <Box display="flex" justifyContent="flex-start" alignItems="center" gridGap={3}>
