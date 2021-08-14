@@ -72,4 +72,31 @@ export const createJob = (data, token) => async (dispatch) => {
 export const updateJob = (data) => async (dispatch) => {};
 
 // delete job
-export const deleteJob = (data) => async (dispatch) => {};
+export const deleteJob = (jid, token) => async (dispatch) => {
+  dispatch({
+    type: "RESET_JOBS",
+  });
+  dispatch({
+    type: "LOADING_JOBS",
+  });
+  const fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/jobs/${jid}`;
+
+  try {
+    await axios.delete(fetchUrl, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    dispatch({
+      type: "RESPONSE_JOBS",
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_JOBS",
+      payload: {
+        error: error.response.data.message,
+      },
+    });
+  }
+};
