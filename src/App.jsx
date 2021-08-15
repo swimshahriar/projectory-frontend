@@ -19,6 +19,7 @@ const ProfileEdit = lazy(() => import("./pages/ProfileEdit"));
 const ResetPass = lazy(() => import("./pages/ResetPass"));
 const ServiceDetails = lazy(() => import("./pages/ServiceDetails"));
 const Services = lazy(() => import("./pages/Services"));
+const FavServices = lazy(() => import("./pages/FavServices"));
 const UserProfile = lazy(() => import("./pages/UserProfile"));
 const UserPostedJobs = lazy(() => import("./pages/UserPostedJobs"));
 const AddJob = lazy(() => import("./pages/AddJob"));
@@ -89,6 +90,13 @@ function App() {
           <PrivateRoute
             component={AddService}
             path="/add-service"
+            token={token}
+            samePath
+            redirectUrl="/auth"
+          />
+          <PrivateRoute
+            component={FavServices}
+            path={`/fav-services/${uid}`}
             token={token}
             samePath
             redirectUrl="/auth"
