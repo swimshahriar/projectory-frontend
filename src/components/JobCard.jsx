@@ -33,7 +33,7 @@ const JobCard = ({ job }) => {
           py={3}
           px={4}
           className={classes.jobCard}
-          onClick={() => history.push(`/jobs/${job._id}`)}
+          onClick={() => history.push(`/job-details/${job._id}`)}
         >
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <AvatarWithUserName
@@ -61,7 +61,7 @@ const JobCard = ({ job }) => {
             <Chip label={job.status} color="secondary" />
           </Box>
           <Box display="flex" justifyContent="space-between" alignItems="center" mt={3}>
-            <Box display="flex" justifyContent="flex-start" alignItems="center" gridGap={3}>
+            <Box display="flex" justifyContent="flex-start" alignItems="center" gridGap={10}>
               {job.skills.map((skill, idx) => (
                 <Chip
                   label={skill}
