@@ -27,6 +27,11 @@ const JobDetails = () => {
     (async () => {
       await dispatch(fetchJobs({ jid }));
     })();
+    return async () => {
+      await dispatch({
+        type: "RESET_JOBS",
+      });
+    };
   }, [jid, dispatch]);
 
   if (isLoading || !jobs || !jobs?.length > 0) {

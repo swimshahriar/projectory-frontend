@@ -55,13 +55,32 @@ const JobCard = ({ job }) => {
             ...
           </Typography>
 
-          <Box display="flex" justifyContent="flex-start" alignItems="center" gridGap={10} mt={3}>
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            flexWrap="wrap"
+            gridGap={10}
+            mt={3}
+          >
             <Chip label={job.category} color="secondary" />
             <Chip label={`${job.duration} days`} color="primary" />
             <Chip label={job.status} color="secondary" />
           </Box>
-          <Box display="flex" justifyContent="space-between" alignItems="center" mt={3}>
-            <Box display="flex" justifyContent="flex-start" alignItems="center" gridGap={10}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            flexWrap="wrap"
+            mt={3}
+          >
+            <Box
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+              flexWrap="wrap"
+              gridGap={10}
+            >
               {job.skills.map((skill, idx) => (
                 <Chip
                   label={skill}

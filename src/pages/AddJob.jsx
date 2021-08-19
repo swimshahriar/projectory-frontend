@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Alert } from "@material-ui/lab";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -88,7 +88,7 @@ const AddJob = () => {
     reset,
   } = useForm({ resolver: yupResolver(schema) });
 
-  useMemo(() => {
+  useEffect(() => {
     if (res) {
       SweetAlert.fire({
         icon: "success",
