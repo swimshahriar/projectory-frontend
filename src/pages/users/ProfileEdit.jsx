@@ -17,12 +17,12 @@ import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 // acitons
-import { changePass, fetchUserInfo, updateUserInfo } from "../actions/userAction";
+import { changePass, fetchUserInfo, updateUserInfo } from "../../actions/userAction";
 // components
-import CloudImage from "../components/CloudImage";
-import Loading from "../components/Loading";
-import RoundedBox from "../components/RoundedBox";
-import SweetAlert from "../components/SweetAlert";
+import CloudImage from "../../components/CloudImage";
+import Loading from "../../components/Loading";
+import RoundedBox from "../../components/RoundedBox";
+import SweetAlert from "../../components/SweetAlert";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -240,7 +240,7 @@ const ProfileEdit = () => {
           Edit Info
         </Typography>
 
-        {/* update form */}
+        {/* ------------------------- update form ------------------------- */}
         <Container className={classes.formContainer}>
           {error && (
             <Alert className={classes.mtLg} severity="error">
@@ -361,7 +361,7 @@ const ProfileEdit = () => {
               onChange={(e) => setOldData((prev) => ({ ...prev, description: e.target.value }))}
               className={classes.formInput}
             />
-            {/* skillS */}
+            {/* ------------------------------ skillS -------------------------- */}
             <Box border={2} borderColor="textSecondary" borderRadius={5} padding={2} width="90%">
               <Box display="flex" justifyContent="center" alignItems="center">
                 <TextField
@@ -409,7 +409,7 @@ const ProfileEdit = () => {
               </Box>
             </Box>
 
-            {/* languages */}
+            {/* ---------------------------- languages ------------------------- */}
             <Box
               border={2}
               borderColor="textSecondary"
@@ -466,7 +466,7 @@ const ProfileEdit = () => {
               </Box>
             </Box>
 
-            {/* education */}
+            {/* ----------------------------- education -------------------------- */}
             <Box
               border={2}
               borderColor="textSecondary"
@@ -523,7 +523,7 @@ const ProfileEdit = () => {
               </Box>
             </Box>
 
-            {/* links */}
+            {/* ---------------------------- links --------------------------- */}
             <Box
               border={2}
               borderColor="textSecondary"
@@ -608,7 +608,7 @@ const ProfileEdit = () => {
           </form>
         </Container>
       </Box>
-      {/* change pass form */}
+      {/* --------------------------- change pass form ---------------------- */}
       <Container className={classes.formContainer}>
         <Typography variant="h4" align="center" className={classes.mtLg}>
           Change Password

@@ -19,10 +19,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 // actions
-import { addService } from "../actions/serviceAction";
+import { addService } from "../../actions/serviceAction";
 // components
-import PackageInput from "../components/PackageInput";
-import SweetAlert from "../components/SweetAlert";
+import PackageInput from "../../components/PackageInput";
+import SweetAlert from "../../components/SweetAlert";
 // styles
 const useStyles = makeStyles((theme) => ({
   formContainer: {

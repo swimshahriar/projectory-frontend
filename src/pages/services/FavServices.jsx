@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 // internal imports
-import { fetchFavoriteServices } from "../actions/serviceAction";
-import Loading from "../components/Loading";
-import ServiceCard from "../components/ServiceCard";
+import { fetchFavoriteServices } from "../../actions/serviceAction";
+import Loading from "../../components/Loading";
+import ServiceCard from "../../components/ServiceCard";
 
 const FavServices = () => {
   const dispatch = useDispatch();

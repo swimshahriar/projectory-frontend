@@ -9,24 +9,24 @@ import Loading from "./components/Loading";
 import PrivateRoute from "./helpers/PrivateRoute";
 // pages
 const About = lazy(() => import("./pages/About"));
-const AddService = lazy(() => import("./pages/AddService"));
+const AddService = lazy(() => import("./pages/services/AddService"));
 const Auth = lazy(() => import("./pages/Auth"));
-const EditService = lazy(() => import("./pages/EditService"));
+const EditService = lazy(() => import("./pages/services/EditService"));
 const Error404 = lazy(() => import("./pages/Error404"));
 const Home = lazy(() => import("./pages/Home"));
-const Jobs = lazy(() => import("./pages/Jobs"));
-const ProfileEdit = lazy(() => import("./pages/ProfileEdit"));
+const Jobs = lazy(() => import("./pages/jobs/Jobs"));
+const ProfileEdit = lazy(() => import("./pages/users/ProfileEdit"));
 const ResetPass = lazy(() => import("./pages/ResetPass"));
-const ServiceDetails = lazy(() => import("./pages/ServiceDetails"));
-const Services = lazy(() => import("./pages/Services"));
-const FavServices = lazy(() => import("./pages/FavServices"));
-const UserProfile = lazy(() => import("./pages/UserProfile"));
-const UserPostedJobs = lazy(() => import("./pages/UserPostedJobs"));
-const AddJob = lazy(() => import("./pages/AddJob"));
-const EditJob = lazy(() => import("./pages/EditJob"));
-const JobDetails = lazy(() => import("./pages/JobDetails"));
+const ServiceDetails = lazy(() => import("./pages/services/ServiceDetails"));
+const Services = lazy(() => import("./pages/services/Services"));
+const FavServices = lazy(() => import("./pages/services/FavServices"));
+const UserProfile = lazy(() => import("./pages/users/UserProfile"));
+const UserPostedJobs = lazy(() => import("./pages/jobs/UserPostedJobs"));
+const AddJob = lazy(() => import("./pages/jobs/AddJob"));
+const EditJob = lazy(() => import("./pages/jobs/EditJob"));
+const JobDetails = lazy(() => import("./pages/jobs/JobDetails"));
 
-function App() {
+const App = () => {
   const dispatch = useDispatch();
   const { token, isAuthCheck, uid } = useSelector((state) => state.auth);
 
@@ -122,6 +122,6 @@ function App() {
       </Suspense>
     </>
   );
-}
+};
 
 export default App;

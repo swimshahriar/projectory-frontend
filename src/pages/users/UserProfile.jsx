@@ -8,14 +8,14 @@ import { GoPrimitiveDot } from "react-icons/go";
 import { HiLocationMarker } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import { fetchServices } from "../actions/serviceAction";
+import { fetchServices } from "../../actions/serviceAction";
 // actions
-import { fetchUserInfo } from "../actions/userAction";
+import { fetchUserInfo } from "../../actions/userAction";
 // components
-import Loading from "../components/Loading";
-import RoundedBox from "../components/RoundedBox";
-import ServiceCard from "../components/ServiceCard";
-import UserLinks from "../components/UserLinks";
+import Loading from "../../components/Loading";
+import RoundedBox from "../../components/RoundedBox";
+import ServiceCard from "../../components/ServiceCard";
+import UserLinks from "../../components/UserLinks";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -66,11 +66,6 @@ const UserProfile = () => {
       await dispatch(fetchUserInfo(userId));
       await dispatch(fetchServices({ uid: userId }));
     })();
-
-    // return async () => {
-    //   await dispatch({ type: "CLEAR_USER" });
-    //   await dispatch({ type: "RESET_SERVICES" });
-    // };
   }, [userId, dispatch]);
 
   // format date
@@ -98,10 +93,12 @@ const UserProfile = () => {
         </Box>
       )}
 
+      {/* ------------------------- user links ------------------------ */}
       {uid && uid === userId && <UserLinks uid={uid} userId={userId} />}
 
       <Box display="flex" justifyContent="center" flexWrap="wrap" gridGap={15} mt={3}>
         <Box flex={35} minWidth="350px">
+          {/* ------------------ user img with location join date ------------------ */}
           <Box
             display="flex"
             flexDirection="column"
@@ -205,7 +202,7 @@ const UserProfile = () => {
               </Box>
             </Box>
           </Box>
-          {/* description */}
+          {/* ----------------------- description ---------------------- */}
           <Box
             display="flex"
             flexDirection="column"
@@ -240,7 +237,7 @@ const UserProfile = () => {
               )}
             </Typography>
             <Divider className={classes.mtMd} />
-            {/* languages */}
+            {/* ------------------------ languages --------------------- */}
             <Typography
               variant="h6"
               component="h6"
@@ -268,7 +265,7 @@ const UserProfile = () => {
             )}
             <Divider className={classes.mtMd} />
 
-            {/* linked account */}
+            {/* -------------------------- linked account --------------------------- */}
             <Typography
               variant="h6"
               component="h6"
@@ -295,7 +292,7 @@ const UserProfile = () => {
               )}
             </Box>
             <Divider className={classes.mtMd} />
-            {/* Skills */}
+            {/* ----------------------------- Skills ----------------------------- */}
             <Typography
               variant="h6"
               component="h6"
@@ -322,7 +319,7 @@ const UserProfile = () => {
             </Box>
             <Divider className={classes.mtMd} />
 
-            {/* Education */}
+            {/* ------------------------------ Education --------------------------- */}
             <Typography
               variant="h6"
               component="h6"
@@ -350,7 +347,7 @@ const UserProfile = () => {
           </Box>
         </Box>
 
-        {/* Right Site */}
+        {/* ----------------------- Right Site ------------------------ */}
         <Box flex={65}>
           <Box
             display="flex"

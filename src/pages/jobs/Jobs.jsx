@@ -2,9 +2,9 @@ import { Box, Container, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // internal imports
-import { fetchJobs } from "../actions/jobAction";
-import JobCard from "../components/JobCard";
-import Loading from "../components/Loading";
+import { fetchJobs } from "../../actions/jobAction";
+import JobCard from "../../components/JobCard";
+import Loading from "../../components/Loading";
 
 const Jobs = () => {
   const dispatch = useDispatch();

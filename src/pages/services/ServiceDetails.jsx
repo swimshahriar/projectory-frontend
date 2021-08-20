@@ -3,14 +3,14 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
-import { fetchServices } from "../actions/serviceAction";
-import { fetchRatings } from "../actions/serviceRatingAction";
-import AvatarWithUserName from "../components/AvatarWithUserName";
-import Loading from "../components/Loading";
-import PriceTab from "../components/PriceTab";
-import RatingReview from "../components/RatingReview";
-import RatingStarCount from "../components/RatingStarCount";
-import SwiperComp from "../components/SwiperComp/SwiperComp";
+import { fetchServices } from "../../actions/serviceAction";
+import { fetchRatings } from "../../actions/serviceRatingAction";
+import AvatarWithUserName from "../../components/AvatarWithUserName";
+import Loading from "../../components/Loading";
+import PriceTab from "../../components/PriceTab";
+import RatingReview from "../../components/RatingReview";
+import RatingStarCount from "../../components/RatingStarCount";
+import SwiperComp from "../../components/SwiperComp/SwiperComp";
 
 const ServiceDetails = () => {
   const { sid } = useParams();

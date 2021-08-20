@@ -17,9 +17,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
-import { fetchJobs, updateJob } from "../actions/jobAction";
-import Loading from "../components/Loading";
-import SweetAlert from "../components/SweetAlert";
+import { fetchJobs, updateJob } from "../../actions/jobAction";
+import Loading from "../../components/Loading";
+import SweetAlert from "../../components/SweetAlert";
 
 // styles
 const useStyles = makeStyles((theme) => ({

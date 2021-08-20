@@ -16,12 +16,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 // internal imports
-import { fetchServices, updateService } from "../actions/serviceAction";
+import { fetchServices, updateService } from "../../actions/serviceAction";
 // components
-import CloudImage from "../components/CloudImage";
-import Loading from "../components/Loading";
-import PackageInput from "../components/PackageInput";
-import SweetAlert from "../components/SweetAlert";
+import CloudImage from "../../components/CloudImage";
+import Loading from "../../components/Loading";
+import PackageInput from "../../components/PackageInput";
+import SweetAlert from "../../components/SweetAlert";
 
 // styles
 const useStyles = makeStyles((theme) => ({

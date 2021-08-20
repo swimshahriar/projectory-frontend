@@ -3,10 +3,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 // actions
-import { fetchServices } from "../actions/serviceAction";
+import { fetchServices } from "../../actions/serviceAction";
 // components
-import Loading from "../components/Loading";
-import ServiceCard from "../components/ServiceCard";
+import Loading from "../../components/Loading";
+import ServiceCard from "../../components/ServiceCard";
 
 const Services = () => {
   const history = useHistory();

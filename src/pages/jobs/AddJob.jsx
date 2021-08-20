@@ -20,8 +20,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 // internal imports
-import { createJob } from "../actions/jobAction";
-import SweetAlert from "../components/SweetAlert";
+import { createJob } from "../../actions/jobAction";
+import SweetAlert from "../../components/SweetAlert";
 
 // styles
 const useStyles = makeStyles((theme) => ({

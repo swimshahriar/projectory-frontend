@@ -4,9 +4,9 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
-import { fetchJobs } from "../actions/jobAction";
-import AvatarWithUserName from "../components/AvatarWithUserName";
-import Loading from "../components/Loading";
+import { fetchJobs } from "../../actions/jobAction";
+import AvatarWithUserName from "../../components/AvatarWithUserName";
+import Loading from "../../components/Loading";
 
 // styles
 const useStyles = makeStyles(() => ({
