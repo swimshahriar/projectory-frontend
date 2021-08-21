@@ -8,7 +8,6 @@ export const fetchSkillTests = (data, token) => async (dispatch) => {
 
   let fetchUrl;
   if (data?.tid) {
-    console.log("I was called");
     fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/skill-test?tid=${data.tid}`;
   } else {
     fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/skill-test`;

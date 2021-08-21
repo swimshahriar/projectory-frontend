@@ -26,6 +26,7 @@ const AddJob = lazy(() => import("./pages/jobs/AddJob"));
 const EditJob = lazy(() => import("./pages/jobs/EditJob"));
 const JobDetails = lazy(() => import("./pages/jobs/JobDetails"));
 const SkillTestList = lazy(() => import("./pages/skillTests/SkillTestList"));
+const TestPage = lazy(() => import("./pages/skillTests/TestPage"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -129,6 +130,13 @@ const App = () => {
           <PrivateRoute
             component={SkillTestList}
             path="/skill-tests"
+            token={token}
+            samePath
+            redirectUrl="/auth"
+          />
+          <PrivateRoute
+            component={TestPage}
+            path="/skill-test/:tid"
             token={token}
             samePath
             redirectUrl="/auth"
