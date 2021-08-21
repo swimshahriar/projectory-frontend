@@ -25,6 +25,7 @@ const UserPostedJobs = lazy(() => import("./pages/jobs/UserPostedJobs"));
 const AddJob = lazy(() => import("./pages/jobs/AddJob"));
 const EditJob = lazy(() => import("./pages/jobs/EditJob"));
 const JobDetails = lazy(() => import("./pages/jobs/JobDetails"));
+const SkillTestList = lazy(() => import("./pages/skillTests/SkillTestList"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -48,14 +49,9 @@ const App = () => {
       <Suspense fallback={<Loading />}>
         <Switch>
           <Route component={Home} path="/" exact />
-          <PrivateRoute
-            component={Auth}
-            path="/auth"
-            token={token}
-            samePath={false}
-            redirectUrl={`/user-profile/${uid}`}
-          />
           <Route component={About} path="/about" />
+
+          {/* ---------------- jobs ----------------- */}
           <Route component={Jobs} path="/jobs" />
           <Route component={JobDetails} path="/job-details/:jid" exact />
           <PrivateRoute
@@ -79,6 +75,8 @@ const App = () => {
             samePath
             redirectUrl="/auth"
           />
+
+          {/* ---------------- services ----------------- */}
           <Route component={Services} path="/services" exact />
           <PrivateRoute
             component={EditService}
@@ -102,6 +100,15 @@ const App = () => {
             redirectUrl="/auth"
           />
           <Route component={ServiceDetails} path="/services/:sid" />
+
+          {/* ---------------- users ----------------- */}
+          <PrivateRoute
+            component={Auth}
+            path="/auth"
+            token={token}
+            samePath={false}
+            redirectUrl={`/user-profile/${uid}`}
+          />
           <Route component={UserProfile} path="/user-profile/:uid" />
           <PrivateRoute
             component={ProfileEdit}
@@ -117,6 +124,16 @@ const App = () => {
             samePath={false}
             redirectUrl={`/user-profile/${uid}`}
           />
+
+          {/* ---------------- skill tests ----------------- */}
+          <PrivateRoute
+            component={SkillTestList}
+            path="/skill-tests"
+            token={token}
+            samePath
+            redirectUrl="/auth"
+          />
+
           <Route component={Error404} />
         </Switch>
       </Suspense>

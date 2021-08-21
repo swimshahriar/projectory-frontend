@@ -30,8 +30,11 @@ const UserLinks = ({ uid, userId }) => {
       <Button color="primary" variant="outlined" onClick={() => history.push("/user-posted-jobs")}>
         Posted Jobs
       </Button>
-      <Button color="primary" variant="outlined" onClick={() => history.push("/add-job")}>
+      <Button color="secondary" variant="outlined" onClick={() => history.push("/add-job")}>
         Add Job
+      </Button>
+      <Button color="primary" variant="outlined" onClick={() => history.push("/skill-tests")}>
+        Skill Tests
       </Button>
       <Button color="secondary" variant="outlined" onClick={() => history.push(`/orders/${uid}`)}>
         Orders
