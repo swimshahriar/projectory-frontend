@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSkillTestResults, fetchSkillTests } from "../../actions/skillTestAction";
 import Loading from "../../components/Loading";
 import SkillTestCard from "../../components/SkillTestCard";
+import TestResultCard from "../../components/TestResultCard";
 
 const SkillTestList = () => {
   const dispatch = useDispatch();
@@ -33,20 +34,28 @@ const SkillTestList = () => {
         </Typography>
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap" gridGap={15}>
-        {isLoading && !skillTests ? (
-          <Loading />
-        ) : (
+        {isLoading && !skillTests && <Loading />}
+        {skillTests ? (
           skillTests?.map((skillTest, idx) => <SkillTestCard skillTest={skillTest} key={idx} />)
+        ) : (
+          <Typography>No skill tests found!</Typography>
         )}
       </Box>
 
       {/* ---------------------- test results ------------------------- */}
-      <Box my={3}>
+      <Box mt={5} mb={3}>
         <Typography variant="h4" align="center">
           Your Results
         </Typography>
       </Box>
-      <Box>{isLoading && !testResults && <Loading />}</Box>
+      <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap" gridGap={15}>
+        {isLoading && !testResults && <Loading />}
+        {testResults ? (
+          testResults.map((result, idx) => <TestResultCard result={result} key={idx} />)
+        ) : (
+          <Typography>You do not have any results!</Typography>
+        )}
+      </Box>
     </Container>
   );
 };
