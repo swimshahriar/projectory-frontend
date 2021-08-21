@@ -35,7 +35,7 @@ const SkillTestList = () => {
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap" gridGap={15}>
         {isLoading && !skillTests && <Loading />}
-        {skillTests ? (
+        {skillTests?.length ? (
           skillTests?.map((skillTest, idx) => <SkillTestCard skillTest={skillTest} key={idx} />)
         ) : (
           <Typography>No skill tests found!</Typography>
