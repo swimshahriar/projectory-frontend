@@ -1,3 +1,8 @@
+.header {
+  width: 100vw;
+  box-shadow: var(--shadow-primary);
+}
+
 .logo {
   min-width: 5rem;
   max-width: 12rem;

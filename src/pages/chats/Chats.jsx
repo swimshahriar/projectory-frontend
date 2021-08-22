@@ -1,8 +1,13 @@
 import { Box, Container, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { io } from "socket.io-client";
 
 const Chats = () => {
-  const obj = {};
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io(import.meta.env.VITE_SERVER_URL);
+  }, []);
   return (
     <Container maxWidth="lg">
       <Box my={3}>
