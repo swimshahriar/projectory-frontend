@@ -1,19 +1,17 @@
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1400px;
-}
-
-.header h1 {
+.logo {
   font-family: "Montserrat", serif;
   cursor: pointer;
   padding-left: 2rem;
 }
 
+/* .header__mobile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
 .header__menu {
-  font-size: 2rem;
+  font-size: 1.8rem;
   display: none;
 }
 .header__menu:hover {
@@ -77,20 +75,15 @@
     padding: 2rem 1rem;
     margin-top: calc(2px + var(--header-height));
     min-height: calc(100vh - var(--header-height));
-    background-color: var(--primary-color);
+    background-color: rgb(243, 243, 243);
     z-index: 1000;
   }
 
   .header__list li a {
-    color: #fff;
     padding-left: 1.5rem;
   }
 
-  .active {
-    color: #fff !important;
-  }
   .active::after {
-    background-color: #fff;
     width: 80%;
     margin-left: 1.5rem;
   }

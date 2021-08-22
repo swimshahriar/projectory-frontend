@@ -1,33 +1,18 @@
-import { Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Box, Button, Container } from "@material-ui/core";
 import React, { useState } from "react";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiFillMessage, AiOutlineClose } from "react-icons/ai";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
-// action
-import { logOutHandler } from "../../actions/authAction";
-// styles
+// internal imports
 import "./Header.css";
-
-const useStyles = makeStyles((theme) => ({
-  logoutBtn: {
-    marginTop: 10,
-    paddingLeft: 20,
-    [theme.breakpoints.up("md")]: {
-      marginLeft: 10,
-      marginTop: 0,
-      paddingLeft: 0,
-    },
-  },
-}));
+import ProfileMenu from "./ProfileMenu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const history = useHistory();
-  const dispatch = useDispatch();
-  const { token, uid } = useSelector((state) => state.auth);
-  const classes = useStyles();
+
+  const { token } = useSelector((state) => state.auth);
 
   // link lists
   let navLinks = [
@@ -71,67 +56,66 @@ const Header = () => {
         title: "About",
         url: "/about",
       },
-      {
-        title: "Profile",
-        url: `/user-profile/${uid}`,
-      },
     ];
   }
 
   return (
-    <div className="header">
-      <h1 onClick={() => history.push("/")}>Projectory</h1>
+    <Container maxWidth="lg">
+      <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
+        <h1 className="logo" onClick={() => history.push("/")}>
+          Projectory
+        </h1>
 
-      <nav className="header__list" id="nav">
-        {navLinks.map((link, idx) => (
-          <li key={idx}>
-            <NavLink
-              to={link.url}
-              onClick={() => {
-                setIsMenuOpen((prev) => !prev);
-                document.getElementById("nav").classList.remove("show");
-              }}
-              activeClassName="active"
-              exact
-            >
-              {link.title}
-            </NavLink>
-          </li>
-        ))}
-        {token && (
-          <li className={classes.logoutBtn}>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={async () => {
-                await dispatch(logOutHandler());
-                setIsMenuOpen((prev) => !prev);
-                document.getElementById("nav").classList.remove("show");
-              }}
-            >
-              Logout
-            </Button>
-          </li>
-        )}
-      </nav>
-      <div className="header__menu">
-        {isMenuOpen ? (
-          <AiOutlineClose
-            onClick={() => {
-              setIsMenuOpen((prev) => !prev);
-              document.getElementById("nav").classList.toggle("show");
-            }}
-          />
-        ) : (
-          <HiMenuAlt3
-            onClick={() => {
-              setIsMenuOpen((prev) => !prev);
-              document.getElementById("nav").classList.toggle("show");
-            }}
-          />
-        )}
-      </div>
-    </div>
+        <nav className="header__list" id="nav">
+          {navLinks.map((link, idx) => (
+            <li key={idx}>
+              <NavLink
+                to={link.url}
+                onClick={() => {
+                  setIsMenuOpen((prev) => !prev);
+                  document.getElementById("nav").classList.remove("show");
+                }}
+                activeClassName="active"
+                exact
+              >
+                {link.title}
+              </NavLink>
+            </li>
+          ))}
+        </nav>
+        <Box display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">
+          <div className="header__menu">
+            {isMenuOpen ? (
+              <AiOutlineClose
+                onClick={() => {
+                  setIsMenuOpen((prev) => !prev);
+                  document.getElementById("nav").classList.toggle("show");
+                }}
+              />
+            ) : (
+              <HiMenuAlt3
+                onClick={() => {
+                  setIsMenuOpen((prev) => !prev);
+                  document.getElementById("nav").classList.toggle("show");
+                }}
+              />
+            )}
+          </div>
+
+          {/* ---------------------- profile and msg icons ---------------- */}
+          {token && (
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <ProfileMenu />
+              <Button onClick={() => history.push("/chats")}>
+                <Box fontSize="1.3rem">
+                  <AiFillMessage />
+                </Box>
+              </Button>
+            </Box>
+          )}
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

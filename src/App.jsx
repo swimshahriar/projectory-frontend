@@ -1,6 +1,7 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
+import { io } from "socket.io-client";
 // internal imports
 import { checkForAuth } from "./actions/authAction";
 // components
@@ -27,6 +28,10 @@ const EditJob = lazy(() => import("./pages/jobs/EditJob"));
 const JobDetails = lazy(() => import("./pages/jobs/JobDetails"));
 const SkillTestList = lazy(() => import("./pages/skillTests/SkillTestList"));
 const TestPage = lazy(() => import("./pages/skillTests/TestPage"));
+const Chats = lazy(() => import("./pages/chats/Chats"));
+
+// socket io instance to window property
+window.socketIo = io(import.meta.env.VITE_SERVER_URL);
 
 const App = () => {
   const dispatch = useDispatch();
@@ -137,6 +142,15 @@ const App = () => {
           <PrivateRoute
             component={TestPage}
             path="/skill-test/:tid"
+            token={token}
+            samePath
+            redirectUrl="/auth"
+          />
+
+          {/* --------------------- chats --------------------- */}
+          <PrivateRoute
+            component={Chats}
+            path="/chats"
             token={token}
             samePath
             redirectUrl="/auth"
