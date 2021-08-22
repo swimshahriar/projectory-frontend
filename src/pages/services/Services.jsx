@@ -36,7 +36,7 @@ const Services = () => {
           Services
         </Typography>
       </Box>
-      <Box display="flex">
+      <Box display="flex" flexWrap="wrap">
         <Box mt={5} flex="20%">
           <Typography variant="h6" align="center" color="textPrimary">
             Filters
@@ -46,7 +46,15 @@ const Services = () => {
           </Typography>
         </Box>
 
-        <Box display="flex" justifyContent="center" flexWrap="wrap" gridGap={15} mt={5} flex="80%">
+        <Box
+          display="flex"
+          justifyContent="center"
+          flexWrap="wrap"
+          gridGap={15}
+          mt={5}
+          flex="80%"
+          minWidth="400px"
+        >
           {services && services.length > 0 ? (
             services.map((service, idx) => (
               <ServiceCard

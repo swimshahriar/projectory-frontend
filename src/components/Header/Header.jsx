@@ -5,6 +5,7 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
 // internal imports
+import logo from "../../assets/logo.svg";
 import "./Header.css";
 import ProfileMenu from "./ProfileMenu";
 
@@ -15,7 +16,7 @@ const Header = () => {
   const { token } = useSelector((state) => state.auth);
 
   // link lists
-  let navLinks = [
+  const navLinks = [
     {
       title: "Home",
       url: "/",
@@ -32,39 +33,22 @@ const Header = () => {
       title: "About",
       url: "/about",
     },
-    {
-      title: "Login/Register",
-      url: "/auth",
-    },
   ];
-
-  if (token) {
-    navLinks = [
-      {
-        title: "Home",
-        url: "/",
-      },
-      {
-        title: "Jobs",
-        url: "/jobs",
-      },
-      {
-        title: "Services",
-        url: "/services",
-      },
-      {
-        title: "About",
-        url: "/about",
-      },
-    ];
-  }
 
   return (
     <Container maxWidth="lg">
       <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
-        <h1 className="logo" onClick={() => history.push("/")}>
-          Projectory
-        </h1>
+        <Box
+          maxWidth="12rem"
+          maxHeight="70px"
+          height="70px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          onClick={() => history.push("/")}
+        >
+          <img src={logo} alt="logo" width="100%" style={{ cursor: "pointer" }} />
+        </Box>
 
         <nav className="header__list" id="nav">
           {navLinks.map((link, idx) => (
@@ -103,13 +87,19 @@ const Header = () => {
           </div>
 
           {/* ---------------------- profile and msg icons ---------------- */}
-          {token && (
+          {token ? (
             <Box display="flex" justifyContent="center" alignItems="center">
               <ProfileMenu />
               <Button onClick={() => history.push("/chats")}>
                 <Box fontSize="1.3rem">
                   <AiFillMessage />
                 </Box>
+              </Button>
+            </Box>
+          ) : (
+            <Box>
+              <Button variant="outlined" color="secondary" onClick={() => history.push("/auth")}>
+                Login/Register
               </Button>
             </Box>
           )}

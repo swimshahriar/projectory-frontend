@@ -1,15 +1,3 @@
-.logo {
-  font-family: "Montserrat", serif;
-  cursor: pointer;
-  padding-left: 2rem;
-}
-
-/* .header__mobile {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-} */
-
 .header__menu {
   font-size: 1.8rem;
   display: none;
