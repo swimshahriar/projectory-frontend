@@ -37,7 +37,19 @@ const Header = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        bgcolor="#fff"
+        position="fixed"
+        top="0"
+        left="0"
+        right="0"
+        boxShadow={2}
+        zIndex="1000"
+        px={1}
+      >
         <Box
           maxHeight="70px"
           height="70px"
@@ -97,7 +109,7 @@ const Header = () => {
               </Button>
             </Box>
           ) : (
-            <Box>
+            <Box ml={1}>
               <Button variant="contained" color="primary" onClick={() => history.push("/auth")}>
                 Login
               </Button>

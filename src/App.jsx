@@ -52,113 +52,115 @@ const App = () => {
       <header>
         <Header />
       </header>
-      <Suspense fallback={<Loading />}>
-        <Switch>
-          <Route component={Home} path="/" exact />
-          <Route component={About} path="/about" />
+      <main style={{ marginTop: "80px" }}>
+        <Suspense fallback={<Loading />}>
+          <Switch>
+            <Route component={Home} path="/" exact />
+            <Route component={About} path="/about" />
 
-          {/* ---------------- jobs ----------------- */}
-          <Route component={Jobs} path="/jobs" />
-          <Route component={JobDetails} path="/job-details/:jid" exact />
-          <PrivateRoute
-            component={UserPostedJobs}
-            path="/user-posted-jobs"
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
-          <PrivateRoute
-            component={AddJob}
-            path="/add-job"
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
-          <PrivateRoute
-            component={EditJob}
-            path="/edit-job/:jid"
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
+            {/* ---------------- jobs ----------------- */}
+            <Route component={Jobs} path="/jobs" />
+            <Route component={JobDetails} path="/job-details/:jid" exact />
+            <PrivateRoute
+              component={UserPostedJobs}
+              path="/user-posted-jobs"
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
+            <PrivateRoute
+              component={AddJob}
+              path="/add-job"
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
+            <PrivateRoute
+              component={EditJob}
+              path="/edit-job/:jid"
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
 
-          {/* ---------------- services ----------------- */}
-          <Route component={Services} path="/services" exact />
-          <PrivateRoute
-            component={EditService}
-            path="/edit-service/:sid"
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
-          <PrivateRoute
-            component={AddService}
-            path="/add-service"
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
-          <PrivateRoute
-            component={FavServices}
-            path={`/fav-services/${uid}`}
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
-          <Route component={ServiceDetails} path="/services/:sid" />
+            {/* ---------------- services ----------------- */}
+            <Route component={Services} path="/services" exact />
+            <PrivateRoute
+              component={EditService}
+              path="/edit-service/:sid"
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
+            <PrivateRoute
+              component={AddService}
+              path="/add-service"
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
+            <PrivateRoute
+              component={FavServices}
+              path={`/fav-services/${uid}`}
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
+            <Route component={ServiceDetails} path="/services/:sid" />
 
-          {/* ---------------- users ----------------- */}
-          <PrivateRoute
-            component={Auth}
-            path="/auth"
-            token={token}
-            samePath={false}
-            redirectUrl={`/user-profile/${uid}`}
-          />
-          <Route component={UserProfile} path="/user-profile/:uid" />
-          <PrivateRoute
-            component={ProfileEdit}
-            path={`/profile-edit/${uid}`}
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
-          <PrivateRoute
-            component={ResetPass}
-            path="/reset-password/:token"
-            token={token}
-            samePath={false}
-            redirectUrl={`/user-profile/${uid}`}
-          />
+            {/* ---------------- users ----------------- */}
+            <PrivateRoute
+              component={Auth}
+              path="/auth"
+              token={token}
+              samePath={false}
+              redirectUrl={`/user-profile/${uid}`}
+            />
+            <Route component={UserProfile} path="/user-profile/:uid" />
+            <PrivateRoute
+              component={ProfileEdit}
+              path={`/profile-edit/${uid}`}
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
+            <PrivateRoute
+              component={ResetPass}
+              path="/reset-password/:token"
+              token={token}
+              samePath={false}
+              redirectUrl={`/user-profile/${uid}`}
+            />
 
-          {/* ---------------- skill tests ----------------- */}
-          <PrivateRoute
-            component={SkillTestList}
-            path="/skill-tests"
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
-          <PrivateRoute
-            component={TestPage}
-            path="/skill-test/:tid"
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
+            {/* ---------------- skill tests ----------------- */}
+            <PrivateRoute
+              component={SkillTestList}
+              path="/skill-tests"
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
+            <PrivateRoute
+              component={TestPage}
+              path="/skill-test/:tid"
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
 
-          {/* --------------------- chats --------------------- */}
-          <PrivateRoute
-            component={Chats}
-            path="/chats"
-            token={token}
-            samePath
-            redirectUrl="/auth"
-          />
+            {/* --------------------- chats --------------------- */}
+            <PrivateRoute
+              component={Chats}
+              path="/chats"
+              token={token}
+              samePath
+              redirectUrl="/auth"
+            />
 
-          <Route component={Error404} />
-        </Switch>
-      </Suspense>
+            <Route component={Error404} />
+          </Switch>
+        </Suspense>
+      </main>
     </>
   );
 };
