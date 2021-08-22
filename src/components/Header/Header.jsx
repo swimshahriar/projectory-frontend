@@ -37,14 +37,14 @@ const Header = () => {
 
   return (
     <Container maxWidth="lg">
-      <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box
-          maxWidth="12rem"
           maxHeight="70px"
           height="70px"
           display="flex"
           justifyContent="center"
           alignItems="center"
+          className="logo"
           onClick={() => history.push("/")}
         >
           <img src={logo} alt="logo" width="100%" style={{ cursor: "pointer" }} />
@@ -98,8 +98,8 @@ const Header = () => {
             </Box>
           ) : (
             <Box>
-              <Button variant="outlined" color="secondary" onClick={() => history.push("/auth")}>
-                Login/Register
+              <Button variant="contained" color="primary" onClick={() => history.push("/auth")}>
+                Login
               </Button>
             </Box>
           )}

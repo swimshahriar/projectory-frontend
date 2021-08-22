@@ -48,7 +48,7 @@ const Jobs = () => {
           flexWrap="wrap"
           mt={5}
           flex="80%"
-          minWidth="400px"
+          minWidth="300px"
         >
           {jobs && jobs.length > 0 ? (
             jobs.map((job, idx) => <JobCard job={job} key={idx} />)

@@ -1,3 +1,8 @@
+.logo {
+  min-width: 5rem;
+  max-width: 12rem;
+}
+
 .header__menu {
   font-size: 1.8rem;
   display: none;
@@ -9,14 +14,13 @@
 .header__list {
   display: flex;
   list-style: none;
-  padding-right: 2rem;
 }
 
 .header__list li {
   margin-right: 1rem;
 }
 
-.header__list li:nth-child(5) {
+.header__list li:nth-child(4) {
   margin-right: 0;
 }
 
@@ -39,7 +43,7 @@
   height: 0.25rem;
   left: 0;
   top: 2.2rem;
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
 }
 
 .show {
@@ -47,9 +51,12 @@
 }
 
 @media screen and (max-width: 850px) {
+  .logo {
+    max-width: 8rem;
+  }
+
   .header__menu {
     display: block;
-    padding-right: 2rem;
   }
 
   .header__list {

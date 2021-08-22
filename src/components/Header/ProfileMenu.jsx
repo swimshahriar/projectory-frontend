@@ -33,7 +33,7 @@ const ProfileMenu = () => {
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
-            history.push(`user-profile/${uid}`);
+            history.push(`/user-profile/${uid}`);
           }}
         >
           Profile

@@ -53,7 +53,7 @@ const Services = () => {
           gridGap={15}
           mt={5}
           flex="80%"
-          minWidth="400px"
+          minWidth="300px"
         >
           {services && services.length > 0 ? (
             services.map((service, idx) => (
