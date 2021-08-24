@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Conversations = ({ conv, uid, active, onclick }) => {
+const Conversations = ({ conv, uid, active, online, onclick }) => {
   const classes = useStyles();
   return (
     <Box
@@ -23,14 +23,25 @@ const Conversations = ({ conv, uid, active, onclick }) => {
     >
       <Paper>
         <Box p={2}>
-          <Typography color="textPrimary" variant="h6" gutterBottom>
+          <Typography color="textPrimary" variant="h6">
             {conv.userName[conv.members.find((u) => u !== uid)]}
           </Typography>
 
-          <Typography>{conv.lastMsg}</Typography>
-          <Typography color="textSecondary" align="right">
-            {moment(conv.updatedAt).fromNow()}
-          </Typography>
+          <Typography variant="body1">{conv.lastMsg.slice(0, 20)}...</Typography>
+          <Box display="flex" justifyContent="space-between" gridGap={5}>
+            {online ? (
+              <Typography color="primary" variant="subtitle2">
+                online
+              </Typography>
+            ) : (
+              <Typography color="secondary" variant="subtitle2">
+                offline
+              </Typography>
+            )}
+            <Typography color="textSecondary" variant="subtitle2">
+              {moment(conv.updatedAt).fromNow()}
+            </Typography>
+          </Box>
         </Box>
       </Paper>
     </Box>

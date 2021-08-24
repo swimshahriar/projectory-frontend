@@ -24,6 +24,7 @@ const Chats = () => {
   const socket = useRef();
   const scrollRef = useRef();
   const { uid, token } = useSelector((state) => state.auth);
+  const [isActive, setIsActive] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -60,7 +61,17 @@ const Chats = () => {
   // -------------------- addUser and getUsers -------------------
   useEffect(() => {
     socket.current.emit("addUser", uid);
-  }, [uid]);
+    if (currentChat) {
+      socket.current.on("getUsers", (users) => {
+        const isUserActive = users.find(
+          (user) => user.userId === currentChat.members.find((m) => m !== uid)
+        );
+        if (isUserActive) {
+          setIsActive((prev) => !prev);
+        }
+      });
+    }
+  }, [uid, currentChat]);
 
   // ---------------- messages scroll to view -------------------
   useEffect(() => {
@@ -178,6 +189,7 @@ const Chats = () => {
                   key={conv._id}
                   conv={conv}
                   uid={uid}
+                  online={isActive}
                   active={conv._id === queryCid}
                   onclick={() => history.push(`/chats/?cid=${conv._id}`)}
                 />
@@ -213,7 +225,13 @@ const Chats = () => {
             {messages?.length ? (
               messages.map((msg, idx) => (
                 <div ref={scrollRef} key={idx}>
-                  <Message msg={msg} me={msg.senderId === uid} uid={uid} conv={currentChat} />
+                  <Message
+                    msg={msg}
+                    online={isActive}
+                    me={msg.senderId === uid}
+                    uid={uid}
+                    conv={currentChat}
+                  />
                 </div>
               ))
             ) : (
