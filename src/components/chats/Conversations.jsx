@@ -16,9 +16,9 @@ const Conversations = ({ conv, uid, active, online, onclick }) => {
     <Box
       my={2}
       className={classes.mPointer}
-      border={active && 2}
-      borderColor={active && "primary.main"}
-      borderRadius={active && 5}
+      border={active ? 2 : 0}
+      borderColor={active ? "primary.main" : ""}
+      borderRadius={active ? 5 : 0}
       onClick={onclick}
     >
       <Paper>
@@ -27,7 +27,7 @@ const Conversations = ({ conv, uid, active, online, onclick }) => {
             {conv.userName[conv.members.find((u) => u !== uid)]}
           </Typography>
 
-          <Typography variant="body1">{conv.lastMsg.slice(0, 20)}...</Typography>
+          <Typography variant="body1">{conv.lastMsg?.slice(0, 20)}...</Typography>
           <Box display="flex" justifyContent="space-between" gridGap={5}>
             {online ? (
               <Typography color="primary" variant="subtitle2">

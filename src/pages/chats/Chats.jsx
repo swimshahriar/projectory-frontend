@@ -20,6 +20,7 @@ const Chats = () => {
   const classes = useStyles();
   const search = new URLSearchParams(useLocation().search);
   const queryCid = search.get("cid");
+  const queryRid = search.get("rid");
   const history = useHistory();
   const socket = useRef();
   const scrollRef = useRef();
@@ -50,6 +51,32 @@ const Chats = () => {
       setCurrentChat(currConv);
     }
   }, [queryCid, conversations]);
+
+  // ------------------- if reciever id in query -----------------
+  useEffect(() => {
+    if (queryRid) {
+      (async () => {
+        try {
+          const conversation = await axios.post(
+            `${import.meta.env.VITE_API_BASE_URI}/chats/conversations/${queryRid}`,
+            {},
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (conversation.data?.cid) {
+            history.push(`/chats?cid=${conversation.data.cid}`);
+          } else if (conversation.data?.conversations._id) {
+            history.push(`/chats?cid=${conversation.data.conversations._id}`);
+          }
+        } catch (error) {
+          console.log(error.response.data.message);
+        }
+      })();
+    }
+  }, [queryRid, token, history, conversations]);
 
   // ------------------- arrival message ---------------------
   useEffect(() => {
@@ -181,7 +208,6 @@ const Chats = () => {
           </Box>
 
           {/* --------------------- conversations ------------------ */}
-
           <Box gridGap={10} mt={2} className={classes.overflowy}>
             {conversations?.length ? (
               conversations.map((conv) => (
@@ -215,9 +241,14 @@ const Chats = () => {
           minWidth="300px"
         >
           <Box py={1} mb={1} border={2} borderColor="primary.main" borderRadius={5}>
-            <Typography variant="h6" align="center">
-              Messages
-            </Typography>
+            {currentChat && (
+              <Typography variant="h6" align="center">
+                <Typography component="span" color={isActive ? "primary" : "secondary"}>
+                  ({isActive ? "online" : "offline"})
+                </Typography>{" "}
+                {currentChat?.userName[currentChat.members.find((m) => m !== uid)]}
+              </Typography>
+            )}
           </Box>
 
           {/* ------------------------ messages ------------------- */}
