@@ -21,6 +21,7 @@ const JobDetails = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { jobs, isLoading } = useSelector((state) => state.jobs);
+  const { uid } = useSelector((state) => state.auth);
 
   // fetch job details
   useEffect(() => {
@@ -40,12 +41,6 @@ const JobDetails = () => {
 
   return (
     <Container maxWidth="lg">
-      {/* 
-        - avatar with username
-        - skills
-        - price -> apply button + num of applicants
-        - details
-       */}
       <Paper>
         <Box px={3} py={4} my={3}>
           <Typography variant="h5" gutterBottom>
@@ -117,18 +112,33 @@ const JobDetails = () => {
               <Button variant="contained" color="primary" size="large">
                 Apply
               </Button>
+              {jobs[0]?.userId !== uid && (
+                <Box>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={() => history.push(`/chats?rid=${jobs[0]?.userId}`)}
+                  >
+                    Contact
+                  </Button>
+                </Box>
+              )}
             </Box>
           )}
 
           <Divider />
-          <Box my={3}>
+          <Box mt={3} display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="h6" gutterBottom>
               Details
             </Typography>
-            <Typography variant="body1" gutterBottom>
-              {jobs[0].details}
+            <Typography variant="h6" color="primary" gutterBottom>
+              {jobs[0].price} tk
             </Typography>
           </Box>
+          <Typography variant="body1" gutterBottom>
+            {jobs[0].details}
+          </Typography>
         </Box>
       </Paper>
     </Container>

@@ -1,4 +1,4 @@
-import { Box, Container, Divider, Paper, Typography } from "@material-ui/core";
+import { Box, Button, Container, Divider, Paper, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -16,7 +16,8 @@ const ServiceDetails = () => {
   const { sid } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { error, res, isLoading, services } = useSelector((state) => state.services);
+  const { isLoading, services } = useSelector((state) => state.services);
+  const { uid } = useSelector((state) => state.auth);
   const { ratings } = useSelector((state) => state.serviceRatings);
 
   useEffect(() => {
@@ -42,27 +43,40 @@ const ServiceDetails = () => {
       >
         <Box my={3} flex={55}>
           <Typography variant="h5">{services.title}</Typography>
-          <Box my={2} display="flex" justifyItems="center" alignItems="center" gridGap={10}>
-            <Box
-              onClick={() => history.push(`/user-profile/${services?.userId}`)}
-              style={{ cursor: "pointer" }}
-            >
-              <AvatarWithUserName
-                userName="swimshahriar"
-                publicId={services.userImg}
-                uploadPreset="projectory_services"
-                width="30"
-                height="30"
-                radius="max"
-                crop="fill"
-              />
+          <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
+            <Box my={2} display="flex" justifyItems="center" alignItems="center" gridGap={10}>
+              <Box
+                onClick={() => history.push(`/user-profile/${services?.userId}`)}
+                style={{ cursor: "pointer" }}
+              >
+                <AvatarWithUserName
+                  userName="swimshahriar"
+                  publicId={services.userImg}
+                  uploadPreset="projectory_services"
+                  width="30"
+                  height="30"
+                  radius="max"
+                  crop="fill"
+                />
+              </Box>
+              <Box mb={0.5}>
+                <RatingStarCount
+                  star={services?.rating?.rating || 0}
+                  starCount={services?.rating?.count || 0}
+                />
+              </Box>
             </Box>
-            <Box mb={0.5}>
-              <RatingStarCount
-                star={services?.rating?.rating || 0}
-                starCount={services?.rating?.count || 0}
-              />
-            </Box>
+            {services?.userId !== uid && (
+              <Box my={1}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => history.push(`/chats?rid=${services?.userId}`)}
+                >
+                  Contact
+                </Button>
+              </Box>
+            )}
           </Box>
 
           <Box>{services.images && <SwiperComp slides={services?.images} />}</Box>

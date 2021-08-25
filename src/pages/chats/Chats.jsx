@@ -25,6 +25,7 @@ const Chats = () => {
   const socket = useRef();
   const scrollRef = useRef();
   const { uid, token } = useSelector((state) => state.auth);
+  const [onlineUsers, setOnlineUsers] = useState([]);
   const [isActive, setIsActive] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -88,17 +89,10 @@ const Chats = () => {
   // -------------------- addUser and getUsers -------------------
   useEffect(() => {
     socket.current.emit("addUser", uid);
-    if (currentChat) {
-      socket.current.on("getUsers", (users) => {
-        const isUserActive = users.find(
-          (user) => user.userId === currentChat.members.find((m) => m !== uid)
-        );
-        if (isUserActive) {
-          setIsActive((prev) => !prev);
-        }
-      });
-    }
-  }, [uid, currentChat]);
+    socket.current.on("getUsers", (users) => {
+      setOnlineUsers(users);
+    });
+  }, [uid]);
 
   // ---------------- messages scroll to view -------------------
   useEffect(() => {
@@ -215,7 +209,7 @@ const Chats = () => {
                   key={conv._id}
                   conv={conv}
                   uid={uid}
-                  online={isActive}
+                  // online={onlineUsers?.includes(conv.members.find((mid) => mid !== uid))}
                   active={conv._id === queryCid}
                   onclick={() => history.push(`/chats/?cid=${conv._id}`)}
                 />
@@ -243,9 +237,20 @@ const Chats = () => {
           <Box py={1} mb={1} border={2} borderColor="primary.main" borderRadius={5}>
             {currentChat && (
               <Typography variant="h6" align="center">
-                <Typography component="span" color={isActive ? "primary" : "secondary"}>
-                  ({isActive ? "online" : "offline"})
-                </Typography>{" "}
+                {/* <Typography
+                  component="span"
+                  color={
+                    onlineUsers?.includes(currentChat.members.find((mid) => mid !== uid))
+                      ? "primary"
+                      : "secondary"
+                  }
+                >
+                  (
+                  {onlineUsers?.includes(currentChat.members.find((mid) => mid !== uid))
+                    ? "online"
+                    : "offline"}
+                  )
+                </Typography>{" "} */}
                 {currentChat?.userName[currentChat.members.find((m) => m !== uid)]}
               </Typography>
             )}
@@ -258,7 +263,7 @@ const Chats = () => {
                 <div ref={scrollRef} key={idx}>
                   <Message
                     msg={msg}
-                    online={isActive}
+                    online={false}
                     me={msg.senderId === uid}
                     uid={uid}
                     conv={currentChat}

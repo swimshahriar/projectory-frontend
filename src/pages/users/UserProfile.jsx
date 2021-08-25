@@ -153,6 +153,20 @@ const UserProfile = () => {
                   <Typography component="span">No tagline added.</Typography>
                 )}
               </Typography>
+
+              {/* ------------------------- contact button ------------------------ */}
+              {uid !== user._id && (
+                <Box my={2}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    onClick={() => history.push(`/chats?rid=${user._id}`)}
+                  >
+                    Contact
+                  </Button>
+                </Box>
+              )}
               <Divider className={classes.mtMd} />
               <Box display="flex" justifyContent="space-between" className={classes.mtMd}>
                 <Typography

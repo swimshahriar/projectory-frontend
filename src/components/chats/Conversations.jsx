@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Conversations = ({ conv, uid, active, online, onclick }) => {
+const Conversations = ({ conv, uid, active, online = false, onclick }) => {
   const classes = useStyles();
   return (
     <Box
