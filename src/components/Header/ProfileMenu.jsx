@@ -61,6 +61,14 @@ const ProfileMenu = () => {
           Skill Tests
         </MenuItem>
         <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
+            history.push(`/chats?rid=${import.meta.env.VITE_ADMIN_ID}`);
+          }}
+        >
+          Contact Admin
+        </MenuItem>
+        <MenuItem
           onClick={async () => {
             await dispatch(logOutHandler());
             setAnchorEl(null);

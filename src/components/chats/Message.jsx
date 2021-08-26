@@ -6,7 +6,7 @@ const Message = ({ me = false, msg, conv, uid }) => (
   <Box my={2}>
     <Box marginLeft={me ? 0 : 1} marginRight={me ? 1 : 0}>
       <Typography variant="subtitle2" align={me ? "right" : "left"}>
-        {conv.userName[conv.members.find((u) => (!me ? u !== uid : u === uid))]}
+        {conv?.userName[conv.members.find((u) => (!me ? u !== uid : u === uid))]}
       </Typography>
     </Box>
 

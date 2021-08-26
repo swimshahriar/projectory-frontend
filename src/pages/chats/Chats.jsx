@@ -113,7 +113,7 @@ const Chats = () => {
         console.log(err);
       }
     })();
-  }, [token]);
+  }, [token, queryCid]);
 
   // -------------------------- fetch messages ---------------------------
   useEffect(() => {
@@ -173,6 +173,17 @@ const Chats = () => {
         <Typography variant="h4" align="center">
           Chats
         </Typography>
+      </Box>
+
+      {/* -------------------------- admin button ------------------------ */}
+      <Box my={2} display="flex" justifyContent="flex-end">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => history.push(`/chats?rid=${import.meta.env.VITE_ADMIN_ID}`)}
+        >
+          Contact Admin
+        </Button>
       </Box>
 
       <Box
