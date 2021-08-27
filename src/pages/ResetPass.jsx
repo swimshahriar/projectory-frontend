@@ -11,6 +11,7 @@ import * as yup from "yup";
 import { forgotPassHandler, resetPassHandler } from "../actions/authAction";
 // components
 import DialogModal from "../components/DialogModal";
+import SiteLayout from "../components/layouts/SiteLayout";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -94,7 +95,7 @@ const ResetPass = () => {
   }
 
   return (
-    <>
+    <SiteLayout>
       <DialogModal
         open={open}
         setOpen={setOpen}
@@ -219,7 +220,7 @@ const ResetPass = () => {
           </Button>
         </Typography>
       </Container>
-    </>
+    </SiteLayout>
   );
 };
 

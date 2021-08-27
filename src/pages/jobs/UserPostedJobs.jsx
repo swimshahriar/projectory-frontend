@@ -1,8 +1,9 @@
 import { Box, Container, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchJobs } from "../../actions/jobAction";
 // internal imports
+import { fetchJobs } from "../../actions/jobAction";
+import SiteLayout from "../../components/layouts/SiteLayout";
 import PostedJobsTab from "../../components/PostedJobsTab";
 
 const UserPostedJobs = () => {
@@ -35,20 +36,22 @@ const UserPostedJobs = () => {
   }
 
   return (
-    <Container maxWidth="lg">
-      <Box my={3}>
-        <Typography variant="h4" align="center">
-          Your Posted Jobs
-        </Typography>
-      </Box>
+    <SiteLayout>
+      <Container maxWidth="lg">
+        <Box my={3}>
+          <Typography variant="h4" align="center">
+            Your Posted Jobs
+          </Typography>
+        </Box>
 
-      <PostedJobsTab
-        publicJobs={publicJobs}
-        activeJobs={activeJobs}
-        finishedJobs={finishedJobs}
-        canceledJobs={canceledJobs}
-      />
-    </Container>
+        <PostedJobsTab
+          publicJobs={publicJobs}
+          activeJobs={activeJobs}
+          finishedJobs={finishedJobs}
+          canceledJobs={canceledJobs}
+        />
+      </Container>
+    </SiteLayout>
   );
 };
 

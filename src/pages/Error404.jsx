@@ -1,15 +1,18 @@
 import { Container, Typography } from "@material-ui/core";
 import React from "react";
+import SiteLayout from "../components/layouts/SiteLayout";
 
 const Error404 = () => (
-  <Container>
-    <Typography variant="h4" align="center" color="textSecondary" style={{ marginTop: "20%" }}>
-      404 - Not Found!{" "}
-      <Typography component="span" aria-label="sad" role="img">
-        😭
+  <SiteLayout>
+    <Container maxWidth="lg">
+      <Typography variant="h4" align="center" color="textSecondary" style={{ marginTop: "20%" }}>
+        404 - Not Found!{" "}
+        <Typography component="span" aria-label="sad" role="img">
+          😭
+        </Typography>
       </Typography>
-    </Typography>
-  </Container>
+    </Container>
+  </SiteLayout>
 );
 
 export default Error404;

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 // internal imports
 import { fetchJobs } from "../../actions/jobAction";
 import JobCard from "../../components/JobCard";
+import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
 
 const Jobs = () => {
@@ -26,40 +27,42 @@ const Jobs = () => {
   }
 
   return (
-    <Container maxWidth="lg">
-      <Box mt={5}>
-        <Typography variant="h4" align="center">
-          Jobs
-        </Typography>
-      </Box>
-      <Box display="flex" flexWrap="wrap" my={3}>
-        <Box mt={5} flex="20%">
-          <Typography variant="h6" align="center" color="textPrimary">
-            Filters
-          </Typography>
-          <Typography variant="body1" align="center" color="textSecondary">
-            ({jobs ? jobs.length : 0} Jobs)
+    <SiteLayout>
+      <Container maxWidth="lg">
+        <Box mt={5}>
+          <Typography variant="h4" align="center">
+            Jobs
           </Typography>
         </Box>
-
-        <Box
-          display="flex"
-          justifyContent="center"
-          flexWrap="wrap"
-          mt={5}
-          flex="80%"
-          minWidth="300px"
-        >
-          {jobs && jobs.length > 0 ? (
-            jobs.map((job, idx) => <JobCard job={job} key={idx} />)
-          ) : (
-            <Typography variant="body1" align="center">
-              No Jobs Found!
+        <Box display="flex" flexWrap="wrap" my={3}>
+          <Box mt={5} flex="20%">
+            <Typography variant="h6" align="center" color="textPrimary">
+              Filters
             </Typography>
-          )}
+            <Typography variant="body1" align="center" color="textSecondary">
+              ({jobs ? jobs.length : 0} Jobs)
+            </Typography>
+          </Box>
+
+          <Box
+            display="flex"
+            justifyContent="center"
+            flexWrap="wrap"
+            mt={5}
+            flex="80%"
+            minWidth="300px"
+          >
+            {jobs && jobs.length > 0 ? (
+              jobs.map((job, idx) => <JobCard job={job} key={idx} />)
+            ) : (
+              <Typography variant="body1" align="center">
+                No Jobs Found!
+              </Typography>
+            )}
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </SiteLayout>
   );
 };
 

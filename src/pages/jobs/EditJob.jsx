@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
 import { fetchJobs, updateJob } from "../../actions/jobAction";
+import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
 import SweetAlert from "../../components/SweetAlert";
 
@@ -142,128 +143,130 @@ const EditJob = () => {
   }
 
   return (
-    <Container maxWidth="lg" component="section" className={classes.formContainer}>
-      <Box my={3}>
-        <Typography variant="h4" align="center">
-          Update Job
-        </Typography>
-      </Box>
+    <SiteLayout>
+      <Container maxWidth="lg" component="section" className={classes.formContainer}>
+        <Box my={3}>
+          <Typography variant="h4" align="center">
+            Update Job
+          </Typography>
+        </Box>
 
-      {/* -------------------- form ------------------- */}
-      <form onSubmit={submitHandler} className={classes.form}>
-        <Box mb={3}>{error && <Alert severity="error">{error}</Alert>}</Box>
+        {/* -------------------- form ------------------- */}
+        <form onSubmit={submitHandler} className={classes.form}>
+          <Box mb={3}>{error && <Alert severity="error">{error}</Alert>}</Box>
 
-        <TextField
-          label="Title"
-          required
-          variant="outlined"
-          className={classes.formInput}
-          value={formData.title}
-          onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
-        />
-        <TextField
-          label="Details"
-          required
-          variant="outlined"
-          multiline
-          rows={6}
-          className={classes.formInput}
-          value={formData.details}
-          onChange={(e) => setFormData((prev) => ({ ...prev, details: e.target.value }))}
-        />
-
-        <TextField
-          label="Price"
-          required
-          variant="outlined"
-          type="number"
-          className={classes.formInput}
-          value={formData.price}
-          onChange={(e) => setFormData((prev) => ({ ...prev, price: e.target.value }))}
-        />
-
-        <TextField
-          label="Duration"
-          required
-          variant="outlined"
-          type="number"
-          className={classes.formInput}
-          value={formData.duration}
-          onChange={(e) => setFormData((prev) => ({ ...prev, duration: e.target.value }))}
-        />
-
-        <FormControl variant="outlined" className={classes.select}>
-          <InputLabel id="category">Category</InputLabel>
-          <Select
-            labelId="category"
-            label="Category"
-            variant="outlined"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className={classes.select}
-          >
-            <MenuItem value="web-development">Web Development</MenuItem>
-            <MenuItem value="mobile-development">Mobile Development</MenuItem>
-            <MenuItem value="graphics-designing">Graphics Designing</MenuItem>
-            <MenuItem value="seo">SEO</MenuItem>
-            <MenuItem value="digital-marketing">Digital Marketing</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Box display="flex" justifyContent="center" alignItems="center" width="100%">
           <TextField
-            label="Skills"
+            label="Title"
+            required
             variant="outlined"
             className={classes.formInput}
-            value={skill}
-            onChange={(e) => setSkill(e.target.value)}
+            value={formData.title}
+            onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
           />
-          <Box ml={2} mb={5}>
-            <Button
+          <TextField
+            label="Details"
+            required
+            variant="outlined"
+            multiline
+            rows={6}
+            className={classes.formInput}
+            value={formData.details}
+            onChange={(e) => setFormData((prev) => ({ ...prev, details: e.target.value }))}
+          />
+
+          <TextField
+            label="Price"
+            required
+            variant="outlined"
+            type="number"
+            className={classes.formInput}
+            value={formData.price}
+            onChange={(e) => setFormData((prev) => ({ ...prev, price: e.target.value }))}
+          />
+
+          <TextField
+            label="Duration"
+            required
+            variant="outlined"
+            type="number"
+            className={classes.formInput}
+            value={formData.duration}
+            onChange={(e) => setFormData((prev) => ({ ...prev, duration: e.target.value }))}
+          />
+
+          <FormControl variant="outlined" className={classes.select}>
+            <InputLabel id="category">Category</InputLabel>
+            <Select
+              labelId="category"
+              label="Category"
               variant="outlined"
-              color="secondary"
-              onClick={() => {
-                if (skill !== "") {
-                  setSkills((prev) => [...prev, skill]);
-                  setSkill("");
-                }
-              }}
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className={classes.select}
             >
-              Add
-            </Button>
-          </Box>
-        </Box>
+              <MenuItem value="web-development">Web Development</MenuItem>
+              <MenuItem value="mobile-development">Mobile Development</MenuItem>
+              <MenuItem value="graphics-designing">Graphics Designing</MenuItem>
+              <MenuItem value="seo">SEO</MenuItem>
+              <MenuItem value="digital-marketing">Digital Marketing</MenuItem>
+            </Select>
+          </FormControl>
 
-        {/* ---------------------- skill list ----------------------- */}
-        <Box
-          display="flex"
-          justifyContent="flex-start"
-          alignItems="center"
-          flexWrap="wrap"
-          gridGap={10}
-        >
-          {skills?.length > 0 &&
-            skills.map((skill, idx) => (
-              <Chip
-                key={idx}
-                label={skill}
-                color={idx % 2 === 0 ? "primary" : "secondary"}
-                onDelete={() => {
-                  setSkills(skills.filter((item) => item !== skill));
+          <Box display="flex" justifyContent="center" alignItems="center" width="100%">
+            <TextField
+              label="Skills"
+              variant="outlined"
+              className={classes.formInput}
+              value={skill}
+              onChange={(e) => setSkill(e.target.value)}
+            />
+            <Box ml={2} mb={5}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => {
+                  if (skill !== "") {
+                    setSkills((prev) => [...prev, skill]);
+                    setSkill("");
+                  }
                 }}
-              />
-            ))}
-        </Box>
+              >
+                Add
+              </Button>
+            </Box>
+          </Box>
 
-        {isLoading ? (
-          <CircularProgress color="primary" />
-        ) : (
-          <Button type="submit" variant="contained" color="primary" size="large">
-            Submit
-          </Button>
-        )}
-      </form>
-    </Container>
+          {/* ---------------------- skill list ----------------------- */}
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            flexWrap="wrap"
+            gridGap={10}
+          >
+            {skills?.length > 0 &&
+              skills.map((skill, idx) => (
+                <Chip
+                  key={idx}
+                  label={skill}
+                  color={idx % 2 === 0 ? "primary" : "secondary"}
+                  onDelete={() => {
+                    setSkills(skills.filter((item) => item !== skill));
+                  }}
+                />
+              ))}
+          </Box>
+
+          {isLoading ? (
+            <CircularProgress color="primary" />
+          ) : (
+            <Button type="submit" variant="contained" color="primary" size="large">
+              Submit
+            </Button>
+          )}
+        </form>
+      </Container>
+    </SiteLayout>
   );
 };
 

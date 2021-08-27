@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
 import { fetchSkillTests, giveSkillTest } from "../../actions/skillTestAction";
+import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
 import QuestionWithOptions from "../../components/QuestionWithOptions";
 import SweetAlert from "../../components/SweetAlert";
@@ -64,64 +65,66 @@ const TestPage = () => {
   }
 
   return (
-    <Container maxWidth="lg" position="relative">
-      {error && (
+    <SiteLayout>
+      <Container maxWidth="lg" position="relative">
+        {error && (
+          <Box my={3}>
+            <Typography variant="h6" align="center" color="secondary">
+              {error}
+            </Typography>
+          </Box>
+        )}
+
         <Box my={3}>
-          <Typography variant="h6" align="center" color="secondary">
-            {error}
-          </Typography>
-        </Box>
-      )}
-
-      <Box my={3}>
-        <Typography variant="h4" align="center">
-          {skillTests?.title}
-        </Typography>
-      </Box>
-
-      {/* --------------------- timer ------------------ */}
-      <Box position="fixed" right={20} bottom={20}>
-        <TestTimer time={skillTests?.duration} setIsTimeFinish={setIsTimeFinish} />
-      </Box>
-
-      {/* ---------------- questions with options -------------- */}
-      <Box my={3}>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          flexWrap="wrap"
-          my={3}
-        >
-          <Typography variant="h5" gutterBottom>
-            Questions: {skillTests?.questions && Object.keys(skillTests.questions).length}
-          </Typography>
-          <Typography variant="h6" gutterBottom>
-            Time: {skillTests?.duration} mins.
+          <Typography variant="h4" align="center">
+            {skillTests?.title}
           </Typography>
         </Box>
 
-        <Box display="flex" flexDirection="column" gridGap={15} mt={3}>
-          {skillTests?.questions &&
-            Object.keys(skillTests.questions).map((ques) => (
-              <QuestionWithOptions
-                key={ques}
-                qnum={ques}
-                question={skillTests.questions[ques]}
-                options={skillTests.options[ques]}
-                setAnswers={setAnswers}
-              />
-            ))}
+        {/* --------------------- timer ------------------ */}
+        <Box position="fixed" right={20} bottom={20}>
+          <TestTimer time={skillTests?.duration} setIsTimeFinish={setIsTimeFinish} />
         </Box>
-      </Box>
 
-      {/* ----------------- submit btn ------------------ */}
-      <Box my={3} display="flex" justifyContent="center" alignItems="center">
-        <Button variant="contained" color="primary" size="large" onClick={handleSubmit}>
-          Submit
-        </Button>
-      </Box>
-    </Container>
+        {/* ---------------- questions with options -------------- */}
+        <Box my={3}>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            flexWrap="wrap"
+            my={3}
+          >
+            <Typography variant="h5" gutterBottom>
+              Questions: {skillTests?.questions && Object.keys(skillTests.questions).length}
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              Time: {skillTests?.duration} mins.
+            </Typography>
+          </Box>
+
+          <Box display="flex" flexDirection="column" gridGap={15} mt={3}>
+            {skillTests?.questions &&
+              Object.keys(skillTests.questions).map((ques) => (
+                <QuestionWithOptions
+                  key={ques}
+                  qnum={ques}
+                  question={skillTests.questions[ques]}
+                  options={skillTests.options[ques]}
+                  setAnswers={setAnswers}
+                />
+              ))}
+          </Box>
+        </Box>
+
+        {/* ----------------- submit btn ------------------ */}
+        <Box my={3} display="flex" justifyContent="center" alignItems="center">
+          <Button variant="contained" color="primary" size="large" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </Box>
+      </Container>
+    </SiteLayout>
   );
 };
 
