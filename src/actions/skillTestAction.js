@@ -36,6 +36,39 @@ export const fetchSkillTests = (data, token) => async (dispatch) => {
   }
 };
 
+// -------------------- update skill test -------------------
+export const updateSkillTest = (tid, data, token) => async (dispatch) => {
+  dispatch({ type: "LOADING_SKILLTEST" });
+
+  const fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/skill-test/${tid}`;
+
+  try {
+    const res = await axios.patch(
+      fetchUrl,
+      { ...data },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    dispatch({
+      type: "FETCH_SKILLTEST",
+      payload: {
+        skillTests: res.data.skillTests,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_SKILLTEST",
+      payload: {
+        error: error.response?.data?.message || error.message,
+      },
+    });
+  }
+};
+
 // ------------------ fetch test results --------------------
 export const fetchSkillTestResults = (data, token) => async (dispatch) => {
   dispatch({ type: "LOADING_SKILLTEST" });

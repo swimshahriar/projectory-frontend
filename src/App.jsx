@@ -30,6 +30,7 @@ const Chats = lazy(() => import("./pages/chats/Chats"));
 const Admin = lazy(() => import("./pages/admin/Admin"));
 const AdminChats = lazy(() => import("./pages/admin/AdminChats"));
 const AdminSkillTests = lazy(() => import("./pages/admin/AdminSkillTests"));
+const AdminEditSkillTests = lazy(() => import("./pages/skillTests/AdminEditSkillTests"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 
 const App = () => {
@@ -164,9 +165,16 @@ const App = () => {
             <Redirect to="/auth" />
           )}
         </Route>
-        <Route path="/admin/skill-test">
+        <Route path="/admin/skill-test" exact>
           {token && uid === import.meta.env.VITE_ADMIN_ID ? (
             <AdminSkillTests />
+          ) : (
+            <Redirect to="/auth" />
+          )}
+        </Route>
+        <Route path="/admin/skill-test/:tid" exact>
+          {token && uid === import.meta.env.VITE_ADMIN_ID ? (
+            <AdminEditSkillTests />
           ) : (
             <Redirect to="/auth" />
           )}
