@@ -39,7 +39,7 @@ const AdminSkillTests = () => {
           gridGap={10}
         >
           {isLoading && <CircularProgress color="primary" />}
-          {skillTests ? (
+          {skillTests?.map ? (
             skillTests?.map((test, idx) => <SkillTestCard key={idx} skillTest={test} admin />)
           ) : (
             <Typography align="center">No Tests added yet!</Typography>

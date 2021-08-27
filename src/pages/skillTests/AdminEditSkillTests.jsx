@@ -8,12 +8,13 @@ import {
   Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
-import { fetchSkillTests, updateSkillTest } from "../../actions/skillTestAction";
+import { deleteSkillTest, fetchSkillTests, updateSkillTest } from "../../actions/skillTestAction";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import SweetAlert from "../../components/SweetAlert";
 
@@ -62,7 +63,7 @@ const AdminEditSkillTests = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
-  const { isLoading, skillTests, res } = useSelector((state) => state.skillTest);
+  const { isLoading, skillTests, res, error } = useSelector((state) => state.skillTest);
   const [formData, setFormData] = useState({
     title: "",
     about: "",
@@ -147,6 +148,11 @@ const AdminEditSkillTests = () => {
 
         {/* ----------------------------- form -------------------------- */}
         <Box className={classes.formContainer}>
+          {error && (
+            <Alert color="error" variant="outlined">
+              {error}
+            </Alert>
+          )}
           <form onSubmit={submitHandler} className={classes.form}>
             <TextField
               label="Title"
@@ -242,9 +248,35 @@ const AdminEditSkillTests = () => {
               ))}
 
             {!isLoading ? (
-              <Button type="submit" variant="contained" color="primary">
-                Update
-              </Button>
+              <Box display="flex" gridGap={10} flexWrap="wrap">
+                <Button type="submit" variant="contained" color="primary">
+                  Update
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={async () => {
+                    SweetAlert.fire({
+                      title: "Are you sure?",
+                      text: "You won't be able to revert this!",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#36B466",
+                      cancelButtonColor: "#F3826E",
+                      confirmButtonText: "Yes, delete it!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        dispatch(deleteSkillTest(tid, token)).then(() => {
+                          SweetAlert.fire("Deleted!", "Your file has been deleted.", "success");
+                          history.push("/admin/skill-test");
+                        });
+                      }
+                    });
+                  }}
+                >
+                  Delete
+                </Button>
+              </Box>
             ) : (
               <CircularProgress color="primary" />
             )}
