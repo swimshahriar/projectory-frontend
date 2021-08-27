@@ -2,7 +2,7 @@ import { Box, Button, Chip, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
 
-const SkillTestCard = ({ skillTest }) => {
+const SkillTestCard = ({ skillTest, admin = false }) => {
   const history = useHistory();
 
   return (
@@ -32,13 +32,25 @@ const SkillTestCard = ({ skillTest }) => {
             />
           </Box>
           <Box display="flex" justifyContent="center" alignItems="center">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => history.push(`/skill-test/${skillTest._id}`)}
-            >
-              Start
-            </Button>
+            {!admin ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => history.push(`/skill-test/${skillTest._id}`)}
+              >
+                Start
+              </Button>
+            ) : (
+              <Box>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => history.push(`/admin/skill-test/${skillTest._id}`)}
+                >
+                  edit
+                </Button>
+              </Box>
+            )}
           </Box>
         </Box>
       </Paper>
