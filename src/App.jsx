@@ -28,6 +28,9 @@ const SkillTestList = lazy(() => import("./pages/skillTests/SkillTestList"));
 const TestPage = lazy(() => import("./pages/skillTests/TestPage"));
 const Chats = lazy(() => import("./pages/chats/Chats"));
 const Admin = lazy(() => import("./pages/admin/Admin"));
+const AdminChats = lazy(() => import("./pages/admin/AdminChats"));
+const AdminSkillTests = lazy(() => import("./pages/admin/AdminSkillTests"));
+const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -151,8 +154,29 @@ const App = () => {
         </Route>
 
         {/* ---------------------- admin --------------------- */}
-        <Route path="/admin">
+        <Route path="/admin" exact>
           {token && uid === import.meta.env.VITE_ADMIN_ID ? <Admin /> : <Redirect to="/auth" />}
+        </Route>
+        <Route path="/admin/chats" exact>
+          {token && uid === import.meta.env.VITE_ADMIN_ID ? (
+            <AdminChats />
+          ) : (
+            <Redirect to="/auth" />
+          )}
+        </Route>
+        <Route path="/admin/skill-test" exact>
+          {token && uid === import.meta.env.VITE_ADMIN_ID ? (
+            <AdminSkillTests />
+          ) : (
+            <Redirect to="/auth" />
+          )}
+        </Route>
+        <Route path="/admin/site-settings" exact>
+          {token && uid === import.meta.env.VITE_ADMIN_ID ? (
+            <AdminSettings />
+          ) : (
+            <Redirect to="/auth" />
+          )}
         </Route>
 
         <Route component={Error404} />

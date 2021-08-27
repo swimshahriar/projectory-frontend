@@ -1,17 +1,16 @@
 import { Container, Typography } from "@material-ui/core";
 import React from "react";
-// internal imports
 import AdminLayout from "../../components/layouts/AdminLayout";
 
-const Admin = () => {
+const AdminSettings = () => {
   const ob = {};
   return (
     <AdminLayout>
       <Container maxWidth="lg">
-        <Typography>Dashboard</Typography>
+        <Typography>Site Settings page</Typography>
       </Container>
     </AdminLayout>
   );
 };
 
-export default Admin;
+export default AdminSettings;

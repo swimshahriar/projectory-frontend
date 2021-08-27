@@ -7,7 +7,6 @@ const SiteLayout = ({ children }) => (
       <Header />
     </header>
     <main style={{ marginTop: "80px" }}>{children}</main>
-    <footer>Footer</footer>
   </>
 );
 
