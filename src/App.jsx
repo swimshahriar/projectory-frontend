@@ -157,21 +157,21 @@ const App = () => {
         <Route path="/admin" exact>
           {token && uid === import.meta.env.VITE_ADMIN_ID ? <Admin /> : <Redirect to="/auth" />}
         </Route>
-        <Route path="/admin/chats" exact>
+        <Route path="/admin/chats">
           {token && uid === import.meta.env.VITE_ADMIN_ID ? (
             <AdminChats />
           ) : (
             <Redirect to="/auth" />
           )}
         </Route>
-        <Route path="/admin/skill-test" exact>
+        <Route path="/admin/skill-test">
           {token && uid === import.meta.env.VITE_ADMIN_ID ? (
             <AdminSkillTests />
           ) : (
             <Redirect to="/auth" />
           )}
         </Route>
-        <Route path="/admin/site-settings" exact>
+        <Route path="/admin/site-settings">
           {token && uid === import.meta.env.VITE_ADMIN_ID ? (
             <AdminSettings />
           ) : (
