@@ -1,13 +1,15 @@
-import { Box, CircularProgress, Container, Typography } from "@material-ui/core";
+import { Box, Button, CircularProgress, Container, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSkillTests } from "../../actions/skillTestAction";
+import { useHistory } from "react-router-dom";
 // internal imports
+import { fetchSkillTests } from "../../actions/skillTestAction";
 import AdminLayout from "../../components/layouts/AdminLayout";
 import SkillTestCard from "../../components/SkillTestCard";
 
 const AdminSkillTests = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { token } = useSelector((state) => state.auth);
   const { skillTests, isLoading } = useSelector((state) => state.skillTest);
 
@@ -26,8 +28,18 @@ const AdminSkillTests = () => {
       <Container maxWidth="lg">
         <Box my={2}>
           <Typography variant="h5" align="center">
-            Skill tests
+            Skill Tests ({skillTests?.length || 0})
           </Typography>
+        </Box>
+
+        <Box display="flex" justifyContent="center" alignItems="center" my={2}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => history.push("/admin/add-skill-test")}
+          >
+            Add New
+          </Button>
         </Box>
 
         <Box

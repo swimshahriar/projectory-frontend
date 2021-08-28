@@ -32,6 +32,7 @@ const AdminChats = lazy(() => import("./pages/admin/AdminChats"));
 const AdminSkillTests = lazy(() => import("./pages/admin/AdminSkillTests"));
 const AdminEditSkillTests = lazy(() => import("./pages/skillTests/AdminEditSkillTests"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
+const AdminAddSkillTest = lazy(() => import("./pages/skillTests/AdminAddSkillTest"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -175,6 +176,13 @@ const App = () => {
         <Route path="/admin/skill-test/:tid" exact>
           {token && uid === import.meta.env.VITE_ADMIN_ID ? (
             <AdminEditSkillTests />
+          ) : (
+            <Redirect to="/auth" />
+          )}
+        </Route>
+        <Route path="/admin/add-skill-test" exact>
+          {token && uid === import.meta.env.VITE_ADMIN_ID ? (
+            <AdminAddSkillTest />
           ) : (
             <Redirect to="/auth" />
           )}
