@@ -20,7 +20,10 @@ import { BsChatDotsFill, BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { GiNewspaper } from "react-icons/gi";
 import { HiMenu } from "react-icons/hi";
 import { RiDashboardFill, RiSettings2Line } from "react-icons/ri";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+// internal imports
+import { logOutHandler } from "../../actions/authAction";
 
 const drawerWidth = 240;
 // styles
@@ -90,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AdminLayout = ({ children }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
   const theme = useTheme();
@@ -127,7 +131,14 @@ const AdminLayout = ({ children }) => {
             Admin Panel
           </Typography>
           <Box ml={3}>
-            <Button variant="contained">Logout</Button>
+            <Button
+              variant="contained"
+              onClick={async () => {
+                await dispatch(logOutHandler());
+              }}
+            >
+              Logout
+            </Button>
           </Box>
         </Toolbar>
       </AppBar>
