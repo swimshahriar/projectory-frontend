@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
-import { fetchOrders } from "../../actions/orderAction";
+import { fetchOrders, updateOrder } from "../../actions/orderAction";
 import SiteLayout from "../../components/layouts/SiteLayout";
 
 // styles
@@ -59,10 +59,37 @@ const OrderDetails = () => {
     }
   }, [uid, orders]);
 
+  // ---------------------------- accept handler ----------------------
+  const handleSubmit = async (action) => {
+    if (action === "accept") {
+      await dispatch(
+        updateOrder(
+          orders?._id,
+          {
+            status: "active",
+            activeDate: new Date(),
+          },
+          token
+        )
+      );
+    } else if (action === "cancel") {
+      await dispatch(
+        updateOrder(
+          orders?._id,
+          {
+            status: "canceled",
+            canceledDate: new Date(),
+          },
+          token
+        )
+      );
+    }
+  };
+
   return (
     <SiteLayout>
       <Container maxWidth="lg">
-        {isLoading && (
+        {(isLoading || !orders) && (
           <Box display="flex" justifyContent="center" alignItems="center" my={3}>
             <CircularProgress color="primary" />
           </Box>
@@ -118,7 +145,7 @@ const OrderDetails = () => {
           </Box>
         </Paper>
 
-        {/* ------------------ buyer info ------------------- */}
+        {/* ------------------ buyer/seller info ------------------- */}
         <Paper>
           <Box
             p={2}
@@ -130,7 +157,16 @@ const OrderDetails = () => {
             gridGap={10}
           >
             <Typography variant="h6" gutterBottom>
-              {isBuyer ? "Seller:" : "Buyer:"} {orders?.reqPersonUserName}
+              {isBuyer ? "Seller:" : "Buyer:"}{" "}
+              {orders?.type === "jobs" ? (
+                <Typography component="span">
+                  {isBuyer ? orders?.reqPersonUserName : orders?.recPersonUserName}
+                </Typography>
+              ) : (
+                <Typography component="span">
+                  {isBuyer ? orders?.recPersonUserName : orders?.reqPersonUserName}
+                </Typography>
+              )}
             </Typography>
             <Box
               display="flex"
@@ -206,12 +242,17 @@ const OrderDetails = () => {
           {/* -------------------- if order in requested status ---------------- */}
           {orders?.status === "requested" && (
             <>
-              {!isBuyer && (
-                <Button variant="contained" color="primary">
+              {orders?.type === "jobs" && isBuyer && (
+                <Button variant="contained" color="primary" onClick={() => handleSubmit("accept")}>
                   Accept
                 </Button>
               )}
-              <Button variant="outlined" color="secondary">
+              {orders?.type === "services" && !isBuyer && (
+                <Button variant="contained" color="primary" onClick={() => handleSubmit("accept")}>
+                  Accept
+                </Button>
+              )}
+              <Button variant="outlined" color="secondary" onClick={() => handleSubmit("cancel")}>
                 Cancel
               </Button>
             </>
@@ -265,7 +306,7 @@ const OrderDetails = () => {
               <Typography>
                 Finished on: {moment(orders?.finishedDate).format("DD MMM YYYY")}
               </Typography>
-              {!isBuyer && (
+              {isBuyer && (
                 <Button variant="contained" color="primary">
                   Give a rating
                 </Button>
