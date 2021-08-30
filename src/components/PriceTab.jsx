@@ -99,7 +99,7 @@ const TabContent = ({ packageInfo, sid, userId, userName, serviceName }) => {
 
       setBrief("");
       setOpen(false);
-      history.push("/orders/seller-services");
+      history.push("/orders/buyer-services");
     }
 
     return () => dispatch({ type: "RESET_ORDER" });

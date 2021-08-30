@@ -12,11 +12,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Alert } from "@material-ui/lab";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
-import { fetchOrders, updateOrder } from "../../actions/orderAction";
+import { fetchOrders, finishedOrder, updateOrder } from "../../actions/orderAction";
 import SiteLayout from "../../components/layouts/SiteLayout";
+import SweetAlert from "../../components/SweetAlert";
 
 // styles
 const useStyles = makeStyles(() => ({
@@ -83,13 +85,32 @@ const OrderDetails = () => {
           token
         )
       );
+    } else if (action === "finished") {
+      await dispatch(
+        finishedOrder(
+          orders?._id,
+          {
+            finishedDate: new Date(),
+          },
+          token
+        )
+      );
     }
+    await dispatch(fetchOrders({ oid }, token));
   };
 
   return (
     <SiteLayout>
       <Container maxWidth="lg">
-        {(isLoading || !orders) && (
+        {/* ---------------------- back button --------------------- */}
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Button variant="outlined" color="primary" onClick={() => history.goBack()}>
+            <BiArrowBack />
+            Go Back
+          </Button>
+        </Box>
+
+        {isLoading && (
           <Box display="flex" justifyContent="center" alignItems="center" my={3}>
             <CircularProgress color="primary" />
           </Box>
@@ -290,7 +311,25 @@ const OrderDetails = () => {
                 </Box>
               </Paper>
               {isBuyer && (
-                <Button variant="contained" color="primary">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>
+                    SweetAlert.fire({
+                      title: "Are you sure?",
+                      text: "You won't be able to revert this!",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: "#36B466",
+                      cancelButtonColor: "#F3826E",
+                      confirmButtonText: "Yes, finish it!",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        handleSubmit("finished");
+                      }
+                    })
+                  }
+                >
                   Mark as Finished
                 </Button>
               )}
