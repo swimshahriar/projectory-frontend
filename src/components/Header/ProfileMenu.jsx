@@ -41,10 +41,26 @@ const ProfileMenu = () => {
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
-            history.push("/orders/seller");
+            history.push(`/buyer-profile/${uid}`);
           }}
         >
-          Orders
+          Buyer Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
+            history.push("/orders/seller-services");
+          }}
+        >
+          Service Orders
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
+            history.push("/orders/seller-jobs");
+          }}
+        >
+          Job Orders
         </MenuItem>
         <MenuItem
           onClick={() => {

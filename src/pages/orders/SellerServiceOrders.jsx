@@ -6,7 +6,7 @@ import { fetchOrders } from "../../actions/orderAction";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import OrdersTabs from "../../components/orders/OrdersTabs";
 
-const SellerOrders = () => {
+const SellerServiceOrders = () => {
   const dispatch = useDispatch();
   const { token, uid } = useSelector((state) => state.auth);
   const { isLoading, orders } = useSelector((state) => state.orders);
@@ -48,7 +48,7 @@ const SellerOrders = () => {
       <Container maxWidth="lg">
         <Box my={3}>
           <Typography variant="h5" align="center">
-            Your Orders
+            Your Service Orders
           </Typography>
         </Box>
         <Box>
@@ -70,4 +70,4 @@ const SellerOrders = () => {
   );
 };
 
-export default SellerOrders;
+export default SellerServiceOrders;

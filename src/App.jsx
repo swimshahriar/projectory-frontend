@@ -33,7 +33,10 @@ const AdminSkillTests = lazy(() => import("./pages/admin/AdminSkillTests"));
 const AdminEditSkillTests = lazy(() => import("./pages/skillTests/AdminEditSkillTests"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminAddSkillTest = lazy(() => import("./pages/skillTests/AdminAddSkillTest"));
-const SellerOrders = lazy(() => import("./pages/orders/SellerOrders"));
+const SellerServiceOrders = lazy(() => import("./pages/orders/SellerServiceOrders"));
+const SellerJobOrders = lazy(() => import("./pages/orders/SellerJobOrders"));
+const BuyerServiceOrders = lazy(() => import("./pages/orders/BuyerServiceOrders"));
+const BuyerJobOrders = lazy(() => import("./pages/orders/BuyerJobOrders"));
 const OrderDetails = lazy(() => import("./pages/orders/OrderDetails"));
 
 const App = () => {
@@ -199,8 +202,29 @@ const App = () => {
 
         {/* ------------------------ orders ----------------------- */}
         <PrivateRoute
-          component={SellerOrders}
-          path="/orders/seller"
+          component={SellerServiceOrders}
+          path="/orders/seller-services"
+          token={token}
+          samePath
+          redirectUrl="/auth"
+        />
+        <PrivateRoute
+          component={SellerJobOrders}
+          path="/orders/seller-jobs"
+          token={token}
+          samePath
+          redirectUrl="/auth"
+        />
+        <PrivateRoute
+          component={BuyerServiceOrders}
+          path="/orders/buyer-services"
+          token={token}
+          samePath
+          redirectUrl="/auth"
+        />
+        <PrivateRoute
+          component={BuyerJobOrders}
+          path="/orders/buyer-jobs"
           token={token}
           samePath
           redirectUrl="/auth"
