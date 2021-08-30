@@ -37,4 +37,42 @@ export const fetchOrders = (data, token) => async (dispatch) => {
   dispatch({
     type: "LOADING_ORDER",
   });
+
+  let fetchUrl;
+
+  if (data?.reqUid) {
+    fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/orders?reqUid=${data.reqUid}&type=${
+      data?.type
+    }`;
+  } else if (data?.recUid) {
+    fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/orders?recUid=${data.recUid}&type=${
+      data?.type
+    }`;
+  } else if (data?.oid) {
+    fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/orders?oid=${data.oid}`;
+  } else {
+    fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/orders?type=${data?.type}`;
+  }
+
+  try {
+    const res = await axios.get(fetchUrl, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    dispatch({
+      type: "FETCH_ORDER",
+      payload: {
+        orders: res.data.orders,
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_ORDER",
+      payload: {
+        error: error.response?.data?.message || error.message,
+      },
+    });
+  }
 };

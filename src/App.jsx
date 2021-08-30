@@ -33,6 +33,7 @@ const AdminSkillTests = lazy(() => import("./pages/admin/AdminSkillTests"));
 const AdminEditSkillTests = lazy(() => import("./pages/skillTests/AdminEditSkillTests"));
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminAddSkillTest = lazy(() => import("./pages/skillTests/AdminAddSkillTest"));
+const SellerOrders = lazy(() => import("./pages/orders/SellerOrders"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -194,6 +195,15 @@ const App = () => {
             <Redirect to="/auth" />
           )}
         </Route>
+
+        {/* ------------------------ orders ----------------------- */}
+        <PrivateRoute
+          component={SellerOrders}
+          path="/orders/seller"
+          token={token}
+          samePath
+          redirectUrl="/auth"
+        />
 
         <Route component={Error404} />
       </Switch>

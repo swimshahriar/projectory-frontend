@@ -15,8 +15,9 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { BsArrowRight } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
-import { createOrder } from "../actions/orderAction";
+import { useHistory } from "react-router-dom";
 // internal imports
+import { createOrder } from "../actions/orderAction";
 import DialogModal from "./DialogModal";
 import SweetAlert from "./SweetAlert";
 
@@ -61,6 +62,7 @@ const TabContent = ({ packageInfo, sid, userId, userName, serviceName }) => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const { res, isLoading } = useSelector((state) => state.orders);
+  const history = useHistory();
 
   // handle submit
   const handleSubmit = async () => {
@@ -97,10 +99,11 @@ const TabContent = ({ packageInfo, sid, userId, userName, serviceName }) => {
 
       setBrief("");
       setOpen(false);
+      history.push("/orders/seller");
     }
 
     return () => dispatch({ type: "RESET_ORDER" });
-  }, [res, dispatch]);
+  }, [res, dispatch, history]);
 
   return (
     <>
@@ -172,7 +175,13 @@ const TabContent = ({ packageInfo, sid, userId, userName, serviceName }) => {
           variant="contained"
           color="primary"
           size="large"
-          onClick={() => setOpen((prev) => !prev)}
+          onClick={() => {
+            if (token) {
+              setOpen(true);
+            } else {
+              history.push("/auth");
+            }
+          }}
         >
           Continue ({packageInfo.price}tk)
         </Button>

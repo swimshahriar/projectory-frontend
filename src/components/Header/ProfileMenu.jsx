@@ -41,6 +41,7 @@ const ProfileMenu = () => {
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
+            history.push("/orders/seller");
           }}
         >
           Orders
@@ -48,6 +49,7 @@ const ProfileMenu = () => {
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
+            history.push("/earnings/seller");
           }}
         >
           Earnings

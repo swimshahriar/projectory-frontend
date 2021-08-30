@@ -36,7 +36,7 @@ const UserLinks = ({ uid, userId }) => {
       <Button color="primary" variant="outlined" onClick={() => history.push("/skill-tests")}>
         Skill Tests
       </Button>
-      <Button color="secondary" variant="outlined" onClick={() => history.push(`/orders/${uid}`)}>
+      <Button color="secondary" variant="outlined" onClick={() => history.push(`/orders/seller`)}>
         Orders
       </Button>
       <Button
