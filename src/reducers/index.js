@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 // internal imports
 import authReducer from "./authReducer";
 import jobReducer from "./jobReducer";
+import orderReducer from "./orderReducer";
 import serviceRatingReducer from "./serviceRatingReducer";
 import serviceReducer from "./serviceReducer";
 import siteSettingReducer from "./siteSettingReducer";
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   jobs: jobReducer,
   skillTest: skillTestReducer,
   settings: siteSettingReducer,
+  orders: orderReducer,
 });
 
 export default rootReducer;

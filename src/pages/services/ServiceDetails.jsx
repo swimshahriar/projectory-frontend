@@ -104,9 +104,19 @@ const ServiceDetails = () => {
 
           {/* -------------------------------- Price tabs ----------------------------- */}
           <Box my={3} flex={45} maxWidth="700px">
-            {services?.packages && <PriceTab packages={services?.packages || false} />}
+            {services?.packages && (
+              <PriceTab
+                sid={services?._id}
+                userId={services?.userId}
+                userName={services?.userName}
+                serviceName={services?.title}
+                packages={services?.packages || false}
+              />
+            )}
           </Box>
         </Box>
+
+        {/* ------------------------------- ratings -------------------- */}
         <Box my={5}>
           <Typography variant="h5">{services?.rating?.count || 0} Reviews</Typography>
           {services?.rating?.count > 0 && (
