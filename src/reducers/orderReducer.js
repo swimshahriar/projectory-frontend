@@ -1,6 +1,7 @@
 const initialState = {
   isLoading: false,
   res: false,
+  createRes: false,
   error: null,
   orders: null,
 };
@@ -20,6 +21,7 @@ const orderReducer = (state = initialState, action) => {
         isLoading: false,
         error: null,
         res: true,
+        createRes: false,
         orders: action.payload.orders,
       };
 
@@ -31,11 +33,21 @@ const orderReducer = (state = initialState, action) => {
         res: true,
       };
 
+    case "CREATE_ORDER":
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        res: false,
+        createRes: true,
+      };
+
     case "ERROR_ORDER":
       return {
         ...state,
         isLoading: false,
         res: false,
+        createRes: false,
         error: action.payload.error,
       };
 
@@ -43,6 +55,7 @@ const orderReducer = (state = initialState, action) => {
       return {
         isLoading: false,
         res: false,
+        createRes: false,
         error: null,
         orders: null,
       };

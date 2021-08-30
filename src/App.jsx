@@ -34,6 +34,7 @@ const AdminEditSkillTests = lazy(() => import("./pages/skillTests/AdminEditSkill
 const AdminSettings = lazy(() => import("./pages/admin/AdminSettings"));
 const AdminAddSkillTest = lazy(() => import("./pages/skillTests/AdminAddSkillTest"));
 const SellerOrders = lazy(() => import("./pages/orders/SellerOrders"));
+const OrderDetails = lazy(() => import("./pages/orders/OrderDetails"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -200,6 +201,13 @@ const App = () => {
         <PrivateRoute
           component={SellerOrders}
           path="/orders/seller"
+          token={token}
+          samePath
+          redirectUrl="/auth"
+        />
+        <PrivateRoute
+          component={OrderDetails}
+          path="/orders/:oid"
           token={token}
           samePath
           redirectUrl="/auth"

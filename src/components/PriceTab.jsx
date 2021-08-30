@@ -60,8 +60,8 @@ const TabContent = ({ packageInfo, sid, userId, userName, serviceName }) => {
   const [open, setOpen] = useState(false);
   const [brief, setBrief] = useState("");
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.auth);
-  const { res, isLoading } = useSelector((state) => state.orders);
+  const { token, uid } = useSelector((state) => state.auth);
+  const { createRes, isLoading } = useSelector((state) => state.orders);
   const history = useHistory();
 
   // handle submit
@@ -86,7 +86,7 @@ const TabContent = ({ packageInfo, sid, userId, userName, serviceName }) => {
 
   // check if order created
   useEffect(() => {
-    if (res) {
+    if (createRes) {
       SweetAlert.fire({
         icon: "success",
         title: "Success",
@@ -103,7 +103,7 @@ const TabContent = ({ packageInfo, sid, userId, userName, serviceName }) => {
     }
 
     return () => dispatch({ type: "RESET_ORDER" });
-  }, [res, dispatch, history]);
+  }, [createRes, dispatch, history]);
 
   return (
     <>
@@ -175,6 +175,7 @@ const TabContent = ({ packageInfo, sid, userId, userName, serviceName }) => {
           variant="contained"
           color="primary"
           size="large"
+          disabled={userId === uid}
           onClick={() => {
             if (token) {
               setOpen(true);
