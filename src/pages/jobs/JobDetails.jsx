@@ -1,13 +1,26 @@
-import { Box, Button, Chip, Container, Divider, Paper, Typography } from "@material-ui/core";
+import {
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Container,
+  Divider,
+  Paper,
+  TextField,
+  Typography
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
 import { fetchJobs } from "../../actions/jobAction";
+import { createOrder } from "../../actions/orderAction";
 import AvatarWithUserName from "../../components/AvatarWithUserName";
+import DialogModal from "../../components/DialogModal";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
+import SweetAlert from "../../components/SweetAlert";
 
 // styles
 const useStyles = makeStyles(() => ({
@@ -22,19 +35,62 @@ const JobDetails = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { jobs, isLoading } = useSelector((state) => state.jobs);
-  const { uid } = useSelector((state) => state.auth);
+  const { uid, token } = useSelector((state) => state.auth);
+  const { isLoading: orderLoading, createRes } = useSelector((state) => state.orders);
+  const [open, setOpen] = useState(false);
+  const [brief, setBrief] = useState("");
 
   // fetch job details
   useEffect(() => {
     (async () => {
       await dispatch(fetchJobs({ jid }));
     })();
-    return async () => {
-      await dispatch({
+    return () => {
+      dispatch({
         type: "RESET_JOBS",
       });
     };
   }, [jid, dispatch]);
+
+  // ----------------------- handle submit ------------------
+  const handleSubmit = async () => {
+    if (brief !== "") {
+      const finalData = {
+        type: "jobs",
+        recPersonId: jobs[0]?.userId,
+        recPersonUserName: jobs[0]?.userName,
+        title: jobs[0]?.title,
+        price: jobs[0]?.price,
+        jobId: jobs[0]?._id,
+        duration: jobs[0]?.duration,
+        features: jobs[0]?.skills,
+        brief,
+      };
+
+      await dispatch(createOrder(finalData, token));
+    }
+  };
+
+  // -------------------- if apply success ------------------
+  useEffect(() => {
+    if (createRes) {
+      SweetAlert.fire({
+        icon: "success",
+        title: "Success",
+        timer: 2000,
+        timerProgressBar: true,
+        position: "bottom-right",
+        toast: true,
+        showConfirmButton: false,
+      });
+
+      setBrief("");
+      setOpen(false);
+      history.push("/orders/seller-jobs");
+    }
+
+    return () => dispatch({ type: "RESET_ORDER" });
+  }, [dispatch, createRes, history]);
 
   if (isLoading || !jobs || !jobs?.length > 0) {
     return <Loading />;
@@ -42,6 +98,45 @@ const JobDetails = () => {
 
   return (
     <SiteLayout>
+      {/* ------------------------ Apply modal ------------------------ */}
+      <DialogModal
+        open={open}
+        setOpen={setOpen}
+        title="Apply request"
+        bodyText={
+          <Box my={2}>
+            <Typography variant="body1" color="textSecondary">
+              {jobs[0]?.title} - {jobs[0]?.price}tk
+            </Typography>
+          </Box>
+        }
+        body={
+          <Box my={2}>
+            <TextField
+              label="your Brief"
+              variant="outlined"
+              required
+              multiline
+              rows={7}
+              value={brief}
+              onChange={(e) => setBrief(e.target.value)}
+            />
+          </Box>
+        }
+        actions={
+          <Box my={2}>
+            {!orderLoading ? (
+              <Button variant="contained" color="primary" onClick={handleSubmit}>
+                Apply
+              </Button>
+            ) : (
+              <CircularProgress color="primary" />
+            )}
+          </Box>
+        }
+      />
+
+      {/* --------------------------- job details --------------------------- */}
       <Container maxWidth="lg">
         <Paper>
           <Box px={3} py={4} my={3}>
@@ -109,9 +204,21 @@ const JobDetails = () => {
                 mb={3}
               >
                 <Typography variant="body1" color="textSecondary">
-                  ({jobs[0]?.numOfApp || 0} applicants)
+                  ({jobs[0]?.applicants || 0} applicants)
                 </Typography>
-                <Button variant="contained" color="primary" size="large">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  disabled={jobs[0]?.userId === uid}
+                  onClick={() => {
+                    if (token) {
+                      setOpen(true);
+                    } else {
+                      history.push("/auth");
+                    }
+                  }}
+                >
                   Apply
                 </Button>
                 {jobs[0]?.userId !== uid && (
