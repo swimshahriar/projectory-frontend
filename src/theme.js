@@ -17,13 +17,13 @@ const muiTheme = createMuiTheme({
     },
   },
   typography: {
-    fontFamily: "Hind Vadodara, sans-serif",
-    h1: { fontFamily: "Montserrat, sans-serif" },
-    h2: { fontFamily: "Montserrat, sans-serif" },
-    h3: { fontFamily: "Lora, serif" },
-    h4: { fontFamily: "Lora, serif" },
-    h5: { fontFamily: "Lora, serif" },
-    h6: { fontFamily: "Lora, serif" },
+    fontFamily: "Poppins, sans-serif",
+    h1: { fontFamily: "Raleway, sans-serif", fontWeight: 700 },
+    h2: { fontFamily: "Raleway, sans-serif", fontWeight: 700 },
+    h3: { fontFamily: "Raleway, sans-serif", fontWeight: 700 },
+    h4: { fontFamily: "Raleway, sans-serif", fontWeight: 700 },
+    h5: { fontFamily: "Raleway, sans-serif", fontWeight: 600 },
+    h6: { fontFamily: "Raleway, sans-serif", fontWeight: 600 },
   },
   breakpoints: {
     values: {

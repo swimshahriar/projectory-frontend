@@ -53,7 +53,7 @@ const Services = () => {
             justifyContent="center"
             flexWrap="wrap"
             gridGap={15}
-            mt={5}
+            my={5}
             flex="80%"
             minWidth="300px"
           >

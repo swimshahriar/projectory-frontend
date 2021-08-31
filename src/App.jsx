@@ -39,6 +39,8 @@ const SellerJobOrders = lazy(() => import("./pages/orders/SellerJobOrders"));
 const BuyerServiceOrders = lazy(() => import("./pages/orders/BuyerServiceOrders"));
 const BuyerJobOrders = lazy(() => import("./pages/orders/BuyerJobOrders"));
 const OrderDetails = lazy(() => import("./pages/orders/OrderDetails"));
+const Topup = lazy(() => import("./pages/payments/Topup"));
+const Withdraw = lazy(() => import("./pages/payments/Withdraw"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -234,6 +236,22 @@ const App = () => {
         <PrivateRoute
           component={OrderDetails}
           path="/orders/:oid"
+          token={token}
+          samePath
+          redirectUrl="/auth"
+        />
+
+        {/* -------------------- payments ------------------- */}
+        <PrivateRoute
+          component={Topup}
+          path="/user-topup"
+          token={token}
+          samePath
+          redirectUrl="/auth"
+        />
+        <PrivateRoute
+          component={Withdraw}
+          path="/user-withdraw"
           token={token}
           samePath
           redirectUrl="/auth"

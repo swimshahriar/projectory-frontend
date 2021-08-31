@@ -138,7 +138,7 @@ const BuyerProfile = () => {
             <Button
               color="primary"
               variant="contained"
-              onClick={() => history.push(`/fav-services/${uid}`)}
+              onClick={() => history.push(`/user-topup/`)}
             >
               Topup
             </Button>

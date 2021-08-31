@@ -65,10 +65,10 @@ const ProfileMenu = () => {
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
-            history.push("/earnings/seller");
+            history.push("/user-withdraw");
           }}
         >
-          Earnings
+          Withdraw
         </MenuItem>
         <MenuItem
           onClick={() => {

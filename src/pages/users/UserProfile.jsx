@@ -130,24 +130,14 @@ const UserProfile = () => {
             >
               Job Orders
             </Button>
-            <Button
-              color="secondary"
-              variant="outlined"
-              onClick={() => {
-                if (uid === userId) {
-                  history.push(`/earnings/${uid}`);
-                }
-              }}
-            >
-              Earnings
-            </Button>
+
             <Button color="primary" variant="outlined" onClick={() => history.push("/skill-tests")}>
               Skill Tests
             </Button>
             <Button
               color="secondary"
               variant="contained"
-              onClick={() => history.push(`/fav-services/${uid}`)}
+              onClick={() => history.push(`/user-withdraw/`)}
             >
               Withdraw
             </Button>

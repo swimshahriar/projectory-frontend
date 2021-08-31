@@ -48,7 +48,7 @@ const Jobs = () => {
             display="flex"
             justifyContent="center"
             flexWrap="wrap"
-            mt={5}
+            my={3}
             flex="80%"
             minWidth="300px"
           >
