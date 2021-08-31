@@ -2,6 +2,8 @@ const initialState = {
   isLoading: false,
   res: false,
   createRes: false,
+  finishedRes: false,
+  updatedRes: false,
   error: null,
   orders: null,
 };
@@ -21,6 +23,7 @@ const orderReducer = (state = initialState, action) => {
         isLoading: false,
         error: null,
         res: true,
+        finishedRes: false,
         createRes: false,
         orders: action.payload.orders,
       };
@@ -31,6 +34,7 @@ const orderReducer = (state = initialState, action) => {
         isLoading: false,
         error: null,
         res: true,
+        finishedRes: false,
       };
 
     case "CREATE_ORDER":
@@ -40,6 +44,28 @@ const orderReducer = (state = initialState, action) => {
         error: null,
         res: false,
         createRes: true,
+        finishedRes: false,
+      };
+
+    case "FINISH_ORDER":
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        res: false,
+        createRes: false,
+        finishedRes: true,
+      };
+
+    case "UPDATE_ORDER":
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        res: false,
+        createRes: false,
+        finishedRes: false,
+        updatedRes: true,
       };
 
     case "ERROR_ORDER":
@@ -48,6 +74,7 @@ const orderReducer = (state = initialState, action) => {
         isLoading: false,
         res: false,
         createRes: false,
+        finishedRes: false,
         error: action.payload.error,
       };
 
@@ -58,6 +85,7 @@ const orderReducer = (state = initialState, action) => {
         createRes: false,
         error: null,
         orders: null,
+        finishedRes: false,
       };
 
     default:

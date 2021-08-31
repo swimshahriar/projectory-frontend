@@ -97,8 +97,7 @@ export const updateOrder = (oid, data, token) => async (dispatch) => {
     );
 
     dispatch({
-      type: "FETCH_ORDER",
-      payload: res.data.orders,
+      type: "UPDATE_ORDER",
     });
   } catch (error) {
     dispatch({
@@ -130,8 +129,7 @@ export const finishedOrder = (oid, data, token) => async (dispatch) => {
     );
 
     dispatch({
-      type: "FETCH_ORDER",
-      payload: res.data.orders,
+      type: "FINISH_ORDER",
     });
   } catch (error) {
     dispatch({

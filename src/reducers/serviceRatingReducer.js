@@ -2,6 +2,7 @@ const initialState = {
   isLoading: false,
   error: null,
   ratings: null,
+  giveRatingRes: false,
 };
 
 const serviceRatingReducer = (state = initialState, action) => {
@@ -12,8 +13,16 @@ const serviceRatingReducer = (state = initialState, action) => {
     case "FETCH_RATINGS":
       return { ...state, isLoading: false, error: null, ratings: action.payload.ratings };
 
+    case "GIVE_RATINGS":
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        ratings: action.payload.ratings,
+        giveRatingRes: true,
+      };
     case "ERROR_RATINGS":
-      return { ...state, isLoading: false, error: action.payload.error };
+      return { ...state, giveRatingRes: false, isLoading: false, error: action.payload.error };
 
     default:
       return state;

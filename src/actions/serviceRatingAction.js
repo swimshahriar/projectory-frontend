@@ -11,6 +11,8 @@ export const fetchRatings = (data) => async (dispatch) => {
     reqUrl = `${import.meta.env.VITE_API_BASE_URI}/rating-review?rid=${data.rid}`;
   } else if (data?.sid) {
     reqUrl = `${import.meta.env.VITE_API_BASE_URI}/rating-review?sid=${data.sid}`;
+  } else if (data?.oid) {
+    reqUrl = `${import.meta.env.VITE_API_BASE_URI}/rating-review?oid=${data.oid}`;
   }
 
   try {
@@ -31,10 +33,32 @@ export const fetchRatings = (data) => async (dispatch) => {
 };
 
 // add ratings
-export const addRatings = (data) => async (dispatch) => {
+export const addRatings = (sid, data, token) => async (dispatch) => {
   dispatch({
     type: "LOADING_RATINGS",
   });
+
+  const reqUrl = `${import.meta.env.VITE_API_BASE_URI}/rating-review/${sid}`;
+
+  try {
+    const ratings = await axios.post(reqUrl, data, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    dispatch({
+      type: "GIVE_RATINGS",
+      payload: ratings.data.ratings,
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_RATINGS",
+      payload: {
+        error: error.response.data.message,
+      },
+    });
+  }
 };
 
 // delete ratings

@@ -5,6 +5,9 @@ import { AiFillStar } from "react-icons/ai";
 const RatingReview = ({ rating }) => (
   <Paper>
     <Box my={2} p={2}>
+      <Typography color="secondary" variant="body2">
+        Order #{rating.orderId}
+      </Typography>
       <Box display="flex" justifyContent="space-between">
         <Typography variant="h6">{rating.userName}</Typography>
         <Typography variant="body1">{new Date(rating.createdAt).toDateString()}</Typography>

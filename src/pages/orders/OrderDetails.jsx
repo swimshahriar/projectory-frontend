@@ -6,10 +6,11 @@ import {
   Container,
   Divider,
   Paper,
+  TextField,
   Typography
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Alert } from "@material-ui/lab";
+import { Alert, Rating } from "@material-ui/lab";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
@@ -17,7 +18,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
 import { fetchOrders, finishedOrder, updateOrder } from "../../actions/orderAction";
+import { addRatings, fetchRatings } from "../../actions/serviceRatingAction";
+import DialogModal from "../../components/DialogModal";
 import SiteLayout from "../../components/layouts/SiteLayout";
+import RatingReview from "../../components/RatingReview";
 import SweetAlert from "../../components/SweetAlert";
 
 // styles
@@ -33,17 +37,32 @@ const OrderDetails = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { token, uid } = useSelector((state) => state.auth);
-  const { isLoading, orders, error } = useSelector((state) => state.orders);
+  const { isLoading, orders, error, finishedRes, updatedRes } = useSelector(
+    (state) => state.orders
+  );
+  const {
+    isLoading: ratingLoading,
+    ratings,
+    error: ratingError,
+    giveRatingRes,
+  } = useSelector((state) => state.serviceRatings);
   const [isBuyer, setIsBuyer] = useState(true);
   const [userId, setUserId] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(5);
+  const [review, setReview] = useState("");
 
   // ------------------ fetch order info -----------------
   useEffect(() => {
     (async () => {
       await dispatch(fetchOrders({ oid }, token));
+      await dispatch(fetchRatings({ oid }));
     })();
 
-    return () => dispatch({ type: "RESET_ORDER" });
+    return () => {
+      dispatch({ type: "RESET_ORDER" });
+      dispatch({ type: "RESET_RATINGS" });
+    };
   }, [token, dispatch, oid]);
 
   // ------------------- setting userId and viewer settings ----------------
@@ -61,6 +80,15 @@ const OrderDetails = () => {
     }
   }, [uid, orders]);
 
+  // ------------------ finished order ----------------
+  useEffect(() => {
+    if (finishedRes || updatedRes) {
+      (async () => {
+        await dispatch(fetchOrders({ oid }, token));
+      })();
+    }
+  }, [dispatch, finishedRes, updatedRes, oid, token]);
+
   // ---------------------------- accept handler ----------------------
   const handleSubmit = async (action) => {
     if (action === "accept") {
@@ -69,7 +97,7 @@ const OrderDetails = () => {
           orders?._id,
           {
             status: "active",
-            activeDate: new Date(),
+            activeDate: moment.now(),
           },
           token
         )
@@ -80,7 +108,7 @@ const OrderDetails = () => {
           orders?._id,
           {
             status: "canceled",
-            canceledDate: new Date(),
+            canceledDate: moment.now(),
           },
           token
         )
@@ -90,17 +118,79 @@ const OrderDetails = () => {
         finishedOrder(
           orders?._id,
           {
-            finishedDate: new Date(),
+            finishedDate: moment.now(),
           },
           token
         )
       );
     }
-    await dispatch(fetchOrders({ oid }, token));
+  };
+
+  // ------------------ handle rating -------------------
+  const handleRating = async () => {
+    if (rating > 0 && review !== "") {
+      const finalData = {
+        star: rating,
+        review,
+        orderId: orders._id,
+      };
+      await dispatch(addRatings(orders.serviceId, finalData, token));
+      setRating(5);
+      setReview("");
+      setOpen(false);
+    }
   };
 
   return (
     <SiteLayout>
+      {/* --------------------------- dialog modal --------------------- */}
+      <DialogModal
+        open={open}
+        setOpen={setOpen}
+        title="Leave a rating and review"
+        bodyText="Please give your valuable feedback about the quality of the project and seller."
+        body={
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexWrap="wrap"
+            gridGap={15}
+            my={2}
+          >
+            <Box>
+              <Typography gutterBottom>your rating: {rating}</Typography>
+              <Rating
+                name="rating"
+                value={rating}
+                precision={0.5}
+                onChange={(_, newValue) => setRating(newValue)}
+              />
+            </Box>
+            <TextField
+              required
+              label="your review"
+              variant="outlined"
+              multiline
+              rows={7}
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+            />
+          </Box>
+        }
+        actions={
+          <Box m={2}>
+            {!ratingLoading ? (
+              <Button variant="contained" color="primary" onClick={handleRating}>
+                Submit
+              </Button>
+            ) : (
+              <CircularProgress color="primary" />
+            )}
+          </Box>
+        }
+      />
+
       <Container maxWidth="lg">
         {/* ---------------------- back button --------------------- */}
         <Box display="flex" justifyContent="center" alignItems="center">
@@ -110,7 +200,7 @@ const OrderDetails = () => {
           </Button>
         </Box>
 
-        {isLoading && (
+        {(isLoading || !orders) && (
           <Box display="flex" justifyContent="center" alignItems="center" my={3}>
             <CircularProgress color="primary" />
           </Box>
@@ -294,14 +384,20 @@ const OrderDetails = () => {
                   <Typography>Dead Line</Typography>
                   <Chip
                     label={moment
-                      .unix((moment.now() + orders?.duration * 24 * 3600 * 1000) / 1000)
+                      .unix(
+                        (Date.parse(orders?.activeDate) + orders?.duration * 24 * 3600 * 1000) /
+                          1000
+                      )
                       .format("DD MMM YYYY hh:mm a")}
                     variant="outlined"
                     color="secondary"
                   />
                   <Typography>
-                    {moment(moment.now() + orders?.duration * 24 * 3600 * 1000) > moment.now() ? (
-                      moment(moment.now() + orders?.duration * 24 * 3600 * 1000).fromNow()
+                    {moment(Date.parse(orders?.activeDate) + orders?.duration * 24 * 3600 * 1000) >
+                    moment.now() ? (
+                      moment(
+                        Date.parse(orders?.activeDate) + orders?.duration * 24 * 3600 * 1000
+                      ).fromNow()
                     ) : (
                       <Typography component="span" color="error">
                         Your are late
@@ -345,10 +441,15 @@ const OrderDetails = () => {
               <Typography>
                 Finished on: {moment(orders?.finishedDate).format("DD MMM YYYY")}
               </Typography>
-              {isBuyer && (
-                <Button variant="contained" color="primary">
+              {orders?.type === "services" && isBuyer && (
+                <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
                   Give a rating
                 </Button>
+              )}
+              {ratings && (
+                <Box width="18rem">
+                  <RatingReview rating={ratings} />
+                </Box>
               )}
             </Box>
           )}
