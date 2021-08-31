@@ -20,6 +20,7 @@ const ServiceDetails = lazy(() => import("./pages/services/ServiceDetails"));
 const Services = lazy(() => import("./pages/services/Services"));
 const FavServices = lazy(() => import("./pages/services/FavServices"));
 const UserProfile = lazy(() => import("./pages/users/UserProfile"));
+const BuyerProfile = lazy(() => import("./pages/users/BuyerProfile"));
 const UserPostedJobs = lazy(() => import("./pages/jobs/UserPostedJobs"));
 const AddJob = lazy(() => import("./pages/jobs/AddJob"));
 const EditJob = lazy(() => import("./pages/jobs/EditJob"));
@@ -118,6 +119,7 @@ const App = () => {
           redirectUrl={`/user-profile/${uid}`}
         />
         <Route component={UserProfile} path="/user-profile/:uid" />
+        <Route component={BuyerProfile} path="/buyer-profile/:uid" />
         <PrivateRoute
           component={ProfileEdit}
           path={`/profile-edit/${uid}`}

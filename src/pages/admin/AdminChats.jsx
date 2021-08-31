@@ -34,7 +34,7 @@ const AdminChats = () => {
 
   // -------------------- set socket connection -----------------
   useEffect(() => {
-    socket.current = io(import.meta.env.VITE_SERVER_URL);
+    socket.current = io(import.meta.env.VITE_SOCKET_SERVER_URL);
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         senderId: data.senderId,
