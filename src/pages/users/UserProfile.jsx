@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, Link, Typography } from "@material-ui/core";
+import { Box, Button, Container, Divider, Link, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Image } from "cloudinary-react";
 import React, { useEffect } from "react";
@@ -8,11 +8,12 @@ import { GoPrimitiveDot } from "react-icons/go";
 import { HiLocationMarker } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import { fetchOrders } from "../../actions/orderAction";
 import { fetchServices } from "../../actions/serviceAction";
 // actions
 import { fetchUserInfo } from "../../actions/userAction";
-import SiteLayout from "../../components/layouts/SiteLayout";
 // components
+import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
 import RoundedBox from "../../components/RoundedBox";
 import ServiceCard from "../../components/ServiceCard";
@@ -56,8 +57,9 @@ const useStyles = makeStyles((theme) => ({
 const UserProfile = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { uid } = useSelector((state) => state.auth);
+  const { uid, token } = useSelector((state) => state.auth);
   const { user, isLoading } = useSelector((state) => state.user);
+  const { orders } = useSelector((state) => state.orders);
   const { services, isLoading: isServicesLoading } = useSelector((state) => state.services);
   const { uid: userId } = useParams();
   const history = useHistory();
@@ -70,8 +72,9 @@ const UserProfile = () => {
     (async () => {
       await dispatch(fetchUserInfo(userId));
       await dispatch(fetchServices({ uid: userId }));
+      await dispatch(fetchOrders({ type: "services", recUid: uid }, token));
     })();
-  }, [userId, dispatch, history]);
+  }, [userId, dispatch, history, token, uid]);
 
   // format date
   let memberSince = null;
@@ -87,10 +90,17 @@ const UserProfile = () => {
     <SiteLayout>
       <Container maxWidth="lg">
         {uid && userId === uid && (
-          <Box mt={3} display="flex" justifyContent="flex-end">
+          <Box mt={3} display="flex" justifyContent="flex-end" gridGap={15}>
             <Button
               variant="contained"
               color="primary"
+              onClick={() => history.push(`/buyer-profile/${uid}`)}
+            >
+              Go to Buyer Profile
+            </Button>
+            <Button
+              variant="contained"
+              color="secondary"
               onClick={() => history.push(`/profile-edit/${uid}`)}
             >
               <FaEdit className={classes.mrSm} />
@@ -100,7 +110,113 @@ const UserProfile = () => {
         )}
 
         {/* ------------------------- user links ------------------------ */}
-        {uid && uid === userId && <UserLinks uid={uid} userId={userId} />}
+        {uid && uid === userId && (
+          <UserLinks>
+            <Button color="primary" variant="outlined" onClick={() => history.push("/add-service")}>
+              Add Service
+            </Button>
+
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => history.push(`/orders/seller-services`)}
+            >
+              Service Orders
+            </Button>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => history.push(`/orders/seller-jobs`)}
+            >
+              Job Orders
+            </Button>
+            <Button
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                if (uid === userId) {
+                  history.push(`/earnings/${uid}`);
+                }
+              }}
+            >
+              Earnings
+            </Button>
+            <Button color="primary" variant="outlined" onClick={() => history.push("/skill-tests")}>
+              Skill Tests
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={() => history.push(`/fav-services/${uid}`)}
+            >
+              Withdraw
+            </Button>
+          </UserLinks>
+        )}
+
+        {/* ----------------------- account info  ------------------------ */}
+        <Box my={3}>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexWrap="wrap"
+            gridGap={15}
+          >
+            {/* --------------------- balance ------------------ */}
+            {uid === user._id && (
+              <Paper>
+                <Box minWidth="12rem" p={2}>
+                  <Box>
+                    <Typography variant="h6" color="textSecondary">
+                      Balance
+                    </Typography>
+                  </Box>
+                  <Typography variant="body1" color="textPrimary">
+                    Current: {user.balance || 0}tk
+                  </Typography>
+                </Box>
+              </Paper>
+            )}
+
+            {/* --------------------- jobs completed --------------- */}
+            <Paper>
+              <Box minWidth="12rem" p={2}>
+                <Box>
+                  <Typography variant="h6" color="textSecondary">
+                    Jobs Completed
+                  </Typography>
+                </Box>
+                <Typography variant="body1" color="textPrimary">
+                  Total:{" "}
+                  {orders?.reduce((acc, odr) => {
+                    let count = 0;
+                    if (odr.status === "finished") {
+                      count = acc + 1;
+                    }
+                    return count;
+                  }, 0) || 0}
+                </Typography>
+              </Box>
+            </Paper>
+
+            {/* -------------------- last withdraw -------------------- */}
+            {uid === user._id && (
+              <Paper>
+                <Box minWidth="12rem" p={2}>
+                  <Box>
+                    <Typography variant="h6" color="textSecondary">
+                      Last Withdraw
+                    </Typography>
+                  </Box>
+                  <Typography variant="body1" color="textPrimary">
+                    Date: {user.lastWithdraw || "not yet"}
+                  </Typography>
+                </Box>
+              </Paper>
+            )}
+          </Box>
+        </Box>
 
         <Box display="flex" justifyContent="center" flexWrap="wrap" gridGap={15} mt={3}>
           <Box flex={35} minWidth="300px">
