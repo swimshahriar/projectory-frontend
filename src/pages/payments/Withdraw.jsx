@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 // internal imports
 import { fetchUserInfo } from "../../actions/userAction";
 import SiteLayout from "../../components/layouts/SiteLayout";
+import PaymentsTabs from "../../components/payments/PaymentsTabs";
 
 const Withdraw = () => {
   const history = useHistory();
@@ -49,6 +50,11 @@ const Withdraw = () => {
           <Typography variant="body1" color="secondary">
             Balance: {user?.balance || 0}tk
           </Typography>
+        </Box>
+
+        {/* ----------------------- payments tabs -------------------- */}
+        <Box my={3}>
+          <PaymentsTabs requested={[]} succeed={[]} canceled={[]} />
         </Box>
       </Container>
     </SiteLayout>

@@ -11,7 +11,7 @@ import Loading from "../../components/Loading";
 import PriceTab from "../../components/PriceTab";
 import RatingReview from "../../components/RatingReview";
 import RatingStarCount from "../../components/RatingStarCount";
-import SwiperComp from "../../components/SwiperComp/SwiperComp";
+import SwiperComp from "../../components/swiperComp/SwiperComp";
 
 const ServiceDetails = () => {
   const { sid } = useParams();
