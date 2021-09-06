@@ -39,5 +39,30 @@ export const fetchPayments = (data, token) => async (dispatch) => {
   }
 };
 
-// -------------------- update payments ---------------------
-export const updatePayments = (data, token) => async (dispatch) => {};
+// -------------------- create payments ---------------------
+export const createPayments = (data, token) => async (dispatch) => {
+  dispatch({
+    type: "LOADING_PAYMENTS",
+  });
+
+  const Url = `${import.meta.env.VITE_API_BASE_URI}/payments`;
+
+  try {
+    await axios.post(Url, data, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    dispatch({
+      type: "RESPONSE_PAYMENTS",
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_PAYMENTS",
+      payload: {
+        error: error.response?.data?.message || error.message,
+      },
+    });
+  }
+};
