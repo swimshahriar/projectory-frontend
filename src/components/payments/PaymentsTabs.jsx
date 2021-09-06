@@ -2,6 +2,7 @@ import { AppBar, Box, Tab, Tabs, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 // internal imports
+import PaymentCard from "./PaymentCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,24 +61,48 @@ const PaymentsTabs = ({ requested, succeed, canceled, topup = false }) => {
         >
           <Tab label={`Requests (${requested?.length || 0})`} {...a11yProps(0)} />
           <Tab label={`Succeed (${succeed?.length || 0})`} {...a11yProps(1)} />
-          <Tab label={`Canceled (${canceled?.length || 0})`} {...a11yProps(2)} />
+          <Tab label={`Canceled/Failed (${canceled?.length || 0})`} {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        {requested && requested.length > 0
-          ? requested.map((item) => null)
-          : `No ${topup ? "Topup" : "Withdraw"} Requests!`}
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          gridGap={15}
+        >
+          {requested && requested.length > 0
+            ? requested.map((item) => <PaymentCard key={item.id} payment={item} />)
+            : `No ${topup ? "Topup" : "Withdraw"} Requests!`}
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {succeed && succeed.length > 0
-          ? succeed.map((item) => null)
-          : `No Succeed ${topup ? "Topup" : "Withdraw"}!`}
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          gridGap={15}
+        >
+          {succeed && succeed.length > 0
+            ? succeed.map((item) => <PaymentCard key={item.id} payment={item} />)
+            : `No Succeed ${topup ? "Topup" : "Withdraw"}!`}
+        </Box>
       </TabPanel>
 
       <TabPanel value={value} index={2}>
-        {canceled && canceled.length > 0
-          ? canceled.map((item) => null)
-          : `No Canceled ${topup ? "Topup" : "Withdraw"}!`}
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          gridGap={15}
+        >
+          {canceled && canceled.length > 0
+            ? canceled.map((item) => <PaymentCard key={item.id} payment={item} />)
+            : `No Canceled ${topup ? "Topup" : "Withdraw"}!`}
+        </Box>
       </TabPanel>
     </div>
   );

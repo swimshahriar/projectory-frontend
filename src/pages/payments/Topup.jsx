@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 // internal imports
+import { fetchPayments } from "../../actions/paymentAction";
 import { fetchUserInfo } from "../../actions/userAction";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import PaymentsTabs from "../../components/payments/PaymentsTabs";
@@ -11,14 +12,21 @@ const Topup = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { uid } = useSelector((state) => state.auth);
+  const { uid, token } = useSelector((state) => state.auth);
+  const { payments, res } = useSelector((state) => state.payments);
 
-  // --------------- fetch user info ---------------
+  // --------------- fetch user info && topups ---------------
   useEffect(() => {
     (async () => {
       await dispatch(fetchUserInfo(uid));
+      await dispatch(fetchPayments({ uid, type: "topup" }, token));
     })();
-  }, [uid, dispatch]);
+  }, [uid, dispatch, token]);
+
+  // payments filter
+  const requested = payments?.filter((item) => item.status === "pending") || [];
+  const succeed = payments?.filter((item) => item.status === "succeed") || [];
+  const canceled = payments?.filter((item) => item.status === "failed") || [];
 
   return (
     <SiteLayout>
@@ -54,7 +62,7 @@ const Topup = () => {
 
         {/* ----------------------- payments tabs -------------------- */}
         <Box my={3}>
-          <PaymentsTabs requested={[]} succeed={[]} canceled={[]} topup />
+          <PaymentsTabs requested={requested} succeed={succeed} canceled={canceled} topup />
         </Box>
       </Container>
     </SiteLayout>
