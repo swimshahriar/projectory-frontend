@@ -46,17 +46,14 @@ export const createJob = (data, token) => async (dispatch) => {
   const fetchUrl = `${import.meta.env.VITE_API_BASE_URI}/jobs`;
 
   try {
-    const res = await axios.post(fetchUrl, data, {
+    await axios.post(fetchUrl, data, {
       headers: {
         authorization: `Bearer ${token}`,
       },
     });
 
     dispatch({
-      type: "FETCH_JOBS",
-      payload: {
-        jobs: res.data.jobs,
-      },
+      type: "ADD_JOBS",
     });
   } catch (error) {
     dispatch({

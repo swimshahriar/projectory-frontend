@@ -74,7 +74,7 @@ const schema = yup.object().shape({
 
 const AddJob = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, res } = useSelector((state) => state.jobs);
+  const { isLoading, error, res, addRes } = useSelector((state) => state.jobs);
   const { token } = useSelector((state) => state.auth);
   const classes = useStyles();
   const history = useHistory();
@@ -90,7 +90,7 @@ const AddJob = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   useEffect(() => {
-    if (res) {
+    if (addRes) {
       SweetAlert.fire({
         icon: "success",
         title: "Success",
@@ -113,7 +113,7 @@ const AddJob = () => {
       dispatch({
         type: "RESET_JOBS",
       });
-  }, [res, history, reset, dispatch]);
+  }, [addRes, history, reset, dispatch]);
 
   // submit handler
   const submitHandler = async (data) => {
