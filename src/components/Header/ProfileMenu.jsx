@@ -65,6 +65,14 @@ const ProfileMenu = () => {
         <MenuItem
           onClick={() => {
             setAnchorEl(null);
+            history.push("/user-topup");
+          }}
+        >
+          Topup
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setAnchorEl(null);
             history.push("/user-withdraw");
           }}
         >

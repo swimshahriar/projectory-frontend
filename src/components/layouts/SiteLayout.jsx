@@ -1,4 +1,5 @@
 import React from "react";
+// internal imports
 import Header from "../header/Header";
 
 const SiteLayout = ({ children }) => (
