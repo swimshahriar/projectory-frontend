@@ -42,6 +42,7 @@ const OrderDetails = lazy(() => import("./pages/orders/OrderDetails"));
 const Topup = lazy(() => import("./pages/payments/Topup"));
 const Withdraw = lazy(() => import("./pages/payments/Withdraw"));
 const AdminTopup = lazy(() => import("./pages/payments/AdminTopup"));
+const AdminWithdraw = lazy(() => import("./pages/payments/AdminWithdraw"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -204,9 +205,16 @@ const App = () => {
             <Redirect to="/auth" />
           )}
         </Route>
-        <Route path="/admin/payments">
+        <Route path="/admin/topup">
           {token && uid === import.meta.env.VITE_ADMIN_ID ? (
             <AdminTopup />
+          ) : (
+            <Redirect to="/auth" />
+          )}
+        </Route>
+        <Route path="/admin/withdraw">
+          {token && uid === import.meta.env.VITE_ADMIN_ID ? (
+            <AdminWithdraw />
           ) : (
             <Redirect to="/auth" />
           )}

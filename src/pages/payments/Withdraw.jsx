@@ -106,7 +106,6 @@ const Withdraw = () => {
 
             {method !== "stripe" && (
               <>
-                <Typography>Send Money: 01777123456</Typography>
                 <TextField
                   required
                   variant="outlined"

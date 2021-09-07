@@ -17,7 +17,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import React from "react";
 import { BsChatDotsFill, BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { GiMoneyStack, GiNewspaper } from "react-icons/gi";
+import { GiMoneyStack, GiNewspaper, GiTakeMyMoney } from "react-icons/gi";
 import { HiMenu } from "react-icons/hi";
 import { RiDashboardFill, RiSettings2Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
@@ -176,11 +176,18 @@ const AdminLayout = ({ children }) => {
             <ListItemText primary="Chats" />
           </ListItem>
 
-          <ListItem button key="Payments" onClick={() => history.push("/admin/payments")}>
+          <ListItem button key="Topup" onClick={() => history.push("/admin/topup")}>
             <ListItemIcon className={classes.iconFontSize}>
               <GiMoneyStack />
             </ListItemIcon>
-            <ListItemText primary="Payments" />
+            <ListItemText primary="Topup" />
+          </ListItem>
+
+          <ListItem button key="Withdraw" onClick={() => history.push("/admin/withdraw")}>
+            <ListItemIcon className={classes.iconFontSize}>
+              <GiTakeMyMoney />
+            </ListItemIcon>
+            <ListItemText primary="Withdraw" />
           </ListItem>
 
           <ListItem button key="Skill Tests" onClick={() => history.push("/admin/skill-test")}>

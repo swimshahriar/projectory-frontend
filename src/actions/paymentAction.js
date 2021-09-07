@@ -66,3 +66,31 @@ export const createPayments = (data, token) => async (dispatch) => {
     });
   }
 };
+
+// -------------------- update payments ---------------------
+export const updatePayments = (pid, data, token) => async (dispatch) => {
+  dispatch({
+    type: "LOADING_PAYMENTS",
+  });
+
+  const Url = `${import.meta.env.VITE_API_BASE_URI}/payments/${pid}`;
+
+  try {
+    await axios.patch(Url, data, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    dispatch({
+      type: "RESPONSE_PAYMENTS",
+    });
+  } catch (error) {
+    dispatch({
+      type: "ERROR_PAYMENTS",
+      payload: {
+        error: error.response?.data?.message || error.message,
+      },
+    });
+  }
+};
