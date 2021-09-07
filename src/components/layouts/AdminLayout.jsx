@@ -17,7 +17,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import clsx from "clsx";
 import React from "react";
 import { BsChatDotsFill, BsChevronLeft, BsChevronRight } from "react-icons/bs";
-import { GiNewspaper } from "react-icons/gi";
+import { GiMoneyStack, GiNewspaper } from "react-icons/gi";
 import { HiMenu } from "react-icons/hi";
 import { RiDashboardFill, RiSettings2Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
@@ -127,7 +127,7 @@ const AdminLayout = ({ children }) => {
           >
             <HiMenu />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h5" noWrap>
             Admin Panel
           </Typography>
           <Box ml={3}>
@@ -174,6 +174,13 @@ const AdminLayout = ({ children }) => {
               <BsChatDotsFill />
             </ListItemIcon>
             <ListItemText primary="Chats" />
+          </ListItem>
+
+          <ListItem button key="Payments" onClick={() => history.push("/admin/payments")}>
+            <ListItemIcon className={classes.iconFontSize}>
+              <GiMoneyStack />
+            </ListItemIcon>
+            <ListItemText primary="Payments" />
           </ListItem>
 
           <ListItem button key="Skill Tests" onClick={() => history.push("/admin/skill-test")}>

@@ -41,6 +41,7 @@ const BuyerJobOrders = lazy(() => import("./pages/orders/BuyerJobOrders"));
 const OrderDetails = lazy(() => import("./pages/orders/OrderDetails"));
 const Topup = lazy(() => import("./pages/payments/Topup"));
 const Withdraw = lazy(() => import("./pages/payments/Withdraw"));
+const AdminTopup = lazy(() => import("./pages/payments/AdminTopup"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -199,6 +200,13 @@ const App = () => {
         <Route path="/admin/site-settings">
           {token && uid === import.meta.env.VITE_ADMIN_ID ? (
             <AdminSettings />
+          ) : (
+            <Redirect to="/auth" />
+          )}
+        </Route>
+        <Route path="/admin/payments">
+          {token && uid === import.meta.env.VITE_ADMIN_ID ? (
+            <AdminTopup />
           ) : (
             <Redirect to="/auth" />
           )}
