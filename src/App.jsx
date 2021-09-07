@@ -43,6 +43,7 @@ const Topup = lazy(() => import("./pages/payments/Topup"));
 const Withdraw = lazy(() => import("./pages/payments/Withdraw"));
 const AdminTopup = lazy(() => import("./pages/payments/AdminTopup"));
 const AdminWithdraw = lazy(() => import("./pages/payments/AdminWithdraw"));
+const Success = lazy(() => import("./pages/payments/Success"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -268,6 +269,13 @@ const App = () => {
         <PrivateRoute
           component={Withdraw}
           path="/user-withdraw"
+          token={token}
+          samePath
+          redirectUrl="/auth"
+        />
+        <PrivateRoute
+          component={Success}
+          path="/payment-succeed/:amount"
           token={token}
           samePath
           redirectUrl="/auth"

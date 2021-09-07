@@ -11,6 +11,7 @@ import {
   Typography
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -26,12 +27,13 @@ const Topup = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { uid, token } = useSelector((state) => state.auth);
-  const { payments, res, isLoading, error } = useSelector((state) => state.payments);
+  const { payments, isLoading, error } = useSelector((state) => state.payments);
   const [open, setOpen] = useState(false);
   const [method, setMethod] = useState("bkash");
   const [amount, setAmount] = useState(0);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [transactionId, setTransactionId] = useState("");
+  const [stripeLoad, setStripeLoad] = useState(false);
 
   // --------------- fetch user info && topups ---------------
   useEffect(() => {
@@ -63,6 +65,29 @@ const Topup = () => {
       setTransactionId("");
       setOpen(false);
       await dispatch(fetchPayments({ uid, type: "topup" }, token));
+    } else if (
+      method === "stripe" &&
+      (amount >= 300 || phoneNumber !== "" || transactionId !== "")
+    ) {
+      setStripeLoad(true);
+      try {
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_API_BASE_URI}/payments/stripe`,
+          {
+            amount,
+          },
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setStripeLoad(false);
+        window.location = data.url;
+      } catch (error) {
+        setStripeLoad(false);
+        return alert(error.response.data.message);
+      }
     }
   };
 
@@ -130,7 +155,7 @@ const Topup = () => {
         }
         actions={
           <Box m={2}>
-            {!isLoading ? (
+            {!isLoading && !stripeLoad ? (
               <Button variant="contained" color="primary" onClick={handleTopup}>
                 Request
               </Button>
@@ -156,7 +181,11 @@ const Topup = () => {
           flexWrap="wrap"
           gridGap={15}
         >
-          <Button variant="outlined" color="primary" onClick={() => history.goBack()}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => history.push(`/buyer-profile/${uid}`)}
+          >
             Go back
           </Button>
           <Button variant="contained" color="primary" onClick={() => setOpen(true)}>

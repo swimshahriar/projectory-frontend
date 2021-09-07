@@ -200,7 +200,8 @@ const UserProfile = () => {
                     </Typography>
                   </Box>
                   <Typography variant="body1" color="textPrimary">
-                    Date: {user.lastWithdraw || "not yet"}
+                    Date:{" "}
+                    {(user.lastWithdraw && new Date(user.lastWithdraw).toDateString()) || "not yet"}
                   </Typography>
                 </Box>
               </Paper>

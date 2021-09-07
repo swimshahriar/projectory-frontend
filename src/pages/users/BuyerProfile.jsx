@@ -302,7 +302,8 @@ const BuyerProfile = () => {
                       </Typography>
                     </Box>
                     <Typography variant="body1" color="textPrimary">
-                      Date: {user.lastTopup || "not yet"}
+                      Date:{" "}
+                      {(user?.lastTopup && new Date(user.lastTopup).toDateString()) || "not yet"}
                     </Typography>
                   </Box>
                 </Paper>

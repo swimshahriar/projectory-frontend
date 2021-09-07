@@ -7,7 +7,7 @@ import SweetAlert from "../SweetAlert";
 
 const PaymentCard = ({ payment }) => {
   const dispatch = useDispatch();
-  const { token, error } = useSelector((state) => state.auth);
+  const { uid, token, error } = useSelector((state) => state.auth);
 
   return (
     <Grow in timeout={500}>
@@ -70,7 +70,7 @@ const PaymentCard = ({ payment }) => {
             </Box>
 
             {/* ------------------------- actions -------------------- */}
-            {payment?.status === "pending" && (
+            {uid === import.meta.env.VITE_ADMIN_ID && payment?.status === "pending" && (
               <Box
                 display="flex"
                 justifyContent="center"
