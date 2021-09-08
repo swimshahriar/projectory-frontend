@@ -1,5 +1,6 @@
 import React from "react";
 // internal imports
+import Footer from "../Footer";
 import Header from "../header/Header";
 
 const SiteLayout = ({ children }) => (
@@ -8,6 +9,9 @@ const SiteLayout = ({ children }) => (
       <Header />
     </header>
     <main style={{ marginTop: "80px" }}>{children}</main>
+    <footer>
+      <Footer />
+    </footer>
   </>
 );
 
