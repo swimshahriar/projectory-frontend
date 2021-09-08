@@ -229,11 +229,23 @@ const Home = () => {
         </Typography>
       </Container>
 
-      {/* -------------------- CTA section -------------------- */}
+      {/* -------------------- Join section -------------------- */}
       <Container component="section" maxWidth="lg">
-        <Typography variant="h1" align="center">
-          CTA
-        </Typography>
+        <Box my={5} px={3} py={5} bgcolor="secondary.light" boxShadow={2} borderRadius={5}>
+          <Typography variant="h4" align="center" className={classes.colorWhite}>
+            Find the talent needed to get your business growing.
+          </Typography>
+          <Box mt={5} display="flex" justifyContent="center" alignItems="center">
+            <Button
+              size="large"
+              variant="contained"
+              color="primary"
+              onClick={() => history.push("/auth")}
+            >
+              JOIN NOW
+            </Button>
+          </Box>
+        </Box>
       </Container>
     </SiteLayout>
   );
