@@ -4,6 +4,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import heroImg from "../assets/home/hero.webp";
 import SiteLayout from "../components/layouts/SiteLayout";
+import SwiperSlider from "../components/swiperSlider/SwiperSlider";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -223,11 +224,18 @@ const Home = () => {
       </Container>
 
       {/* -------------------- Testimonial section -------------------- */}
-      <Container component="section" maxWidth="lg">
-        <Typography variant="h3" align="center">
-          Testimonial
-        </Typography>
-      </Container>
+      <Box height="35rem">
+        <Container component="section" maxWidth="lg">
+          <Box my={5}>
+            <Typography variant="h3" align="center">
+              Testimonials
+            </Typography>
+            <Box mt={5} height="15rem">
+              <SwiperSlider />
+            </Box>
+          </Box>
+        </Container>
+      </Box>
 
       {/* -------------------- Join section -------------------- */}
       <Container component="section" maxWidth="lg">
