@@ -161,32 +161,16 @@ const Footer = () => {
                 >
                   About us
                 </Typography>
-                <Typography
-                  className={classes.linkHover}
-                  color="textSecondary"
-                  onClick={() => history.push("/about")}
-                >
+                <Typography className={classes.linkHover} color="textSecondary">
                   Careers
                 </Typography>
-                <Typography
-                  className={classes.linkHover}
-                  color="textSecondary"
-                  onClick={() => history.push("/about")}
-                >
+                <Typography className={classes.linkHover} color="textSecondary">
                   Partnerships
                 </Typography>
-                <Typography
-                  className={classes.linkHover}
-                  color="textSecondary"
-                  onClick={() => history.push("/about")}
-                >
+                <Typography className={classes.linkHover} color="textSecondary">
                   Privacy Policy
                 </Typography>
-                <Typography
-                  className={classes.linkHover}
-                  color="textSecondary"
-                  onClick={() => history.push("/about")}
-                >
+                <Typography className={classes.linkHover} color="textSecondary">
                   Terms of Services
                 </Typography>
               </Box>
