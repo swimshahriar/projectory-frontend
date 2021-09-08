@@ -42,6 +42,8 @@ export const fetchServices = (data) => async (dispatch) => {
     reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?uid=${data.uid}`;
   } else if (data?.sid) {
     reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?sid=${data.sid}`;
+  } else if (data?.cat) {
+    reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?cat=${data.cat}`;
   }
 
   try {

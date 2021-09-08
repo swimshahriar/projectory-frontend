@@ -135,7 +135,7 @@ const Footer = () => {
                 <Typography
                   className={classes.linkHover}
                   color="textSecondary"
-                  onClick={() => history.push("/services?cat=graphics-designing")}
+                  onClick={() => history.push("/jobs?cat=graphics-designing")}
                 >
                   Graphics Designing
                 </Typography>

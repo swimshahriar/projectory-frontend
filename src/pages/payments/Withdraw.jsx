@@ -66,11 +66,11 @@ const Withdraw = () => {
 
   return (
     <SiteLayout>
-      {/* ------------------------ topup modal ---------------------- */}
+      {/* ------------------------ withdraw modal ---------------------- */}
       <DialogModal
         open={open}
         setOpen={setOpen}
-        title="Request Topup"
+        title="Request Withdraw"
         bodyText={
           <>
             <Typography variant="body1" gutterBottom>

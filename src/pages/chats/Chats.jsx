@@ -68,9 +68,9 @@ const Chats = () => {
             }
           );
           if (conversation.data?.cid) {
-            history.push(`/chats?cid=${conversation.data.cid}`);
+            history.replace(`/chats?cid=${conversation.data.cid}`);
           } else if (conversation.data?.conversations._id) {
-            history.push(`/chats?cid=${conversation.data.conversations._id}`);
+            history.replace(`/chats?cid=${conversation.data.conversations._id}`);
           }
         } catch (error) {
           console.log(error.response.data.message);
