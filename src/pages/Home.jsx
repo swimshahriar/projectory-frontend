@@ -1,4 +1,4 @@
-import { Box, Button, Container, Slide, Typography } from "@material-ui/core";
+import { Box, Button, Container, Grow, Slide, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useHistory } from "react-router-dom";
@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("md")]: {
       width: "450px !important",
     },
+  },
+  catBtn: {
+    fontSize: 20,
+    padding: 25,
   },
 }));
 
@@ -63,11 +67,74 @@ const Home = () => {
         </Container>
       </Box>
 
-      {/* -------------------- popular services section -------------------- */}
+      {/* -------------------- services category section -------------------- */}
+
       <Container component="section" maxWidth="lg">
-        <Typography variant="h1" align="center">
-          popular services categories
-        </Typography>
+        <Box my={5}>
+          <Typography variant="h3" align="center">
+            Categories
+          </Typography>
+        </Box>
+
+        <Box
+          mb={3}
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          flexWrap="wrap"
+          gridGap={15}
+        >
+          <Grow in timeout={500}>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.catBtn}
+              onClick={() => history.push("/services?cat=web-development")}
+            >
+              Web Development
+            </Button>
+          </Grow>
+          <Grow in timeout={700}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              className={classes.catBtn}
+              onClick={() => history.push("/services?cat=mobile-development")}
+            >
+              Mobile Development
+            </Button>
+          </Grow>
+          <Grow in timeout={900}>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.catBtn}
+              onClick={() => history.push("/services?cat=digital-marketing")}
+            >
+              Digital Marketing
+            </Button>
+          </Grow>
+          <Grow in timeout={1200}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              className={classes.catBtn}
+              onClick={() => history.push("/services?cat=seo")}
+            >
+              SEO
+            </Button>
+          </Grow>
+          <Grow in timeout={1500}>
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.catBtn}
+              onClick={() => history.push("/services?cat=graphics-designing")}
+            >
+              Graphics Designing
+            </Button>
+          </Grow>
+        </Box>
       </Container>
 
       {/* -------------------- about section -------------------- */}
@@ -77,24 +144,10 @@ const Home = () => {
         </Typography>
       </Container>
 
-      {/* -------------------- categories section -------------------- */}
+      {/* -------------------- Testimonial section -------------------- */}
       <Container component="section" maxWidth="lg">
         <Typography variant="h1" align="center">
-          Categoies
-        </Typography>
-      </Container>
-
-      {/* -------------------- Testamonial section -------------------- */}
-      <Container component="section" maxWidth="lg">
-        <Typography variant="h1" align="center">
-          Testamonial
-        </Typography>
-      </Container>
-
-      {/* -------------------- guides section -------------------- */}
-      <Container component="section" maxWidth="lg">
-        <Typography variant="h1" align="center">
-          Guides
+          Testimonial
         </Typography>
       </Container>
 
