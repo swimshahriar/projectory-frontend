@@ -52,7 +52,7 @@ const ServiceDetails = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <AvatarWithUserName
-                    userName="swimshahriar"
+                    userName={services.userName}
                     publicId={services.userImg}
                     uploadPreset="projectory_services"
                     width="30"
