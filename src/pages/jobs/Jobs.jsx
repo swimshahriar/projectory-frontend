@@ -8,6 +8,7 @@ import { fetchJobs } from "../../actions/jobAction";
 import JobCard from "../../components/JobCard";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
+import PaginationComponent from "../../components/PaginationComponent";
 import Search from "../../components/Search";
 
 const useStyles = makeStyles(() => ({
@@ -25,6 +26,9 @@ const Jobs = () => {
   const queryCat = search.get("cat");
   const querySearch = search.get("search");
   const [searchQuery, setSearchQuery] = useState("");
+  const [loadedItems, setLoadedItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(8);
 
   useEffect(() => {
     let data = {};
@@ -52,6 +56,19 @@ const Jobs = () => {
       setSearchQuery("");
     };
   }, [dispatch, queryCat, querySearch]);
+
+  // ------------------ on jobs load ---------------------
+  useEffect(() => {
+    setLoadedItems(jobs);
+  }, [jobs]);
+
+  // ----------------------- Pagination helper ------------------------
+  let currentItems;
+  if (loadedItems) {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstPage = indexOfLastItem - itemsPerPage;
+    currentItems = loadedItems.slice(indexOfFirstPage, indexOfLastItem);
+  }
 
   // -------------------- handle search ------------------
   const handleSearch = () => {
@@ -166,14 +183,22 @@ const Jobs = () => {
               )}
             </Box>
             <Box display="flex" justifyContent="center" flexWrap="wrap" my={3}>
-              {jobs && jobs.length > 0 ? (
-                jobs.map((job, idx) => <JobCard job={job} key={idx} />)
+              {currentItems && currentItems.length > 0 ? (
+                currentItems.map((job, idx) => <JobCard job={job} key={idx} />)
               ) : (
                 <Typography variant="body1" align="center">
                   No Jobs Found!
                 </Typography>
               )}
             </Box>
+            {currentItems && currentItems.length > 0 && (
+              <PaginationComponent
+                totalItems={loadedItems.length}
+                itemsPerPage={itemsPerPage}
+                setCurrentPage={setCurrentPage}
+                page={currentPage}
+              />
+            )}
           </Box>
         </Box>
       </Container>
