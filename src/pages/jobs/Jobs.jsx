@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 // internal imports
@@ -8,6 +8,7 @@ import { fetchJobs } from "../../actions/jobAction";
 import JobCard from "../../components/JobCard";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
+import Search from "../../components/Search";
 
 const useStyles = makeStyles(() => ({
   linkHover: {
@@ -23,12 +24,22 @@ const Jobs = () => {
   const search = new URLSearchParams(useLocation().search);
   const queryCat = search.get("cat");
   const querySearch = search.get("search");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     let data = {};
-    if (queryCat) {
+    if (queryCat && querySearch) {
       data = {
         cat: queryCat,
+        search: querySearch,
+      };
+    } else if (!querySearch && queryCat) {
+      data = {
+        cat: queryCat,
+      };
+    } else if (!queryCat && querySearch) {
+      data = {
+        search: querySearch,
       };
     }
     (async () => {
@@ -38,8 +49,20 @@ const Jobs = () => {
       await dispatch({
         type: "RESET_JOBS",
       });
+      setSearchQuery("");
     };
-  }, [dispatch, queryCat]);
+  }, [dispatch, queryCat, querySearch]);
+
+  // -------------------- handle search ------------------
+  const handleSearch = () => {
+    if (searchQuery !== "") {
+      if (queryCat) {
+        history.push(`/jobs?cat=${queryCat}&search=${searchQuery}`);
+      } else if (!queryCat) {
+        history.push(`/jobs?search=${searchQuery}`);
+      }
+    }
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -53,6 +76,17 @@ const Jobs = () => {
             Jobs
           </Typography>
         </Box>
+
+        {/* ------------------------------ search box ----------------------- */}
+        <Box mt={5} mb={3} display="flex" justifyContent="center" alignItems="center">
+          <Search
+            cat={queryCat}
+            search={searchQuery}
+            setSearch={setSearchQuery}
+            onclick={handleSearch}
+          />
+        </Box>
+
         <Box display="flex" flexWrap="wrap" my={3}>
           <Box mt={5} flex="20%">
             <Typography variant="h5" align="center" color="textPrimary">
@@ -123,8 +157,13 @@ const Jobs = () => {
           <Box flex="80%" minWidth="300px">
             <Box>
               <Typography variant="h6" align="center">
-                Showing "{queryCat || "all"}"
+                Category "{queryCat || "all"}"
               </Typography>
+              {querySearch && (
+                <Typography variant="h6" align="center">
+                  Search Query "{querySearch || "all"}"
+                </Typography>
+              )}
             </Box>
             <Box display="flex" justifyContent="center" flexWrap="wrap" my={3}>
               {jobs && jobs.length > 0 ? (
