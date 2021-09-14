@@ -8,6 +8,7 @@ import { fetchServices } from "../../actions/serviceAction";
 // components
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
+import PaginationComponent from "../../components/PaginationComponent";
 import Search from "../../components/Search";
 import ServiceCard from "../../components/ServiceCard";
 
@@ -27,6 +28,9 @@ const Services = () => {
   const dispatch = useDispatch();
   const { isLoading, services } = useSelector((state) => state.services);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loadedItems, setLoadedItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(9);
 
   // fetch services
   useEffect(() => {
@@ -55,6 +59,19 @@ const Services = () => {
       setSearchQuery("");
     };
   }, [dispatch, queryCat, querySearch]);
+
+  // ------------------ on services load ---------------------
+  useEffect(() => {
+    setLoadedItems(services);
+  }, [services]);
+
+  // ----------------------- Pagination helper ------------------------
+  let currentItems;
+  if (loadedItems) {
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstPage = indexOfLastItem - itemsPerPage;
+    currentItems = loadedItems.slice(indexOfFirstPage, indexOfLastItem);
+  }
 
   // -------------------- handle search ------------------
   const handleSearch = () => {
@@ -170,28 +187,38 @@ const Services = () => {
               )}
             </Box>
             <Box display="flex" justifyContent="center" flexWrap="wrap" gridGap={15} my={5}>
-              {services && services.length > 0 ? (
-                services.map((service, idx) => (
-                  <ServiceCard
-                    key={idx}
-                    sid={service._id}
-                    onclick={() => history.push(`/services/${service._id}`)}
-                    userId={service.userId}
-                    title={service.title}
-                    imgs={service.images}
-                    star={service.rating?.rating || 0}
-                    starCount={service.rating?.count || 0}
-                    price={service.packages[0]?.price || 0}
-                    userName={service.userName}
-                    userImg={service.userImg}
-                  />
-                ))
+              {currentItems && currentItems.length > 0 ? (
+                <>
+                  {currentItems.map((service, idx) => (
+                    <ServiceCard
+                      key={idx}
+                      sid={service._id}
+                      onclick={() => history.push(`/services/${service._id}`)}
+                      userId={service.userId}
+                      title={service.title}
+                      imgs={service.images}
+                      star={service.rating?.rating || 0}
+                      starCount={service.rating?.count || 0}
+                      price={service.packages[0]?.price || 0}
+                      userName={service.userName}
+                      userImg={service.userImg}
+                    />
+                  ))}
+                </>
               ) : (
                 <Typography variant="body1" align="center">
                   No Services Found!
                 </Typography>
               )}
             </Box>
+            {currentItems && currentItems.length > 0 && (
+              <PaginationComponent
+                totalItems={loadedItems.length}
+                itemsPerPage={itemsPerPage}
+                setCurrentPage={setCurrentPage}
+                page={currentPage}
+              />
+            )}
           </Box>
         </Box>
       </Container>
