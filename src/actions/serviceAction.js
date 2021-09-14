@@ -42,7 +42,11 @@ export const fetchServices = (data) => async (dispatch) => {
     reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?uid=${data.uid}`;
   } else if (data?.sid) {
     reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?sid=${data.sid}`;
-  } else if (data?.cat) {
+  } else if (data?.cat && data?.search) {
+    reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?cat=${data.cat}&search=${data.search}`;
+  } else if (!data?.cat && data?.search) {
+    reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?search=${data.search}`;
+  } else if (data?.cat && !data?.search) {
     reqUrl = `${import.meta.env.VITE_API_BASE_URI}/services?cat=${data.cat}`;
   }
 

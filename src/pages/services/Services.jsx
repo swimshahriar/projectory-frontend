@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 // actions
@@ -8,6 +8,7 @@ import { fetchServices } from "../../actions/serviceAction";
 // components
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
+import Search from "../../components/Search";
 import ServiceCard from "../../components/ServiceCard";
 
 // styles
@@ -25,13 +26,23 @@ const Services = () => {
   const querySearch = search.get("search");
   const dispatch = useDispatch();
   const { isLoading, services } = useSelector((state) => state.services);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // fetch services
   useEffect(() => {
     let data = {};
-    if (queryCat) {
+    if (queryCat && querySearch) {
       data = {
         cat: queryCat,
+        search: querySearch,
+      };
+    } else if (!querySearch && queryCat) {
+      data = {
+        cat: queryCat,
+      };
+    } else if (!queryCat && querySearch) {
+      data = {
+        search: querySearch,
       };
     }
     (async () => {
@@ -41,8 +52,20 @@ const Services = () => {
       await dispatch({
         type: "RESET_SERVICES",
       });
+      setSearchQuery("");
     };
-  }, [dispatch, queryCat]);
+  }, [dispatch, queryCat, querySearch]);
+
+  // -------------------- handle search ------------------
+  const handleSearch = () => {
+    if (searchQuery !== "") {
+      if (queryCat) {
+        history.push(`/services?cat=${queryCat}&search=${searchQuery}`);
+      } else if (!queryCat) {
+        history.push(`/services?search=${searchQuery}`);
+      }
+    }
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -56,6 +79,17 @@ const Services = () => {
             Services
           </Typography>
         </Box>
+
+        {/* ------------------------------ search box ----------------------- */}
+        <Box mt={5} mb={3} display="flex" justifyContent="center" alignItems="center">
+          <Search
+            cat={queryCat}
+            search={searchQuery}
+            setSearch={setSearchQuery}
+            onclick={handleSearch}
+          />
+        </Box>
+
         <Box display="flex" flexWrap="wrap">
           <Box mt={5} flex="20%">
             <Typography variant="h6" align="center" color="textPrimary">
@@ -127,8 +161,13 @@ const Services = () => {
           <Box flex="80%" minWidth="300px" my={5}>
             <Box>
               <Typography variant="h6" align="center">
-                Showing "{queryCat || "all"}"
+                Category "{queryCat || "all"}"
               </Typography>
+              {querySearch && (
+                <Typography variant="h6" align="center">
+                  Search Query "{querySearch || "all"}"
+                </Typography>
+              )}
             </Box>
             <Box display="flex" justifyContent="center" flexWrap="wrap" gridGap={15} my={5}>
               {services && services.length > 0 ? (
