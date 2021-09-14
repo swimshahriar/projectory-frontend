@@ -1,3 +1,5 @@
+<a href="https://ibb.co/VB0kt7P"><img src="https://i.ibb.co/dKsHrdz/projectory-mockup.png" alt="projectory-mockup" border="0"></a>
+
 ### Live 🔥
 
 Website: [https://projectory-front.netlify.app/](https://projectory-front.netlify.app/)
