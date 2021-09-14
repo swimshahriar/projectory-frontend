@@ -63,11 +63,13 @@ const Services = () => {
   // ------------------ on services load ---------------------
   useEffect(() => {
     setLoadedItems(services);
+
+    return () => setLoadedItems([]);
   }, [services]);
 
   // ----------------------- Pagination helper ------------------------
-  let currentItems;
-  if (loadedItems) {
+  let currentItems = null;
+  if (loadedItems?.length > 0) {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstPage = indexOfLastItem - itemsPerPage;
     currentItems = loadedItems.slice(indexOfFirstPage, indexOfLastItem);
@@ -118,7 +120,7 @@ const Services = () => {
 
             {/* -------------------- Categories -------------------- */}
             <Box my={3} minWidth="10rem" display="flex" flexDirection="column" alignItems="center">
-              <Typography variant="h6" color="textPrimary" align="start">
+              <Typography variant="h6" color="textPrimary" align="left">
                 Categories
               </Typography>
               <Box

@@ -1,10 +1,14 @@
 import { Box, Button, Container, Grow, Slide, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
+import { FiGlobe } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+// internal imports
 import heroImg from "../assets/home/hero.webp";
 import SiteLayout from "../components/layouts/SiteLayout";
 import SwiperSlider from "../components/swiperSlider/SwiperSlider";
+import { bng, eng } from "../data";
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -12,7 +16,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
   },
   imgHero: {
-    width: "300px !important",
+    width: "200px !important",
+    [theme.breakpoints.up("sm")]: {
+      width: "300px !important",
+    },
     [theme.breakpoints.up("md")]: {
       width: "450px !important",
     },
@@ -33,9 +40,28 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { language } = useSelector((state) => state.settings);
 
   return (
     <SiteLayout>
+      {/* ----------------------- language change btn -------------------- */}
+      <Box position="fixed" left={20} bottom={20} zIndex={5}>
+        <Button
+          startIcon={<FiGlobe />}
+          size="small"
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            dispatch({
+              type: "CHANGE_LANGUAGE",
+            });
+          }}
+        >
+          {language}
+        </Button>
+      </Box>
+
       {/* -------------------- hero section -------------------- */}
       <Box width="100%" height="75vh" mt={-1} bgcolor="primary.dark">
         <Container component="section" maxWidth="lg">
@@ -43,11 +69,11 @@ const Home = () => {
             <Box flex={50} minWidth="20rem">
               <Slide direction="right" in unmountOnExit timeout={1000}>
                 <Typography variant="h3" className={classes.colorWhite}>
-                  Find the perfect{" "}
+                  {language === "eng" ? eng.hero.text[0] : bng.hero.text[0]}{" "}
                   <Typography component="span" variant="h2" color="secondary">
-                    freelance
+                    {language === "eng" ? eng.hero.text[1] : bng.hero.text[1]}
                   </Typography>{" "}
-                  services for your business
+                  {language === "eng" ? eng.hero.text[2] : bng.hero.text[2]}
                 </Typography>
               </Slide>
 
@@ -59,16 +85,14 @@ const Home = () => {
                     color="secondary"
                     onClick={() => history.push("/services")}
                   >
-                    Services
+                    {language === "eng" ? eng.hero.btn : bng.hero.btn}
                   </Button>
                 </Slide>
               </Box>
             </Box>
 
             <Box flex={50}>
-              <Slide direction="left" in timeout="1500">
-                <img src={heroImg} alt="hero.webp" className={classes.imgHero} />
-              </Slide>
+              <img src={heroImg} alt="hero.webp" className={classes.imgHero} />
             </Box>
           </Box>
         </Container>
@@ -79,7 +103,7 @@ const Home = () => {
       <Container component="section" maxWidth="lg">
         <Box my={5}>
           <Typography variant="h3" align="center">
-            Categories
+            {language === "eng" ? "Categories" : "বিভাগ"}
           </Typography>
         </Box>
 
@@ -98,7 +122,7 @@ const Home = () => {
               className={classes.catBtn}
               onClick={() => history.push("/services?cat=web-development")}
             >
-              Web Development
+              {language === "eng" ? eng.categories[0] : bng.categories[0]}
             </Button>
           </Grow>
           <Grow in timeout={700}>
@@ -108,7 +132,7 @@ const Home = () => {
               className={classes.catBtn}
               onClick={() => history.push("/services?cat=mobile-development")}
             >
-              Mobile Development
+              {language === "eng" ? eng.categories[1] : bng.categories[1]}
             </Button>
           </Grow>
           <Grow in timeout={900}>
@@ -118,7 +142,7 @@ const Home = () => {
               className={classes.catBtn}
               onClick={() => history.push("/services?cat=digital-marketing")}
             >
-              Digital Marketing
+              {language === "eng" ? eng.categories[2] : bng.categories[2]}
             </Button>
           </Grow>
           <Grow in timeout={1200}>
@@ -128,7 +152,7 @@ const Home = () => {
               className={classes.catBtn}
               onClick={() => history.push("/services?cat=seo")}
             >
-              SEO
+              {language === "eng" ? eng.categories[3] : bng.categories[3]}
             </Button>
           </Grow>
           <Grow in timeout={1500}>
@@ -138,7 +162,7 @@ const Home = () => {
               className={classes.catBtn}
               onClick={() => history.push("/services?cat=graphics-designing")}
             >
-              Graphics Designing
+              {language === "eng" ? eng.categories[4] : bng.categories[4]}
             </Button>
           </Grow>
         </Box>
@@ -148,7 +172,7 @@ const Home = () => {
       <Container component="section" maxWidth="lg" id="about">
         <Box my={5}>
           <Typography variant="h3" align="center">
-            About
+            {language === "eng" ? "About" : "সম্পর্কিত"}
           </Typography>
         </Box>
 
@@ -175,48 +199,46 @@ const Home = () => {
           </Box>
           <Box flex={50} px={3} py={5} bgcolor="primary.light" borderRadius={10}>
             <Typography variant="h4" color="textPrimary">
-              A whole world of freelance talent at your fingertips
+              {language === "eng" ? eng.about.title : bng.about.title}
             </Typography>
 
             <Box my={3}>
               <Typography variant="h6" color="textPrimary" gutterBottom>
-                1. The best for every budget
+                1. {language === "eng" ? eng.about.data[0].title : bng.about.data[0].title}
               </Typography>
 
               <Typography color="textSecondary">
-                Find high-quality services at every price point. No hourly rates, just project-based
-                pricing.
+                {language === "eng" ? eng.about.data[0].text : bng.about.data[0].text}
               </Typography>
             </Box>
 
             <Box my={3}>
               <Typography variant="h6" color="textPrimary" gutterBottom>
-                2. Quality work done quickly
+                2. {language === "eng" ? eng.about.data[1].title : bng.about.data[1].title}
               </Typography>
 
               <Typography color="textSecondary">
-                Find the right freelancer to begin working on your project within minutes.
+                {language === "eng" ? eng.about.data[1].text : bng.about.data[1].text}
               </Typography>
             </Box>
 
             <Box my={3}>
               <Typography variant="h6" color="textPrimary" gutterBottom>
-                3. Protected payments, every time
+                3. {language === "eng" ? eng.about.data[2].title : bng.about.data[2].title}
               </Typography>
 
               <Typography color="textSecondary">
-                Always know what you'll pay upfront. Your payment isn't released until you approve
-                the work.
+                {language === "eng" ? eng.about.data[2].text : bng.about.data[2].text}
               </Typography>
             </Box>
 
             <Box my={3}>
               <Typography variant="h6" color="textPrimary" gutterBottom>
-                4. 24/7 support
+                4. {language === "eng" ? eng.about.data[3].title : bng.about.data[3].title}
               </Typography>
 
               <Typography color="textSecondary">
-                Questions? Our round-the-clock support team is available to help anytime, anywhere.
+                {language === "eng" ? eng.about.data[3].text : bng.about.data[3].text}
               </Typography>
             </Box>
           </Box>
@@ -228,7 +250,7 @@ const Home = () => {
         <Container component="section" maxWidth="lg">
           <Box my={5}>
             <Typography variant="h3" align="center">
-              Testimonials
+              {language === "eng" ? "Testimonials" : "প্রশংসাপত্র"}
             </Typography>
             <Box mt={5} height="15rem">
               <SwiperSlider />
@@ -241,7 +263,7 @@ const Home = () => {
       <Container component="section" maxWidth="lg">
         <Box my={5} px={3} py={5} bgcolor="secondary.light" boxShadow={2} borderRadius={5}>
           <Typography variant="h4" align="center" className={classes.colorWhite}>
-            Find the talent needed to get your business growing.
+            {language === "eng" ? eng.cta.title : bng.cta.title}
           </Typography>
           <Box mt={5} display="flex" justifyContent="center" alignItems="center">
             <Button
@@ -250,7 +272,7 @@ const Home = () => {
               color="primary"
               onClick={() => history.push("/auth")}
             >
-              JOIN NOW
+              {language === "eng" ? eng.cta.btn : bng.cta.btn}
             </Button>
           </Box>
         </Box>

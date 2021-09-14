@@ -3,10 +3,17 @@ const initialState = {
   res: false,
   error: null,
   settings: [],
+  language: "eng",
 };
 
 const siteSettingReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "CHANGE_LANGUAGE":
+      return {
+        ...state,
+        language: state.language === "eng" ? "bng" : "eng",
+      };
+
     case "LOADING_SETTINGS":
       return {
         ...state,
