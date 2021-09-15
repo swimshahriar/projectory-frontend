@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { fetchServices } from "../../actions/serviceAction";
 import { fetchRatings } from "../../actions/serviceRatingAction";
 import AvatarWithUserName from "../../components/AvatarWithUserName";
+import BackBtn from "../../components/BackBtn";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
 import PriceTab from "../../components/PriceTab";
@@ -35,6 +36,7 @@ const ServiceDetails = () => {
   return (
     <SiteLayout>
       <Container maxWidth="lg">
+        <BackBtn url="/services" />
         <Box
           display="flex"
           justifyContent="center"

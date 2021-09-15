@@ -17,6 +17,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { fetchJobs } from "../../actions/jobAction";
 import { createOrder } from "../../actions/orderAction";
 import AvatarWithUserName from "../../components/AvatarWithUserName";
+import BackBtn from "../../components/BackBtn";
 import DialogModal from "../../components/DialogModal";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
@@ -138,6 +139,7 @@ const JobDetails = () => {
 
       {/* --------------------------- job details --------------------------- */}
       <Container maxWidth="lg">
+        <BackBtn url="/jobs" />
         <Paper>
           <Box px={3} py={4} my={3}>
             <Typography variant="h5" gutterBottom>

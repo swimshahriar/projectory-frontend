@@ -45,6 +45,9 @@ const Success = () => {
           <Typography variant="h3" color="primary" align="center">
             Succeed!
           </Typography>
+          <Typography variant="h5" color="secondary" align="center">
+            Please wait! Redirecting....
+          </Typography>
         </Box>
       </Container>
     </SiteLayout>
