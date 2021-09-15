@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 // internal imports
 import { fetchFavoriteServices } from "../../actions/serviceAction";
+import BackBtn from "../../components/BackBtn";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
 import ServiceCard from "../../components/ServiceCard";
@@ -12,7 +13,7 @@ const FavServices = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { isLoading, favServices, res, error } = useSelector((state) => state.services);
-  const { token } = useSelector((state) => state.auth);
+  const { token, uid } = useSelector((state) => state.auth);
 
   // fetch fav services
   useEffect(() => {
@@ -28,6 +29,7 @@ const FavServices = () => {
   return (
     <SiteLayout>
       <Container maxWidth="lg">
+        <BackBtn url={`/buyer-profile/${uid}`} />
         <Box my={3}>
           <Typography variant="h4" align="center">
             Favorite Services ({favServices?.length || 0})

@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // internal imports
 import { fetchJobs } from "../../actions/jobAction";
+import BackBtn from "../../components/BackBtn";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import PostedJobsTab from "../../components/PostedJobsTab";
 
@@ -38,6 +39,7 @@ const UserPostedJobs = () => {
   return (
     <SiteLayout>
       <Container maxWidth="lg">
+        <BackBtn url={`/buyer-profile/${uid}`} />
         <Box my={3}>
           <Typography variant="h4" align="center">
             Your Posted Jobs

@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // internal imports
 import { fetchSkillTestResults, fetchSkillTests } from "../../actions/skillTestAction";
+import BackBtn from "../../components/BackBtn";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
 import SkillTestCard from "../../components/SkillTestCard";
@@ -29,6 +30,7 @@ const SkillTestList = () => {
   return (
     <SiteLayout>
       <Container maxWidth="lg">
+        <BackBtn url={`/user-profile/${uid}`} />
         {/* ----------------------- skill tests list -------------------- */}
         <Box my={3}>
           <Typography variant="h4" align="center">

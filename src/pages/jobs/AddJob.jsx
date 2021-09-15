@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 // internal imports
 import { createJob } from "../../actions/jobAction";
+import BackBtn from "../../components/BackBtn";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import SweetAlert from "../../components/SweetAlert";
 
@@ -74,8 +75,8 @@ const schema = yup.object().shape({
 
 const AddJob = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, res, addRes } = useSelector((state) => state.jobs);
-  const { token } = useSelector((state) => state.auth);
+  const { isLoading, error, addRes } = useSelector((state) => state.jobs);
+  const { token, uid } = useSelector((state) => state.auth);
   const classes = useStyles();
   const history = useHistory();
   const [category, setCategory] = useState("");
@@ -135,6 +136,7 @@ const AddJob = () => {
   return (
     <SiteLayout>
       <Container maxWidth="lg" component="section" className={classes.formContainer}>
+        <BackBtn url={`/buyer-profile/${uid}`} />
         <Box my={3}>
           <Typography variant="h4" align="center">
             Add a Job

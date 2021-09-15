@@ -20,6 +20,7 @@ import { useHistory } from "react-router-dom";
 import * as yup from "yup";
 // actions
 import { addService } from "../../actions/serviceAction";
+import BackBtn from "../../components/BackBtn";
 import SiteLayout from "../../components/layouts/SiteLayout";
 // components
 import PackageInput from "../../components/PackageInput";
@@ -230,6 +231,7 @@ const AddService = () => {
   return (
     <SiteLayout>
       <Container maxWidth="lg" component="section" className={classes.formContainer}>
+        <BackBtn url={`/user-profile/${uid}`} />
         <Box mt={4}>
           <Typography variant="h4" align="center">
             Add a Service

@@ -58,6 +58,7 @@ const ServiceCard = ({
               publicId={imgs[0]}
               uploadPreset="projectory_services"
               width="250"
+              height="150"
               crop="scale"
             />
 
