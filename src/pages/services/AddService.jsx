@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 
 // form schema
 const schema = yup.object().shape({
-  title: yup.string().max(50).required("required"),
+  title: yup.string().required("required"),
   about: yup.string().required("required"),
   basicPrice: yup.number().min(300).required("required"),
   basicDeliveryTime: yup.number().min(1).max(30).required("required(1 - 30)"),
