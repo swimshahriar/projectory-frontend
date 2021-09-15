@@ -68,10 +68,10 @@ const BuyerProfile = () => {
     }
     (async () => {
       await dispatch(fetchUserInfo(userId));
-      await dispatch(fetchJobs({ uid }));
-      await dispatch(fetchOrders({ type: "services", reqUid: uid }, token));
+      await dispatch(fetchJobs({ uid: userId }));
+      await dispatch(fetchOrders({ type: "services", reqUid: userId }, token));
     })();
-  }, [userId, dispatch, history, uid, token]);
+  }, [userId, dispatch, history, token]);
 
   // format date
   let memberSince = null;

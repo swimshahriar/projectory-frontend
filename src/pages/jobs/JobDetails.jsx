@@ -152,7 +152,7 @@ const JobDetails = () => {
               flexWrap="wrap"
             >
               <Box
-                onClick={() => history.push(`/user-profile/${jobs[0].userId}`)}
+                onClick={() => history.push(`/buyer-profile/${jobs[0].userId}`)}
                 className={classes.hover}
               >
                 <AvatarWithUserName
