@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 // internal imports
 import { fetchServices, updateService } from "../../actions/serviceAction";
+import BackBtn from "../../components/BackBtn";
 // components
 import CloudImage from "../../components/CloudImage";
 import SiteLayout from "../../components/layouts/SiteLayout";
@@ -92,7 +93,7 @@ const EditService = () => {
   const [standardFeatures, setStandardFeatures] = useState(null);
   const [premiumFeatures, setPremiumFeatures] = useState(null);
 
-  const { token } = useSelector((state) => state.auth);
+  const { token, uid } = useSelector((state) => state.auth);
   const { error, res, isLoading, services } = useSelector((state) => state.services);
 
   // fetch service info
@@ -258,6 +259,7 @@ const EditService = () => {
   return (
     <SiteLayout>
       <Container maxWidth="lg">
+        <BackBtn url={`/user-profile/${uid}`} />
         <Box mt={3}>
           <Typography variant="h4" align="center">
             Edit Service

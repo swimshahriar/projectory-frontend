@@ -434,20 +434,26 @@ const OrderDetails = () => {
 
           {/* -------------------- if order in finished status ---------------- */}
           {orders?.status === "finished" && (
-            <Box display="flex" flexDirection="column" gridGap={10}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              gridGap={10}
+            >
               {!isBuyer && (
                 <Typography variant="h6"> You earned: {orders?.sellerMoney || 0} tk</Typography>
               )}
               <Typography>
                 Finished on: {moment(orders?.finishedDate).format("DD MMM YYYY")}
               </Typography>
-              {orders?.type === "services" && isBuyer && (
+              {orders?.type === "services" && isBuyer && !ratings && (
                 <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
                   Give a rating
                 </Button>
               )}
               {ratings && (
-                <Box width="18rem">
+                <Box width="22rem">
                   <RatingReview rating={ratings} />
                 </Box>
               )}

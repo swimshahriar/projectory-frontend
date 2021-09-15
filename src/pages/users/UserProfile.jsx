@@ -180,11 +180,10 @@ const UserProfile = () => {
                 <Typography variant="body1" color="textPrimary">
                   Total:{" "}
                   {orders?.reduce((acc, odr) => {
-                    let count = 0;
                     if (odr.status === "finished") {
-                      count = acc + 1;
+                      return (acc += 1);
                     }
-                    return count;
+                    return acc;
                   }, 0) || 0}
                 </Typography>
               </Box>

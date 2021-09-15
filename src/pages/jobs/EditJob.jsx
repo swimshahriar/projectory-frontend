@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 // internal imports
 import { fetchJobs, updateJob } from "../../actions/jobAction";
+import BackBtn from "../../components/BackBtn";
 import SiteLayout from "../../components/layouts/SiteLayout";
 import Loading from "../../components/Loading";
 import SweetAlert from "../../components/SweetAlert";
@@ -145,6 +146,7 @@ const EditJob = () => {
   return (
     <SiteLayout>
       <Container maxWidth="lg" component="section" className={classes.formContainer}>
+        <BackBtn url="/user-posted-jobs" />
         <Box my={3}>
           <Typography variant="h4" align="center">
             Update Job

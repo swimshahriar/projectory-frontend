@@ -32,6 +32,8 @@ const Chats = () => {
   const [messages, setMessages] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [formData, setFormData] = useState("");
+  const [convLoading, setConvLoading] = useState(false);
+  const [msgLoading, setMsgLoading] = useState(false);
 
   // -------------------- set socket connection -----------------
   useEffect(() => {
@@ -57,6 +59,7 @@ const Chats = () => {
   useEffect(() => {
     if (queryRid) {
       (async () => {
+        setConvLoading(true);
         try {
           const conversation = await axios.post(
             `${import.meta.env.VITE_API_BASE_URI}/chats/conversations/${queryRid}`,
@@ -67,6 +70,7 @@ const Chats = () => {
               },
             }
           );
+          setConvLoading(false);
           if (conversation.data?.cid) {
             history.replace(`/chats?cid=${conversation.data.cid}`);
           } else if (conversation.data?.conversations._id) {

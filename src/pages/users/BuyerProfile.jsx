@@ -346,11 +346,10 @@ const BuyerProfile = () => {
                   <Typography variant="body1" color="textPrimary">
                     Total:{" "}
                     {orders?.reduce((acc, ord) => {
-                      let currSpent = 0;
                       if (ord.status === "finished") {
-                        currSpent = parseFloat(acc + ord.price);
+                        return (acc += parseFloat(ord.price));
                       }
-                      return currSpent;
+                      return acc;
                     }, 0)}
                     tk
                   </Typography>
@@ -368,11 +367,10 @@ const BuyerProfile = () => {
                   <Typography variant="body1" color="textPrimary">
                     Total:{" "}
                     {jobs?.reduce((acc, job) => {
-                      let currSpent = 0;
                       if (job.status === "finished") {
-                        currSpent = parseFloat(acc + job.price);
+                        return (acc += parseFloat(job.price));
                       }
-                      return currSpent;
+                      return acc;
                     }, 0)}
                     tk
                   </Typography>
