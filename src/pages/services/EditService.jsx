@@ -351,9 +351,11 @@ const EditService = () => {
                 onChange={(e) => setCategory(e.target.value)}
                 className={classes.select}
               >
-                <MenuItem value="web-developement">Web Developement</MenuItem>
-                <MenuItem value="mobile-developement">Mobile Developement</MenuItem>
+                <MenuItem value="web-development">Web Development</MenuItem>
+                <MenuItem value="mobile-development">Mobile Development</MenuItem>
                 <MenuItem value="graphics-designing">Graphics Designing</MenuItem>
+                <MenuItem value="seo">SEO</MenuItem>
+                <MenuItem value="digital-marketing">Digital Marketing</MenuItem>
               </Select>
             </FormControl>
 
