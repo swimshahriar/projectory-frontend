@@ -1,9 +1,19 @@
 import { Box, CircularProgress, Container, Paper, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis
+} from "recharts";
+// internal imports
 import { fetchJobs } from "../../actions/jobAction";
 import { fetchServices } from "../../actions/serviceAction";
-// internal imports
 import { fetchUserInfo } from "../../actions/userAction";
 import AdminLayout from "../../components/layouts/AdminLayout";
 
@@ -70,9 +80,9 @@ const Admin = () => {
               <Typography variant="body1" color="textPrimary">
                 Total: {jobs?.length}
               </Typography>
-              <Typography variant="body1" color="textPrimary">
+              {/* <Typography variant="body1" color="textPrimary">
                 Active: {jobs?.filter((job) => job.status === "active").length}
-              </Typography>
+              </Typography> */}
             </Box>
           </Paper>
 
@@ -87,11 +97,40 @@ const Admin = () => {
               <Typography variant="body1" color="textPrimary">
                 Total: {services?.length}
               </Typography>
-              <Typography variant="body1" color="textPrimary">
+              {/* <Typography variant="body1" color="textPrimary">
                 Active: {services?.filter((service) => service.status === "active").length}
-              </Typography>
+              </Typography> */}
             </Box>
           </Paper>
+        </Box>
+
+        {/* -------------------------- charts ---------------------- */}
+        <Box my={5} display="flex" justifyContent="center" alignItems="center">
+          {jobs?.length && services?.length ? (
+            <ResponsiveContainer width={300} height={250}>
+              <BarChart
+                data={[
+                  {
+                    name: "jobs",
+                    current: jobs?.length || 0,
+                  },
+                  {
+                    name: "services",
+                    current: services?.length || 0,
+                  },
+                ]}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="current" fill="#F3826F" />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <CircularProgress color="primary" />
+          )}
         </Box>
       </Container>
     </AdminLayout>
