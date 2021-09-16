@@ -72,9 +72,9 @@ const UserProfile = () => {
     (async () => {
       await dispatch(fetchUserInfo(userId));
       await dispatch(fetchServices({ uid: userId }));
-      await dispatch(fetchOrders({ type: "services", recUid: uid }, token));
+      await dispatch(fetchOrders({ type: "services", recUid: userId }, token));
     })();
-  }, [userId, dispatch, history, token, uid]);
+  }, [userId, dispatch, history, token]);
 
   // format date
   let memberSince = null;
@@ -169,12 +169,12 @@ const UserProfile = () => {
               </Paper>
             )}
 
-            {/* --------------------- jobs completed --------------- */}
+            {/* --------------------- service completed --------------- */}
             <Paper>
               <Box minWidth="12rem" p={2}>
                 <Box>
                   <Typography variant="h6" color="textSecondary">
-                    Jobs Completed
+                    Service Completed
                   </Typography>
                 </Box>
                 <Typography variant="body1" color="textPrimary">
@@ -184,7 +184,7 @@ const UserProfile = () => {
                       return (acc += 1);
                     }
                     return acc;
-                  }, 0) || 0}
+                  }, 0)}
                 </Typography>
               </Box>
             </Paper>
