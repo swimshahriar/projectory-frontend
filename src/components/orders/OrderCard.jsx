@@ -34,7 +34,7 @@ const OrderCard = ({ order }) => {
               Order #{order.id}
             </Typography>
             <Typography variant="h6">{order.title}</Typography>
-            <Typography>Buyer: {order.reqPersonUserName}</Typography>
+            <Typography>{order.reqPersonUserName}</Typography>
           </Box>
 
           <Typography>{order.duration} days</Typography>
